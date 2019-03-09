@@ -14,8 +14,23 @@
     "vue-template-compiler": "^2.6.8"
   },
   "dependencies": {
-    "@vue/cli": "^3.5.0",
+    "vue": "^2.6.8",
     "vue-router": "^3.0.2",
     "vuex": "^3.1.0"
+  },
+
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
   }
 }
