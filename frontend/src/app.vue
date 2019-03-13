@@ -1,8 +1,7 @@
 <template>
   <div id="app">
-    <h1>Django and Vue</h1>
     <div id="nav">
-     <router-link :to="{ name: 'UserAuth' }">Auth</router-link>
+      <router-link :to="{ name: 'UserAuth' }"></router-link>
     </div>
     <router-view/>
   </div>
