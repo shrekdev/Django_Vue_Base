@@ -4,7 +4,7 @@ import Router from 'vue-router'
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
 
-import UserAuth from '@/components/UserAuth.vue'
+import UserAuth from '@/components/auth/UserAuth.vue'
 
 
 Vue.use(Router)
