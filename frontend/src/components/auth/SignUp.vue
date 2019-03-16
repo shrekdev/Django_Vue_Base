@@ -34,19 +34,12 @@
 
 <script>
     export default {
+        name: 'SignUp',
         data() {
             return {
-                sign_in_username: 'a',
             }
         },
         methods: {
-            sign_in() {
-                const credentials = {
-                    username: this.sign_in_username,
-                    password: this.sign_in_password
-                }
-                console.log('message: ', credentials);
-            }
         }
     }
 </script>

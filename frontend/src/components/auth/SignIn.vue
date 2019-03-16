@@ -20,6 +20,7 @@
   import { mapGetters } from 'vuex';
 
   export default {
+    name: 'SignIn',
     data() {
       return {
         sign_in_username: '',

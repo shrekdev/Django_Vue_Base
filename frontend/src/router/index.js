@@ -30,10 +30,16 @@ const ifAuthenticated = (to, from, next) => {
 
 const router = new Router({
   routes: [
+//    {
+//      path: '/',
+//      name: 'Home',
+//      component: Home,
+//    },
     {
       path: '/',
       name: 'UserAuth',
-      component: UserAuth
+      component: UserAuth,
+      beforeEnter: ifNotAuthenticated,
     },
     {
       path: '/dashboard',

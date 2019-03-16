@@ -15,10 +15,10 @@
         <div class="container">
           <b-tabs type="is-toggle" expanded>
             <b-tab-item label="Zaloguj się">
-              <sign-in />
+              <SignIn />
             </b-tab-item>
             <b-tab-item label="Zarejestruj się">
-              <sign-up />
+              <SignUp />
             </b-tab-item>
           </b-tabs>
         </div>
@@ -30,6 +30,15 @@
 
 
 <script>
+  import SignIn from './SignIn.vue';
+  import SignUp from './SignUp.vue';
+
+  export default {
+    components: {
+      SignIn,
+      SignUp
+    }
+  }
 </script>
 
 
