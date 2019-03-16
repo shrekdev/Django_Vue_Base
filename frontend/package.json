@@ -15,6 +15,7 @@
     "vue-template-compiler": "^2.6.8"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "buefy": "^0.7.3",
     "vue": "^2.6.8",
     "vue-router": "^3.0.2",

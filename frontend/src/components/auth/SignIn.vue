@@ -16,6 +16,9 @@
 
 
 <script>
+  import {AUTH_REQUEST} from '@/store/actions/auth';
+  import { mapGetters } from 'vuex';
+
   export default {
     data() {
       return {
@@ -24,12 +27,14 @@
       }
     },
     methods: {
-      sign_in() {
+      sign_in: function () {
         const credentials = {
           username: this.sign_in_username,
           password: this.sign_in_password
         }
-        console.log('message: ', credentials);
+        this.$store.dispatch(AUTH_REQUEST, credentials).then(() => {
+          this.$router.push('/dashboard');
+        })
       }
     }
   }
