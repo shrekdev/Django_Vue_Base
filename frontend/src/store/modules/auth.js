@@ -6,6 +6,7 @@ import apiCall from '../../utils/api';
 const state = {
   token: localStorage.getItem('user-token') || '',
   status: '',
+  errors: {},
   hasLoadedOnce: false,
   badLogin: false,
 }
@@ -15,6 +16,7 @@ const getters = {
   isAuthenticated: state => !!state.token,
   authStatus: state => state.status,
   badLogin: state => state.badLogin,
+  authErrors: state => state.errors,
 }
 
 const actions = {
@@ -25,10 +27,10 @@ const actions = {
       .then(resp => {
         localStorage.setItem('user-token', resp.data.auth_token)
         commit(AUTH_SUCCESS, resp)
-//        dispatch(USER_REQUEST)
         resolve(resp)
       })
       .catch(err => {
+        console.log('error during logging, err: ', err.response.data)
         commit(AUTH_ERROR, err)
         localStorage.removeItem('user-token')
         reject(err)
@@ -53,10 +55,11 @@ const mutations = {
     state.token = resp.data.auth_token
     state.hasLoadedOnce = true
   },
-  [AUTH_ERROR]: (state) => {
-    state.badLogin = true;
+  [AUTH_ERROR]: (state, err) => {
     state.status = 'error';
-    state.hasLoadedOnce = true
+    state.badLogin = true;
+    state.hasLoadedOnce = true;
+    state.errors = err.response.data
   },
   [AUTH_LOGOUT]: (state) => {
     state.token = ''

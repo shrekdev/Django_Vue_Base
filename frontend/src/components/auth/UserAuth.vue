@@ -34,6 +34,7 @@
   import SignUp from './SignUp.vue';
 
   export default {
+    name: 'UserAuth',
     components: {
       SignIn,
       SignUp

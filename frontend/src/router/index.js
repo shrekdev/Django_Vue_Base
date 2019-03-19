@@ -1,15 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store'
-import Buefy from 'buefy'
-import 'buefy/dist/buefy.css'
 
+
+import Home from '@/components/home/Home.vue'
 import UserAuth from '@/components/auth/UserAuth.vue'
 import DashboardMain from '@/components/dashboard/DashboardMain.vue'
 
 
 Vue.use(Router)
-Vue.use(Buefy)
 
 
 const ifNotAuthenticated = (to, from, next) => {
@@ -17,7 +16,7 @@ const ifNotAuthenticated = (to, from, next) => {
     next()
     return
   }
-  next('/auth')
+  next('/')
 }
 
 const ifAuthenticated = (to, from, next) => {
@@ -25,16 +24,16 @@ const ifAuthenticated = (to, from, next) => {
     next()
     return
   }
-  next('/dashboard')
+  next('/UserAuth')
 }
 
 const router = new Router({
   routes: [
-//    {
-//      path: '/',
-//      name: 'Home',
-//      component: Home,
-//    },
+    {
+      path: '/',
+      name: 'Home',
+      component: Home,
+    },
     {
       path: '/',
       name: 'UserAuth',
