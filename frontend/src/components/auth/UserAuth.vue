@@ -13,14 +13,34 @@
     <section class="hero is-fullheight">
       <div class="hero-body">
         <div class="container">
-          <b-tabs type="is-toggle" expanded>
-            <b-tab-item label="Zaloguj się">
-              <SignIn />
-            </b-tab-item>
-            <b-tab-item label="Zarejestruj się">
-              <SignUp />
-            </b-tab-item>
-          </b-tabs>
+
+
+<div class="tabs is-toggle">
+  <ul>
+    <li class="is-active"><a>Sign in</a></li>
+    <li><a>Sign up</a></li>
+  </ul>
+</div>
+
+<div id="tab-content">
+  <p class="is-active" data-content="1">
+    <SignIn />
+  </p>
+  <p data-content="2">
+    <SignUp />
+  </p>
+  <p data-content="3">
+    Videos
+  </p>
+  <p data-content="4">
+    Documents
+  </p>
+</div>
+
+
+
+
+
         </div>
       </div>
     </section>
@@ -44,4 +64,11 @@
 
 
 <style scoped>
+  #tab-content p {
+    display: none;
+  }
+
+  #tab-content p.is-active {
+    display: block;
+  }
 </style>

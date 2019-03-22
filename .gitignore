@@ -3,6 +3,9 @@ node_modules/
 migrations/
 dist/
 
+# DB files
+*.sqlite3
+
 # Log files
 npm-debug.log*
 yarn-debug.log*

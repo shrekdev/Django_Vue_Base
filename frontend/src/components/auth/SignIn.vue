@@ -5,12 +5,11 @@
     </p>
     <br>
     <div class="field">
-      <label class="label">Użytkownik</label>
+      <label class="label">E-mail</label>
       <div class="control has-icons-left has-icons-right">
         <input v-model="sign_in_username"
           :class="username_error ? 'input is-danger' : 'input'"
-          type="input"
-          placeholder="Nazwa użytkownika">
+          type="input">
         <span class="icon is-small is-left">
           <i class="fas fa-user"></i>
         </span>
@@ -24,8 +23,7 @@
       <p class="control has-icons-left">
         <input v-model="sign_in_password"
           :class="password_error ? 'input is-danger' : 'input'"
-          type="password"
-          placeholder="Hasło">
+          type="password">
         <span class="icon is-small is-left">
           <i class="fas fa-lock"></i>
         </span>
@@ -35,7 +33,7 @@
       </p>
     </div>
     <button class="button is-primary" v-on:click="sign_in()">
-      Zaloguj
+      Zaloguj się
     </button>
   </section>
 </template>
