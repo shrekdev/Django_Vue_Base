@@ -6,7 +6,7 @@
     <br>
 
     <div class="field">
-      <label class="label">Imię</label>
+      <label class="label is-small">Imię</label>
       <div class="control has-icons-left has-icons-right">
         <input v-model="first_name"
           :class="first_name_error ? 'input is-danger' : 'input'"
@@ -21,7 +21,7 @@
     </div>
 
     <div class="field">
-      <label class="label">E-mail</label>
+      <label class="label is-small">E-mail</label>
       <p class="control has-icons-left">
         <input v-model="email"
           :class="email_error ? 'input is-danger' : 'input'"
@@ -36,7 +36,7 @@
     </div>
 
     <div class="field">
-      <label class="label">Hasło</label>
+      <label class="label is-small">Hasło</label>
       <p class="control has-icons-left">
         <input v-model="password1"
           :class="password1_error ? 'input is-danger' : 'input'"
@@ -51,7 +51,7 @@
     </div>
 
     <div class="field">
-      <label class="label">Powtórz hasło</label>
+      <label class="label is-small">Powtórz hasło</label>
       <p class="control has-icons-left">
         <input v-model="password2"
           :class="password2_error ? 'input is-danger' : 'input'"

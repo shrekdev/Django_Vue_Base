@@ -5,7 +5,7 @@
     </p>
     <br>
     <div class="field">
-      <label class="label">E-mail</label>
+      <label class="label is-small">E-mail</label>
       <div class="control has-icons-left has-icons-right">
         <input v-model="sign_in_username"
           :class="username_error ? 'input is-danger' : 'input'"
@@ -19,7 +19,7 @@
       </p>
     </div>
     <div class="field">
-    <label class="label">Hasło</label>
+    <label class="label is-small">Hasło</label>
       <p class="control has-icons-left">
         <input v-model="sign_in_password"
           :class="password_error ? 'input is-danger' : 'input'"
