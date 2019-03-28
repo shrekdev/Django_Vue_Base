@@ -30,7 +30,7 @@
               <SignIn />
             </p>
             <p :class="sign_up_active ? 'is-active' : null">
-              <SignUp />
+
             </p>
           </div>
 

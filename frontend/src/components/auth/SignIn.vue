@@ -57,6 +57,7 @@
           username: this.sign_in_username,
           password: this.sign_in_password
         }
+        //console.log('is_authenticated: ', this.$store.getters.is_authenticated);
         this.$store.dispatch(AUTH_REQUEST, credentials).then(() => {
           this.$router.push('/home');
         })
