@@ -30,8 +30,6 @@
   export default {
     methods: {
       test_home: function () {
-          console.log('access_token_exp -> ', this.access_token_exp);
-          console.log('refresh_token_exp -> ', this.refresh_token_exp);
           this.$store.dispatch(TEST_ACTION);
         }
       },
