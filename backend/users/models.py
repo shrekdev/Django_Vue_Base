@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser, UserManager
+from django.contrib.auth.models import AbstractUser, UserManager, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -8,11 +8,38 @@ class CustomUserManager(UserManager):
     CustomUserManager provide possibility to log in both with username and email address
     """
 
-    def get_by_natural_key(self, username):
-        return self.get(
-            models.Q(**{self.model.USERNAME_FIELD: username}) |
-            models.Q(**{self.model.EMAIL_FIELD: username})
-        )
+    use_in_migrations = True
+
+    def _create_user(self, email, password, **extra_fields):
+        """
+        Creates and saves a User with the given email and password.
+        """
+
+        if not email:
+            raise ValueError('The e-mail address must be set!')
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+
+        return user
+
+    def create_user(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', False)
+        extra_fields.setdefault('is_superuser', False)
+
+        return self._create_user(email, password, **extra_fields)
+
+    def create_superuser(self, email, password, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+
+        return self._create_user(email, password, **extra_fields)
 
 
 class CustomUser(AbstractUser):
@@ -20,14 +47,18 @@ class CustomUser(AbstractUser):
     CustomUser model with e-mail and first_name fields required and with CustomUserManager
     """
 
-    USERNAME_FIELD = 'username'
+    USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'email']
+    REQUIRED_FIELDS = []
+
+    # to register and log in only by e-mail
+    username = None
 
     first_name = models.CharField(
         verbose_name=_('first name'),
         max_length=30
     )
+
     email = models.EmailField(
         verbose_name=_('e-mail address'),
         max_length=254,

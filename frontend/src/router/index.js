@@ -16,7 +16,7 @@ const ifNotAuthenticated = (to, from, next) => {
     next()
     return
   }
-  next('/')
+  next('/home')
 }
 
 const ifAuthenticated = (to, from, next) => {
@@ -24,15 +24,16 @@ const ifAuthenticated = (to, from, next) => {
     next()
     return
   }
-  next('/UserAuth')
+  next('/home')
 }
 
 const router = new Router({
   routes: [
     {
-      path: '/',
+      path: '/home',
       name: 'Home',
       component: Home,
+      beforeEnter: ifAuthenticated,
     },
     {
       path: '/',
