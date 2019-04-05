@@ -36,15 +36,12 @@ const actions = {
   [AUTH_SIGN_UP]: ({commit, dispatch}, data) => {
     return new Promise((resolve, reject) => {
 //      commit(AUTH_SIGN_UP)
-        console.log('data -> ', data);
       apiCall.post('http://127.0.0.1:8000/api/auth/users/', data)
       .then(resp => {
-        console.log("AUTH_SIGN_UP: resp: ", resp);
 //        commit(AUTH_SUCCESS, resp);
         resolve(resp);
       })
       .catch(err => {
-        console.log("AUTH_SIGN_UP: error: ", err);
         commit(AUTH_SIGN_UP_ERROR, err);
         reject(err);
       })

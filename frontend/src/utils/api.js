@@ -39,7 +39,7 @@ async function refreshToken() {
     store.commit(AUTH_TOKEN_REFRESH, response);     // TODO: not by dispatch? verify
     return response.data.access;
   } catch (err) {
-    console.log(err);
+//    console.log(err);
     return Promise.reject(error)
   }
 }

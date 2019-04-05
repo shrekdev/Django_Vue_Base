@@ -7,4 +7,6 @@ urlpatterns = [
 
     path('api/auth/', include('djoser.urls')),
     path('api/auth/', include('djoser.urls.jwt')),
+
+    # path('api/auth', include('users.urls')),
 ]
