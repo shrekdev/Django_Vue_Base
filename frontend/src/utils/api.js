@@ -8,10 +8,10 @@ import { AUTH_TOKEN_REFRESH, AUTH_LOGOUT } from '@/store/actions/auth';
 
 const apiCall = axios.create({
   timeout: 5000,
-  headers: {
-    'Content-Type': 'application/json',
-//    'X-CSRFToken': Cookies.get('csrftoken')
-  }
+//  headers: {
+//    'Content-Type': 'application/json',
+////    'X-CSRFToken': Cookies.get('csrftoken')
+//  }
 })
 
 
@@ -47,8 +47,9 @@ async function refreshToken() {
 
 apiCall.interceptors.request.use(async function (config) {
   if (!tokensExist()) {
-    console.log('bad tokens!')
-    store.dispatch(AUTH_LOGOUT);
+//    console.log('bad tokens!')
+//    store.dispatch(AUTH_LOGOUT);
+    return config
   } else {
 
     if (isTokenExpValid(store.getters.getAccessToken)) {

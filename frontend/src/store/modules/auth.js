@@ -1,4 +1,13 @@
-import { AUTH_REQUEST, AUTH_ERROR, AUTH_SUCCESS, AUTH_LOGOUT, TEST_ACTION, AUTH_TOKEN_REFRESH } from '../actions/auth.js';
+import {
+    AUTH_SIGN_UP,
+    AUTH_SIGN_UP_ERROR,
+    AUTH_LOG_IN,
+    AUTH_ERROR,
+    AUTH_SUCCESS,
+    AUTH_LOGOUT,
+    TEST_ACTION,
+    AUTH_TOKEN_REFRESH
+} from '../actions/auth.js';
 import apiCall from '../../utils/api';
 import jwt_decode from 'jwt-decode';
 
@@ -8,6 +17,7 @@ const state = {
   refreshToken: localStorage.getItem('refresh'),
   status: '',
   errors: {},
+  signup_errors: {},
 }
 
 
@@ -17,14 +27,33 @@ const getters = {
   isAuthenticated: state => !!state.accessToken && !!state.refreshToken,
   authStatus: state => state.status,
   authErrors: state => state.errors,
+  signUpErrors: state => state.signup_errors,
 }
 
 
 const actions = {
 
-  [AUTH_REQUEST]: ({commit, dispatch}, user) => {
+  [AUTH_SIGN_UP]: ({commit, dispatch}, data) => {
     return new Promise((resolve, reject) => {
-      commit(AUTH_REQUEST)
+//      commit(AUTH_SIGN_UP)
+        console.log('data -> ', data);
+      apiCall.post('http://127.0.0.1:8000/api/auth/users/', data)
+      .then(resp => {
+        console.log("AUTH_SIGN_UP: resp: ", resp);
+//        commit(AUTH_SUCCESS, resp);
+        resolve(resp);
+      })
+      .catch(err => {
+        console.log("AUTH_SIGN_UP: error: ", err);
+        commit(AUTH_SIGN_UP_ERROR, err);
+        reject(err);
+      })
+    })
+  },
+
+  [AUTH_LOG_IN]: ({commit, dispatch}, user) => {
+    return new Promise((resolve, reject) => {
+      commit(AUTH_LOG_IN)
       apiCall.post('/api/auth/jwt/create/', user)
       .then(resp => {
         localStorage.setItem('access', resp.data.access);
@@ -62,7 +91,11 @@ const actions = {
 
 const mutations = {
 
-  [AUTH_REQUEST]: (state) => {
+  [AUTH_SIGN_UP_ERROR]: (state, err) => {
+    state.signup_errors = err.response.data
+  },
+
+  [AUTH_LOG_IN]: (state) => {
     state.status = 'loading'
   },
 
@@ -73,7 +106,6 @@ const mutations = {
   },
 
   [AUTH_ERROR]: (state, err) => {
-    state.status = 'error';
     state.errors = err.response.data
   },
 

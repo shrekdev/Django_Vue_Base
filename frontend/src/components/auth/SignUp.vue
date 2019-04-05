@@ -1,90 +1,132 @@
 <template>
   <section>
-    <p v-if="non_field_errors" class="help is-danger">
-      Podane dane uwierzytelniające są nieprawidłowe!
+
+    <p v-if="signUpErrors.length">
+      <p class="help is-danger" v-for="error in signUpErrors.non_field_errors">{{ error }}</p>
     </p>
     <br>
 
-    <div class="field">
-      <label class="label is-small">Imię</label>
-      <div class="control has-icons-left has-icons-right">
-        <input v-model="first_name"
-          :class="first_name_error ? 'input is-danger' : 'input'"
-          type="input">
-        <span class="icon is-small is-left">
-          <i class="fas fa-user"></i>
-        </span>
+
+    <form @submit="checkForm" >
+
+      <div class="field">
+        <label class="label is-small">Imię</label>
+        <div class="control has-icons-left has-icons-right">
+          <input v-model="first_name" type="input" :class="signUpErrors.first_name ? 'input is-danger' : 'input'" required>
+          <span class="icon is-small is-left">
+            <i class="fas fa-user"></i>
+          </span>
+        </div>
+        <p v-if="signUpErrors.length">
+          <p class="help is-danger" v-for="error in signUpErrors.first_name">{{ error }}</p>
+        </p>
       </div>
-      <p v-if="first_name_error" class="help is-danger">
-        To pole jest wymagane!
-      </p>
-    </div>
 
-    <div class="field">
-      <label class="label is-small">E-mail</label>
-      <p class="control has-icons-left">
-        <input v-model="email"
-          :class="email_error ? 'input is-danger' : 'input'"
-          type="email">
-        <span class="icon is-small is-left">
-          <i class="fas fa-envelope"></i>
-        </span>
-      </p>
-      <p v-if="email_error" class="help is-danger">
-        To pole jest wymagane!
-      </p>
-    </div>
+      <div class="field">
+        <label class="label is-small">E-mail</label>
+        <p class="control has-icons-left">
+          <input v-model="email1" type="email" :class="signUpErrors.email ? 'input is-danger' : 'input'" required>
+          <span class="icon is-small is-left">
+            <i class="fas fa-envelope"></i>
+          </span>
+        </p>
+        <p v-if="signUpErrors.length">
+          <p class="help is-danger" v-for="error in signUpErrors.email">{{ error }}</p>
+        </p>
+      </div>
 
-    <div class="field">
-      <label class="label is-small">Hasło</label>
-      <p class="control has-icons-left">
-        <input v-model="password1"
-          :class="password1_error ? 'input is-danger' : 'input'"
-          type="password">
-        <span class="icon is-small is-left">
-          <i class="fas fa-envelope"></i>
-        </span>
-      </p>
-      <p v-if="password1_error" class="help is-danger">
-        To pole jest wymagane!
-      </p>
-    </div>
+      <div class="field">
+        <label class="label is-small">Powtórz e-mail</label>
+        <p class="control has-icons-left">
+          <input v-model="email2" type="email" :class="signUpErrors.email ? 'input is-danger' : 'input'" required>
+          <span class="icon is-small is-left">
+            <i class="fas fa-envelope"></i>
+          </span>
+        </p>
+        <p v-if="signUpErrors.length">
+          <p class="help is-danger" v-for="error in signUpErrors.email">{{ error }}</p>
+        </p>
+      </div>
 
-    <div class="field">
-      <label class="label is-small">Powtórz hasło</label>
-      <p class="control has-icons-left">
-        <input v-model="password2"
-          :class="password2_error ? 'input is-danger' : 'input'"
-          type="password">
-        <span class="icon is-small is-left">
-          <i class="fas fa-envelope"></i>
-        </span>
-      </p>
-      <p v-if="password1_error" class="help is-danger">
-        To pole jest wymagane!
-      </p>
-    </div>
+      <div class="field">
+        <label class="label is-small">Hasło</label>
+        <p class="control has-icons-left">
+          <input v-model="password1" type="password" :class="signUpErrors.password ? 'input is-danger' : 'input'" required>
+          <span class="icon is-small is-left">
+            <i class="fas fa-envelope"></i>
+         </span>
+        </p>
+        <p v-if="signUpErrors.length">
+          <p class="help is-danger" v-for="error in signUpErrors.password">{{ error }}</p>
+        </p>
+      </div>
 
-    <button class="button is-primary" v-on:click="sign_in()">
-      Zarejestruj się
-    </button>
+      <div class="field">
+        <label class="label is-small">Powtórz hasło</label>
+        <p class="control has-icons-left">
+          <input v-model="password2" type="password" :class="signUpErrors.password ? 'input is-danger' : 'input'" required>
+          <span class="icon is-small is-left">
+            <i class="fas fa-envelope"></i>
+          </span>
+        </p>
+        <p v-if="signUpErrors.length">
+          <p class="help is-danger" v-for="error in signUpErrors.password">{{ error }}</p>
+        </p>
+      </div>
+
+      <button class="button is-primary" v-on:click="sign_up()">
+        Zarejestruj się
+      </button>
+
+    </form>
+
   </section>
 </template>
 
 
 <script>
+  import { mapGetters } from 'vuex';
+  import { AUTH_SIGN_UP } from '@/store/actions/auth';
+
   export default {
     name: 'SignUp',
-      data() {
-        return {
-          first_name: '',
-          email: '',
-          password1: '',
-          password2: '',
-        }
-      },
-      methods: {
+    data() {
+      return {
+        first_name: '',
+        email1: '',
+        email2: '',
+        password1: '',
+        password2: '',
+        errors: {},
       }
+    },
+    methods: {
+      sign_up: function () {
+          this.$store.dispatch(AUTH_SIGN_UP, {
+            first_name: this.first_name,
+            email: this.email1,
+            password: this.password1
+          }).then(() => {
+            console.log('account created!');
+//            this.$router.push('/home');
+          })
+      },
+
+      checkForm: function (e) {
+        console.log('checkForm, password1: ', this.password1);
+        this.errors = {};
+        if (this.password1 === this.password2) {
+          this.sign_up();
+        } else {
+          console.log('Hasła różnią się!');
+        }
+        e.preventDefault();
+      },
+
+    },
+    computed: {
+      ...mapGetters(['signUpErrors']),
+    },
   }
 </script>
 

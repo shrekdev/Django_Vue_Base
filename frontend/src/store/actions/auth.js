@@ -1,4 +1,7 @@
-export const AUTH_REQUEST = 'AUTH_REQUEST'
+export const AUTH_SIGN_UP = 'AUTH_SIGN_UP'
+export const AUTH_SIGN_UP_ERROR = 'AUTH_SIGN_UP_ERROR'
+
+export const AUTH_LOG_IN = 'AUTH_LOG_IN'
 export const AUTH_SUCCESS = 'AUTH_SUCCESS'
 export const AUTH_ERROR = 'AUTH_ERROR'
 export const AUTH_LOGOUT = 'AUTH_LOGOUT'

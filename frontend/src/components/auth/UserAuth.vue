@@ -17,7 +17,7 @@
           <div class="tabs is-small is-centered is-right is-toggle is-fullwidth">
             <ul>
               <li :class="sign_in_active ? 'is-active' : null" v-on:click="switch_tab('sign_in')">
-                <a>Sign in</a>
+                <a>Log in</a>
               </li>
               <li :class="sign_up_active ? 'is-active' : null" v-on:click="switch_tab('sign_up')">
                 <a>Sign up</a>
@@ -27,10 +27,10 @@
 
           <div id="tab-content">
             <p :class="sign_in_active ? 'is-active' : null">
-              <SignIn />
+              <LogIn />
             </p>
             <p :class="sign_up_active ? 'is-active' : null">
-
+              <SignUp />
             </p>
           </div>
 
@@ -43,7 +43,7 @@
 
 
 <script>
-  import SignIn from './SignIn.vue';
+  import LogIn from './LogIn.vue';
   import SignUp from './SignUp.vue';
 
   export default {
@@ -67,7 +67,7 @@
     },
     name: 'UserAuth',
     components: {
-      SignIn,
+      LogIn,
       SignUp
     }
   }
