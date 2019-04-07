@@ -36,6 +36,9 @@
       <button class="button is-primary" v-on:click="log_in()">
         Zaloguj się
       </button>
+      <div>
+        <p class="help is-small">Zapomniałeś hasła?</p>
+      </div>
     </form>
 
   </section>

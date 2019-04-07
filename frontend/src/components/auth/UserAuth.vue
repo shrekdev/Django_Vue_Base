@@ -4,7 +4,18 @@
     <section class="hero is-info is-fullheight">
       <div class="hero-body">
         <div class="container">
-          main
+          <div v-if="getAccountActivationStatus === 'error'">
+            <div class="notification is-danger">
+              <button class="delete"></button>
+              message error
+            </div>
+          </div>
+          <div v-else-if="getAccountActivationStatus === 'success'">
+            <div class="notification is-success">
+              <button class="delete"></button>
+              message success
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -45,6 +56,7 @@
 <script>
   import LogIn from './LogIn.vue';
   import SignUp from './SignUp.vue';
+  import { mapGetters } from 'vuex';
 
   export default {
     data() {
@@ -65,6 +77,11 @@
         }
       }
     },
+
+    computed: {
+      ...mapGetters(['getAccountActivationStatus']),
+    },
+
     name: 'UserAuth',
     components: {
       LogIn,

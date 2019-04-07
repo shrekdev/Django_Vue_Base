@@ -1,6 +1,9 @@
 import {
     AUTH_SIGN_UP,
     AUTH_SIGN_UP_ERROR,
+    AUTH_ACCOUNT_ACTIVATE,
+    AUTH_ACCOUNT_ACTIVATE_SUCCESS,
+    AUTH_ACCOUNT_ACTIVATE_ERROR,
     AUTH_LOG_IN,
     AUTH_ERROR,
     AUTH_SUCCESS,
@@ -15,6 +18,7 @@ import jwt_decode from 'jwt-decode';
 const state = {
   accessToken: localStorage.getItem('access'),
   refreshToken: localStorage.getItem('refresh'),
+  accountActivationStatus: "",
   status: '',
   errors: {},
   signup_errors: {},
@@ -28,6 +32,7 @@ const getters = {
   authStatus: state => state.status,
   authErrors: state => state.errors,
   signUpErrors: state => state.signup_errors,
+  getAccountActivationStatus: state => state.accountActivationStatus,
 }
 
 
@@ -43,6 +48,22 @@ const actions = {
       })
       .catch(err => {
         commit(AUTH_SIGN_UP_ERROR, err);
+        reject(err);
+      })
+    })
+  },
+
+  [AUTH_ACCOUNT_ACTIVATE]: ({commit, dispatch}, data) => {
+    return new Promise((resolve, reject) => {
+      apiCall.post('/api/auth/users/confirm/', data)
+      .then(resp => {
+        console.log('AUTH_ACCOUNT_ACTIVATE_SUCCESS: ', resp);
+        commit(AUTH_ACCOUNT_ACTIVATE_SUCCESS, resp);
+        resolve(resp);
+      })
+      .catch(err => {
+        console.log('AUTH_ACCOUNT_ACTIVATE_ERROR: ', err);
+        commit(AUTH_ACCOUNT_ACTIVATE_ERROR, err);
         reject(err);
       })
     })
@@ -91,6 +112,15 @@ const mutations = {
   [AUTH_SIGN_UP_ERROR]: (state, err) => {
     state.signup_errors = err.response.data
   },
+
+
+  [AUTH_ACCOUNT_ACTIVATE_SUCCESS]: (state, resp) => {
+    state.accountActivationStatus = 'success';
+  },
+  [AUTH_ACCOUNT_ACTIVATE_ERROR]: (state, err) => {
+    state.accountActivationStatus = 'error';
+  },
+
 
   [AUTH_LOG_IN]: (state) => {
     state.status = 'loading'
