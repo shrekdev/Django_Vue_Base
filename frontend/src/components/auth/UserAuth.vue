@@ -5,16 +5,14 @@
       <div class="hero-body">
         <div class="container">
           <div v-if="getAccountActivationStatus === 'error'">
-            <div class="notification is-danger">
-              <button class="delete"></button>
-              message error
-            </div>
+            <b-message type="is-danger" has-icon>
+              error message
+            </b-message>
           </div>
           <div v-else-if="getAccountActivationStatus === 'success'">
-            <div class="notification is-success">
-              <button class="delete"></button>
+            <b-message type="is-success" has-icon>
               message success
-            </div>
+            </b-message>
           </div>
         </div>
       </div>

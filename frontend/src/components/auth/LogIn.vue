@@ -36,10 +36,11 @@
       <button class="button is-primary" v-on:click="log_in()">
         Zaloguj się
       </button>
-      <div>
-        <p class="help is-small">Zapomniałeś hasła?</p>
-      </div>
     </form>
+
+      <div>
+        <PasswordReset />
+      </div>
 
   </section>
 </template>
@@ -48,6 +49,7 @@
 <script>
   import { mapGetters } from 'vuex';
   import { AUTH_LOG_IN } from '@/store/actions/auth';
+
 
   export default {
     name: 'LogIn',
@@ -79,6 +81,8 @@
     computed: {
       ...mapGetters(['authErrors']),
     },
+    components: {
+    }
   }
 </script>
 
