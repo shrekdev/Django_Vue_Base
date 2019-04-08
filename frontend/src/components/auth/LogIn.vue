@@ -37,10 +37,8 @@
         Zaloguj się
       </button>
     </form>
-
-      <div>
+        <br>
         <PasswordReset />
-      </div>
 
   </section>
 </template>

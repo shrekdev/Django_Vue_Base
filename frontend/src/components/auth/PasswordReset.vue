@@ -1,55 +1,43 @@
 <template>
-    <section>
-        <button class="button is-primary"
-            @click="isComponentModalActive = true">
-            Password reset
-        </button>
-
-        <b-modal :active.sync="isComponentModalActive" has-modal-card>
-            <modal-form v-bind="formProps"></modal-form>
-        </b-modal>
-    </section>
+  <section>
+    <form action="">
+      <b-field label="E-mail">
+        <b-input
+          v-model="email"
+          type="email"
+          placeholder="E-mail address"
+          required>
+        </b-input>
+      </b-field>
+      <button class="button is-primary" v-on:click="passwordReset()">
+        Reset password
+      </button>
+    </form>
+  </section>
 </template>
 
 <script>
-  const ModalForm = {
-    props: ['email'],
-    template: `
-      <form action="">
-        <div class="modal-card" style="width: auto">
-          <header class="modal-card-head">
-            <p class="modal-card-title">Password reset</p>
-          </header>
-          <section class="modal-card-body">
-            <b-field label="E-mail">
-              <b-input
-                type="email"
-                :value="email"
-                placeholder="Your email"
-                required>
-              </b-input>
-            </b-field>
-          </section>
-          <footer class="modal-card-foot">
-            <button class="button is-primary">Reset password</button>
-          </footer>
-        </div>
-      </form>
-    `
-  }
+  import { AUTH_PASSWORD_RESET } from '@/store/actions/auth';
 
   export default {
     name: 'PasswordReset',
-    components: {
-      ModalForm
-    },
+
     data() {
       return {
-        isComponentModalActive: false,
-        formProps: {
-          email: '',
-        }
+        email: '',
       }
     },
+    methods: {
+      passwordReset: function() {
+        console.log('clicked, email: ', this.email);
+        if(this.email) {
+          this.$store.dispatch(AUTH_PASSWORD_RESET, {
+            email: this.email,
+          }).then(() => {
+            this.$router.push('/');
+          })
+        }
+      }
+    }
   }
 </script>

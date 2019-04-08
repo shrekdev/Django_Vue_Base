@@ -9,7 +9,13 @@ import {
     AUTH_SUCCESS,
     AUTH_LOGOUT,
     TEST_ACTION,
-    AUTH_TOKEN_REFRESH
+    AUTH_TOKEN_REFRESH,
+    AUTH_PASSWORD_RESET,
+    AUTH_PASSWORD_RESET_SUCCESS,
+    AUTH_PASSWORD_RESET_ERROR,
+    AUTH_PASSWORD_RESET_CONFIRM,
+    AUTH_PASSWORD_RESET_CONFIRM_SUCCESS,
+    AUTH_PASSWORD_RESET_CONFIRM_ERROR
 } from '../actions/auth.js';
 import apiCall from '../../utils/api';
 import jwt_decode from 'jwt-decode';
@@ -19,6 +25,8 @@ const state = {
   accessToken: localStorage.getItem('access'),
   refreshToken: localStorage.getItem('refresh'),
   accountActivationStatus: "",
+  accountPasswordResetStatus: "",
+  accountPasswordResetConfirmStatus: "",
   status: '',
   errors: {},
   signup_errors: {},
@@ -105,6 +113,37 @@ const actions = {
     })
   },
 
+  [AUTH_PASSWORD_RESET]: ({commit, dispatch}, data) => {
+    return new Promise((resolve, reject) => {
+      apiCall.post('/api/auth/password/reset/', data)
+      .then(resp => {
+        console.log('AUTH_PASSWORD_RESET_SUCCESS: ', resp);
+        commit(AUTH_PASSWORD_RESET_SUCCESS, resp);
+        resolve(resp);
+      })
+      .catch(err => {
+        console.log('AUTH_PASSWORD_RESET_ERROR: ', err);
+        commit(AUTH_PASSWORD_RESET_ERROR, err);
+        reject(err);
+      })
+    })
+  },
+
+  [AUTH_PASSWORD_RESET_CONFIRM]: ({commit, dispatch}, data) => {
+    return new Promise((resolve, reject) => {
+      apiCall.post('/api/auth/password/reset/confirm/', data)
+      .then(resp => {
+        console.log('AUTH_PASSWORD_RESET_CONFIRM_SUCCESS: ', resp);
+        commit(AUTH_PASSWORD_RESET_SUCCESS, resp);
+        resolve(resp);
+      })
+      .catch(err => {
+        console.log('AUTH_PASSWORD_RESET_CONFIRM_ERROR: ', err);
+        commit(AUTH_PASSWORD_RESET_ERROR, err);
+        reject(err);
+      })
+    })
+  },
 }
 
 const mutations = {
@@ -143,8 +182,21 @@ const mutations = {
 
   [AUTH_TOKEN_REFRESH]: (state, resp) => {
     state.accessToken = resp.data.access
-  }
+  },
 
+  [AUTH_PASSWORD_RESET_SUCCESS]: (state, resp) => {
+    state.accountPasswordResetStatus = 'success';
+  },
+  [AUTH_PASSWORD_RESET_ERROR]: (state, err) => {
+    state.accountPasswordResetStatus = 'error';
+  },
+
+  [AUTH_PASSWORD_RESET_CONFIRM_SUCCESS]: (state, resp) => {
+    state.accountPasswordResetConfirmStatus = 'success';
+  },
+  [AUTH_PASSWORD_RESET_CONFIRM_ERROR]: (state, err) => {
+    state.accountPasswordResetConfirmStatus = 'error';
+  },
 }
 
 
