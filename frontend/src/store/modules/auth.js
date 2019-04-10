@@ -41,6 +41,7 @@ const getters = {
   authErrors: state => state.errors,
   signUpErrors: state => state.signup_errors,
   getAccountActivationStatus: state => state.accountActivationStatus,
+  getAccountPasswordResetStatus: state => state.accountPasswordResetStatus,
 }
 
 

@@ -1,28 +1,38 @@
 <template>
-  <section>
-    <form action="">
-      <b-field label="New password:">
-        <b-input
-          v-model="new_password"
-          type="password"
-          placeholder="E-mail address"
-          required>
-        </b-input>
-      </b-field>
+<section class="hero is-primary is-fullheight">
+  <div class="hero-body">
+    <div class="container">
 
-      <b-field label="New password:">
-        <b-input
-          v-model="re_new_password"
-          type="password"
-          placeholder="E-mail address"
-          required>
-        </b-input>
-      </b-field>
-      <button class="button is-primary" v-on:click="passwordResetConfirm()">
-        Change password
-      </button>
-    </form>
-  </section>
+<div class="columns is-mobile">
+  <div class="column is-4 is-offset-4">
+
+      <div class="field">
+        <label class="label is-small">Password</label>
+        <p class="control has-icons-left">
+          <input v-model="password" type="password" class="input" required>
+          <span class="icon is-small is-left">
+            <i class="fas fa-lock"></i>
+          </span>
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="label is-small">Password</label>
+        <p class="control has-icons-left">
+          <input v-model="password" type="password" class="input" required>
+          <span class="icon is-small is-left">
+            <i class="fas fa-lock"></i>
+          </span>
+        </p>
+      </div>
+
+
+</div>
+</div>
+
+    </div>
+  </div>
+</section>
 </template>
 
 <script>

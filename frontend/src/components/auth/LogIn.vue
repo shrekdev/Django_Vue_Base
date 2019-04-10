@@ -21,7 +21,7 @@
       </div>
 
       <div class="field">
-      <label class="label is-small">Password</label>
+        <label class="label is-small">Password</label>
         <p class="control has-icons-left">
           <input v-model="password" type="password" :class="authErrors.password ? 'input is-danger' : 'input'" required>
           <span class="icon is-small is-left">
@@ -32,14 +32,15 @@
           <p class="help is-danger" v-for="error in authErrors.password">{{ error }}</p>
         </p>
       </div>
-
-      <button class="button is-primary" v-on:click="log_in()">
-        Zaloguj się
-      </button>
+      <button class="button is-primary is-small is-fullwidth" v-on:click="log_in()">Log in</button>
     </form>
+    <div>
+      <a class="help is-info has-text-centered" v-on:click="showPasswordResetForm = !showPasswordResetForm">Zapomniałeś hasła?</a>
+      <div v-bind:class="showPasswordResetForm ? null : 'is-hidden'">
         <br>
         <PasswordReset />
-
+      </div>
+    </div>
   </section>
 </template>
 
@@ -55,6 +56,7 @@
       return {
         email: '',
         password: '',
+        showPasswordResetForm: false,
       }
     },
     methods: {
@@ -74,7 +76,7 @@
             this.$router.push('/home');
           })
         }
-      }
+      },
     },
     computed: {
       ...mapGetters(['authErrors']),
