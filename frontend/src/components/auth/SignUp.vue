@@ -1,14 +1,20 @@
 <template>
   <section>
-
-    <p v-if="signUpErrors.length">
-      <p class="help is-danger" v-for="error in signUpErrors.non_field_errors">{{ error }}</p>
-    </p>
-    <br>
-
-
-    <form @submit="checkForm" >
-
+    <div v-if="getAccountSignUpStatus === 'success'">
+      <article class="message is-success is-small has-text-centered">
+        <div class="message-body">
+          Check your e-mail
+        </div>
+      </article>
+    </div>
+    <div v-else-if="getAccountSignUpStatus === 'error'">
+      <article class="message is-danger is-small has-text-centered">
+        <div class="message-body">
+          error during registration
+        </div>
+      </article>
+    </div>
+    <form>
       <div class="field">
         <label class="label is-small">Imię</label>
         <div class="control has-icons-left has-icons-right">
@@ -21,7 +27,6 @@
           <p class="help is-danger" v-for="error in signUpErrors.first_name">{{ error }}</p>
         </p>
       </div>
-
       <div class="field">
         <label class="label is-small">E-mail</label>
         <p class="control has-icons-left">
@@ -34,7 +39,6 @@
           <p class="help is-danger" v-for="error in signUpErrors.email">{{ error }}</p>
         </p>
       </div>
-
       <div class="field">
         <label class="label is-small">Powtórz e-mail</label>
         <p class="control has-icons-left">
@@ -47,7 +51,6 @@
           <p class="help is-danger" v-for="error in signUpErrors.email">{{ error }}</p>
         </p>
       </div>
-
       <div class="field">
         <label class="label is-small">Hasło</label>
         <p class="control has-icons-left">
@@ -60,7 +63,6 @@
           <p class="help is-danger" v-for="error in signUpErrors.password">{{ error }}</p>
         </p>
       </div>
-
       <div class="field">
         <label class="label is-small">Powtórz hasło</label>
         <p class="control has-icons-left">
@@ -73,13 +75,10 @@
           <p class="help is-danger" v-for="error in signUpErrors.password">{{ error }}</p>
         </p>
       </div>
-
       <button class="button is-primary" v-on:click="sign_up()">
         Zarejestruj się
       </button>
-
     </form>
-
   </section>
 </template>
 
@@ -102,30 +101,18 @@
     },
     methods: {
       sign_up: function () {
+        if (this.password1 === this.password2) {
           this.$store.dispatch(AUTH_SIGN_UP, {
             first_name: this.first_name,
             email: this.email1,
             password: this.password1
           }).then(() => {
-            console.log('account created!');
-//            this.$router.push('/home');
           })
-      },
-
-      checkForm: function (e) {
-        console.log('checkForm, password1: ', this.password1);
-        this.errors = {};
-        if (this.password1 === this.password2) {
-          this.sign_up();
-        } else {
-          console.log('Hasła różnią się!');
         }
-        e.preventDefault();
       },
-
     },
     computed: {
-      ...mapGetters(['signUpErrors']),
+      ...mapGetters(['signUpErrors', 'getAccountSignUpStatus']),
     },
   }
 </script>

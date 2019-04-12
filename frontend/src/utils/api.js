@@ -51,12 +51,10 @@ apiCall.interceptors.request.use(async function (config) {
 //    store.dispatch(AUTH_LOGOUT);
     return config
   } else {
-
     if (isTokenExpValid(store.getters.getAccessToken)) {
       config.headers.Authorization = `JWT ${store.getters.getAccessToken}`;
       return config;
     }
-
     if (isTokenExpValid(store.getters.getRefreshToken)) {
       config.headers.Authorization = `JWT ${await refreshToken()}`;
     } else {
@@ -74,7 +72,6 @@ apiCall.interceptors.request.use(async function (config) {
 apiCall.interceptors.response.use(function (config) {
   return config
 }, function (error) {
-  console.log('some error, error: ', error);
   if (error.request !== undefined) {
     if (error.request.responseURL.includes('/jwt/create/')) {
       return Promise.reject(error)

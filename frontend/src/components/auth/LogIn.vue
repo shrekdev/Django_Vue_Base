@@ -1,11 +1,23 @@
 <template>
   <section>
-
+    <div v-if="getAccountActivationStatus === 'success'">
+      <article class="message is-success is-small has-text-centered">
+        <div class="message-body">
+          Success! You can log in now :)
+        </div>
+      </article>
+    </div>
+    <div v-else-if="getAccountActivationStatus === 'error'">
+      <article class="message is-danger is-small has-text-centered">
+        <div class="message-body">
+          error
+        </div>
+      </article>
+    </div>
     <p v-if="authErrors.length">
       <p class="help is-danger" v-for="error in authErrors.non_field_errors">{{ error }}</p>
     </p>
     <br>
-
     <form>
       <div class="field">
         <label class="label is-small">E-mail</label>
@@ -19,7 +31,6 @@
           <p class="help is-danger" v-for="error in authErrors.email">{{ error }}</p>
         </p>
       </div>
-
       <div class="field">
         <label class="label is-small">Password</label>
         <p class="control has-icons-left">
@@ -37,7 +48,6 @@
     <div>
       <a class="help is-info has-text-centered" v-on:click="showPasswordResetForm = !showPasswordResetForm">Zapomniałeś hasła?</a>
       <div v-bind:class="showPasswordResetForm ? null : 'is-hidden'">
-        <br>
         <PasswordReset />
       </div>
     </div>
@@ -79,7 +89,7 @@
       },
     },
     computed: {
-      ...mapGetters(['authErrors']),
+      ...mapGetters(['authErrors', 'getAccountActivationStatus']),
     },
     components: {
     }

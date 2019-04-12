@@ -1,5 +1,6 @@
 import {
     AUTH_SIGN_UP,
+    AUTH_SIGN_UP_SUCCESS,
     AUTH_SIGN_UP_ERROR,
     AUTH_ACCOUNT_ACTIVATE,
     AUTH_ACCOUNT_ACTIVATE_SUCCESS,
@@ -24,8 +25,10 @@ import jwt_decode from 'jwt-decode';
 const state = {
   accessToken: localStorage.getItem('access'),
   refreshToken: localStorage.getItem('refresh'),
+  accountSignUpStatus: "",
   accountActivationStatus: "",
   accountPasswordResetStatus: "",
+  accountPasswordResetErrors: "",
   accountPasswordResetConfirmStatus: "",
   status: '',
   errors: {},
@@ -40,8 +43,10 @@ const getters = {
   authStatus: state => state.status,
   authErrors: state => state.errors,
   signUpErrors: state => state.signup_errors,
+  getAccountSignUpStatus: state => state.accountSignUpStatus,
   getAccountActivationStatus: state => state.accountActivationStatus,
   getAccountPasswordResetStatus: state => state.accountPasswordResetStatus,
+  getAccountPasswordResetErrors: state => state.accountPasswordResetErrors,
 }
 
 
@@ -49,10 +54,9 @@ const actions = {
 
   [AUTH_SIGN_UP]: ({commit, dispatch}, data) => {
     return new Promise((resolve, reject) => {
-//      commit(AUTH_SIGN_UP)
-      apiCall.post('http://127.0.0.1:8000/api/auth/users/', data)
+      apiCall.post('/api/auth/users/', data)
       .then(resp => {
-//        commit(AUTH_SUCCESS, resp);
+        commit(AUTH_SIGN_UP_SUCCESS, resp);
         resolve(resp);
       })
       .catch(err => {
@@ -149,8 +153,13 @@ const actions = {
 
 const mutations = {
 
+  [AUTH_SIGN_UP_SUCCESS]: (state, resp) => {
+    state.accountSignUpStatus = 'success';
+    state.signup_errors = {};
+  },
   [AUTH_SIGN_UP_ERROR]: (state, err) => {
-    state.signup_errors = err.response.data
+    state.accountSignUpStatus = 'error';
+    state.signup_errors = err.response.data;
   },
 
 
@@ -163,26 +172,26 @@ const mutations = {
 
 
   [AUTH_LOG_IN]: (state) => {
-    state.status = 'loading'
+    state.status = 'loading';
   },
 
   [AUTH_SUCCESS]: (state, resp) => {
     state.status = 'success'
-    state.accessToken = resp.data.access
-    state.refreshToken = resp.data.refresh
+    state.accessToken = resp.data.access;
+    state.refreshToken = resp.data.refresh;
   },
 
   [AUTH_ERROR]: (state, err) => {
-    state.errors = err.response.data
+    state.errors = err.response.data;
   },
 
   [AUTH_LOGOUT]: (state) => {
-    state.accessToken = ''
-    state.refreshToken = ''
+    state.accessToken = '';
+    state.refreshToken = '';
   },
 
   [AUTH_TOKEN_REFRESH]: (state, resp) => {
-    state.accessToken = resp.data.access
+    state.accessToken = resp.data.access;
   },
 
   [AUTH_PASSWORD_RESET_SUCCESS]: (state, resp) => {
@@ -190,6 +199,7 @@ const mutations = {
   },
   [AUTH_PASSWORD_RESET_ERROR]: (state, err) => {
     state.accountPasswordResetStatus = 'error';
+    state.accountPasswordResetErrors = err.response.data;
   },
 
   [AUTH_PASSWORD_RESET_CONFIRM_SUCCESS]: (state, resp) => {

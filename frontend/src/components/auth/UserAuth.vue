@@ -4,16 +4,7 @@
     <section class="hero is-info is-fullheight">
       <div class="hero-body">
         <div class="container">
-          <div v-if="getAccountActivationStatus === 'error'">
-            <b-message type="is-danger" has-icon>
-              error message
-            </b-message>
-          </div>
-          <div v-else-if="getAccountActivationStatus === 'success'">
-            <b-message type="is-success" has-icon>
-              message success
-            </b-message>
-          </div>
+
         </div>
       </div>
     </section>
