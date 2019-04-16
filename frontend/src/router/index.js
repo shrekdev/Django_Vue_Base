@@ -31,12 +31,12 @@ const ifAuthenticated = (to, from, next) => {
 
 const router = new Router({
   routes: [
-//    {
-//      path: '/home',
-//      name: 'Home',
-//      component: Home,
-//      beforeEnter: ifAuthenticated,
-//    },
+    {
+      path: '/home',
+      name: 'Home',
+      component: Home,
+      beforeEnter: ifAuthenticated,
+    },
     {
       path: '/',
       name: 'UserAuth',

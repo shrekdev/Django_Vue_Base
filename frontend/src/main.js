@@ -1,16 +1,11 @@
-import Vue from 'vue'
-import store from '@/store'
-import router from '@/router'
-import App from '@/app.vue'
-
-import Buefy from 'buefy'
-import 'buefy/dist/buefy.css'
-
-Vue.use(Buefy)
+import Vue from 'vue';
+import store from '@/store';
+import router from '@/router';
+import App from '@/app.vue';
+import VueSweetalert2 from 'vue-sweetalert2';
 
 
-import PasswordReset from './components/auth/PasswordReset.vue';
-Vue.component('PasswordReset', PasswordReset)
+Vue.use(VueSweetalert2);
 
 
 const vue = new Vue({

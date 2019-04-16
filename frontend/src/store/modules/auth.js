@@ -30,6 +30,7 @@ const state = {
   accountPasswordResetStatus: "",
   accountPasswordResetErrors: "",
   accountPasswordResetConfirmStatus: "",
+  accountPasswordResetConfirmErrors: {},
   status: '',
   errors: {},
   signup_errors: {},
@@ -47,6 +48,8 @@ const getters = {
   getAccountActivationStatus: state => state.accountActivationStatus,
   getAccountPasswordResetStatus: state => state.accountPasswordResetStatus,
   getAccountPasswordResetErrors: state => state.accountPasswordResetErrors,
+  getAccountPasswordResetConfirmStatus: state => state.accountPasswordResetConfirmStatus,
+  getAccountPasswordResetConfirmErrors: state => state.accountPasswordResetConfirmErrors,
 }
 
 
@@ -122,12 +125,10 @@ const actions = {
     return new Promise((resolve, reject) => {
       apiCall.post('/api/auth/password/reset/', data)
       .then(resp => {
-        console.log('AUTH_PASSWORD_RESET_SUCCESS: ', resp);
         commit(AUTH_PASSWORD_RESET_SUCCESS, resp);
         resolve(resp);
       })
       .catch(err => {
-        console.log('AUTH_PASSWORD_RESET_ERROR: ', err);
         commit(AUTH_PASSWORD_RESET_ERROR, err);
         reject(err);
       })
@@ -138,13 +139,12 @@ const actions = {
     return new Promise((resolve, reject) => {
       apiCall.post('/api/auth/password/reset/confirm/', data)
       .then(resp => {
-        console.log('AUTH_PASSWORD_RESET_CONFIRM_SUCCESS: ', resp);
-        commit(AUTH_PASSWORD_RESET_SUCCESS, resp);
+        commit(AUTH_PASSWORD_RESET_CONFIRM_SUCCESS, resp);
         resolve(resp);
       })
       .catch(err => {
-        console.log('AUTH_PASSWORD_RESET_CONFIRM_ERROR: ', err);
-        commit(AUTH_PASSWORD_RESET_ERROR, err);
+        console.log('error in AUTH_PASSWORD_RESET_CONFIRM_ERROR')
+        commit(AUTH_PASSWORD_RESET_CONFIRM_ERROR, err);
         reject(err);
       })
     })
@@ -206,6 +206,7 @@ const mutations = {
     state.accountPasswordResetConfirmStatus = 'success';
   },
   [AUTH_PASSWORD_RESET_CONFIRM_ERROR]: (state, err) => {
+    state.accountPasswordResetConfirmErrors = err.response.data;
     state.accountPasswordResetConfirmStatus = 'error';
   },
 }

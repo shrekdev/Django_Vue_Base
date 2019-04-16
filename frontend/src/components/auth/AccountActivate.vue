@@ -13,6 +13,13 @@
         uid: this.$route.params.uid,
         token: this.$route.params.token
       }).then(() => {
+        if(this.$store.getters.getAccountActivationStatus === 'success') {
+          this.$swal({
+            type: 'success',
+            title: 'Success!',
+            text: 'You can log in now ;)'
+          });
+        }
         this.$router.push('/');
       })
     },

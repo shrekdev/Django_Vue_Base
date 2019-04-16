@@ -1,19 +1,5 @@
 <template>
   <section>
-    <div v-if="getAccountSignUpStatus === 'success'">
-      <article class="message is-success is-small has-text-centered">
-        <div class="message-body">
-          Check your e-mail
-        </div>
-      </article>
-    </div>
-    <div v-else-if="getAccountSignUpStatus === 'error'">
-      <article class="message is-danger is-small has-text-centered">
-        <div class="message-body">
-          error during registration
-        </div>
-      </article>
-    </div>
     <form>
       <div class="field">
         <label class="label is-small">Imię</label>
@@ -107,12 +93,26 @@
             email: this.email1,
             password: this.password1
           }).then(() => {
+            this.$router.push('/');
+            if(this.$store.getters.getAccountSignUpStatus === 'success') {
+              this.first_name = '';
+              this.email1 = '';
+              this.email2 = '';
+              this.password1 = '';
+              this.password2 = '';
+              this.errors = {};
+              this.$swal({
+                type: 'success',
+                title: 'E-mail confirmation',
+                text: 'Check your e-mail box and confirm your e-mail address ;)'
+              });
+            }
           })
         }
       },
     },
     computed: {
-      ...mapGetters(['signUpErrors', 'getAccountSignUpStatus']),
+      ...mapGetters(['signUpErrors']),
     },
   }
 </script>

@@ -1,13 +1,6 @@
 <template>
   <section>
-    <div v-if="getAccountActivationStatus === 'success'">
-      <article class="message is-success is-small has-text-centered">
-        <div class="message-body">
-          Success! You can log in now :)
-        </div>
-      </article>
-    </div>
-    <div v-else-if="getAccountActivationStatus === 'error'">
+    <div v-if="getAccountActivationStatus === 'error'">
       <article class="message is-danger is-small has-text-centered">
         <div class="message-body">
           error
@@ -56,6 +49,7 @@
 
 
 <script>
+  import PasswordReset from './PasswordReset.vue';
   import { mapGetters } from 'vuex';
   import { AUTH_LOG_IN } from '@/store/actions/auth';
 
@@ -92,6 +86,7 @@
       ...mapGetters(['authErrors', 'getAccountActivationStatus']),
     },
     components: {
+      PasswordReset
     }
   }
 </script>

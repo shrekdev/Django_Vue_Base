@@ -1,14 +1,6 @@
 <template>
   <section>
     <form>
-      <div v-if="getAccountPasswordResetStatus === 'success'">
-        <article class="message is-success is-small has-text-centered">
-          <div class="message-body">
-            To continue check your email and follow the steps
-          </div>
-        </article>
-      </div>
-      <br>
       <div class="field">
         <label class="label is-small">E-mail</label>
         <div class="control has-icons-left has-icons-right">
@@ -43,13 +35,21 @@
           this.$store.dispatch(AUTH_PASSWORD_RESET, {
             email: this.email,
           }).then(() => {
+            if(this.$store.getters.getAccountPasswordResetStatus === 'success') {
+              this.email = '';
+              this.$swal({
+                type: 'success',
+                title: 'Success!',
+                text: 'To continue check your email and follow the steps'
+              });
+            }
             this.$router.push('/');
           })
         }
       }
     },
     computed: {
-      ...mapGetters(['getAccountPasswordResetStatus', 'getAccountPasswordResetErrors']),
+      ...mapGetters(['getAccountPasswordResetErrors']),
     },
   }
 </script>

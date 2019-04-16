@@ -24,7 +24,6 @@
               </li>
             </ul>
           </div>
-
           <div id="tab-content">
             <p :class="sign_in_active ? 'is-active' : null">
               <LogIn />
@@ -33,7 +32,6 @@
               <SignUp />
             </p>
           </div>
-
         </div>
       </div>
     </section>
@@ -56,7 +54,6 @@
     },
     methods: {
       switch_tab(tab) {
-        console.log('clicked: ', tab);
         if(tab === 'sign_in') {
           this.sign_in_active = true,
           this.sign_up_active = false
@@ -66,11 +63,6 @@
         }
       }
     },
-
-    computed: {
-      ...mapGetters(['getAccountActivationStatus']),
-    },
-
     name: 'UserAuth',
     components: {
       LogIn,
