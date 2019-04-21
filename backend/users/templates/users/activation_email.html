@@ -1,0 +1,12 @@
+{% block subject %}Text and HTML mail subject{% endblock %}
+
+{% block text_body %}Activation (text only){% endblock %}
+
+{% block html_body %}
+  <p>
+      Please go to the following page to activate account:
+  </p>
+  <p>
+      <a href="{{ protocol }}://{{ domain }}/{{ url|safe }}">{{ protocol }}://{{ domain }}/{{ url|safe }}</a>
+  </p>
+{% endblock %}

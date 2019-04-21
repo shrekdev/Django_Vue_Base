@@ -104,14 +104,23 @@ REST_FRAMEWORK = {
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 DJOSER = {
-    'PASSWORD_RESET_CONFIRM_URL': 'http://localhost:8080/#/password-reset/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': '#/password-reset/{uid}/{token}',
     'PASSWORD_RESET_CONFIRM_RETYPE': True,
-    'ACTIVATION_URL': 'http://localhost:8080/#/activate/{uid}/{token}',
+    'ACTIVATION_URL': '#/activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
     'SERIALIZERS': {
          'user_create': 'users.serializers.CustomUserRegistrationSerializer'
+    },
+    'EMAIL': {
+        'DOMAIN': 'example.com',
+        'SITE_NAME': 'Foo Website',
+        'activation': 'users.views.ActivationEmail',
+        'confirmation': 'users.views.ConfirmationEmail',
+        'password_reset': 'users.views.PasswordResetEmail',
     }
 }
+
+
 
 from datetime import timedelta
 SIMPLE_JWT = {

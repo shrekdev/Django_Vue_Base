@@ -1,28 +1,27 @@
-# from djoser.conf import django_settings
-# from django.urls import reverse
-# from rest_framework.response import Response
-# from rest_framework.views import APIView
-# from rest_framework.permissions import AllowAny
-# from urllib import request, parse
-# # import requests
-#
-#
-# class ActivateUserByGet(APIView):
-#     permission_classes = [AllowAny, ]
-#
-#     def get(self, r, uid, token, format = None):
-#         print('request: ', r)
-#         payload = {'uid': uid, 'token': token}
-#         data = parse.urlencode(payload).encode()
-#         # url = f'http://127.0.0.1:8000{reverse("customuser-confirm")}'
-#         url = 'http://127.0.0.1:8000/api/auth/users/activate'
-#         print('url: ', url)
-#         req = request.Request(url, data=data)
-#         resp = request.urlopen(req)
-#
-#         print('resp status: ', resp.getcode())
-#
-#         if resp.getcode() == 204:
-#             return Response({'detail': 'all good, sir'})
-#         else:
-#             return Response({'detail': 'not good, sir'})
+from django.contrib.auth.tokens import default_token_generator
+from templated_mail.mail import BaseEmailMessage
+from djoser import utils
+from djoser.conf import settings
+
+
+class ActivationEmail(BaseEmailMessage):
+    template_name = 'users/activation_email.html'
+
+    def get_context_data(self):
+        context = super(ActivationEmail, self).get_context_data()
+
+        user = context.get('user')
+        context['uid'] = utils.encode_uid(user.pk)
+        context['token'] = default_token_generator.make_token(user)
+        context['url'] = settings.ACTIVATION_URL.format(**context)
+        context['domain'] = 'www.new-domain.pl'
+
+        return context
+
+
+class ConfirmationEmail(BaseEmailMessage):
+    template_name = 'users/confirmation_email.html'
+
+
+class PasswordResetEmail(BaseEmailMessage):
+    template_name = 'users/password_reset_email.html'
