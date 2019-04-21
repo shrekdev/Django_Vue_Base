@@ -10,6 +10,9 @@ django = "*"
 djangorestframework = "*"
 djoser = "*"
 django-cors-headers = "*"
+djangorestframework-simplejwt = "*"
+requests = "*"
+django-templated-mail = "*"
 
 [requires]
 python_version = "3.7"
