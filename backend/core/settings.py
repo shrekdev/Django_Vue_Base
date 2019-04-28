@@ -112,12 +112,15 @@ DJOSER = {
          'user_create': 'users.serializers.CustomUserRegistrationSerializer'
     },
     'EMAIL': {
-        'DOMAIN': 'example.com',
-        'SITE_NAME': 'Foo Website',
         'activation': 'users.views.ActivationEmail',
         'confirmation': 'users.views.ConfirmationEmail',
         'password_reset': 'users.views.PasswordResetEmail',
     }
+}
+
+DJOSER_EMAIL = {
+    'DOMAIN': 'example.com',
+    'SITE_NAME': 'Foo Website',
 }
 
 
