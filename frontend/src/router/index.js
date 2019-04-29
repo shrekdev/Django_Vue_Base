@@ -38,7 +38,7 @@ const router = new Router({
       beforeEnter: ifAuthenticated,
     },
     {
-      path: '/',
+      path: '/:uid?/:token?',
       name: 'UserAuth',
       component: UserAuth,
       beforeEnter: ifNotAuthenticated,

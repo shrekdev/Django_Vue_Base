@@ -7,8 +7,8 @@
         </div>
       </article>
     </div>
-    <p v-if="authErrors.length">
-      <p class="help is-danger" v-for="error in authErrors.non_field_errors">{{ error }}</p>
+    <p v-if="authErrors.detail">
+      <p class="help is-danger">{{ authErrors.detail }}</p>
     </p>
     <br>
     <form>
@@ -77,7 +77,8 @@
             email: this.email,
             password: this.password
           }).then(() => {
-            this.$router.push('/home');
+          console.log('przekierowanie na home');
+//            this.$router.push('/home');
           })
         }
       },

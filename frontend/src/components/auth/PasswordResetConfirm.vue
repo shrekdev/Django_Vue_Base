@@ -64,7 +64,6 @@
             new_password: this.new_password,
             re_new_password: this.re_new_password
           }).then(() => {
-            this.$router.push('/');
             if(this.$store.getters.getAccountPasswordResetConfirmStatus === 'success') {
               this.new_password = '';
               this.re_new_password = '';
@@ -73,6 +72,7 @@
                 title: 'Success!',
                 text: 'You can log in now with your new password ;)'
               });
+              this.$router.push('/');
             }
           })
         }

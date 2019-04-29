@@ -12,8 +12,10 @@
   <div class="column is-4">
     <section class="hero is-fullheight">
       <div class="hero-body align-baseline">
-        <div class="container">
-
+        <div v-if="passwordResetConfirm" class="container">
+          <PasswordResetConfirm2 />
+        </div>
+        <div v-else class="container">
           <div class="tabs is-small is-centered is-right is-toggle is-fullwidth">
             <ul>
               <li :class="sign_in_active ? 'is-active' : null" v-on:click="switch_tab('sign_in')">
@@ -43,6 +45,7 @@
 <script>
   import LogIn from './LogIn.vue';
   import SignUp from './SignUp.vue';
+  import PasswordResetConfirm2 from './PasswordResetConfirm2.vue';
   import { mapGetters } from 'vuex';
 
   export default {
@@ -50,6 +53,17 @@
       return {
         sign_in_active: true,
         sign_up_active: false,
+        passwordResetConfirm: false,
+      }
+    },
+    mounted() {
+      console.log(this.$route.params.uid);
+      console.log(this.$route.params.token);
+      if(this.$route.params.uid && this.$route.params.token) {
+        console.log('password reset confirm');
+        this.passwordResetConfirm = true
+      } else {
+        this.passwordResetConfirm = false
       }
     },
     methods: {
@@ -66,7 +80,8 @@
     name: 'UserAuth',
     components: {
       LogIn,
-      SignUp
+      SignUp,
+      PasswordResetConfirm2
     }
   }
 </script>

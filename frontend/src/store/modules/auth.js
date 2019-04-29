@@ -96,6 +96,7 @@ const actions = {
         resolve(resp);
       })
       .catch(err => {
+      console.log('error: ', err)
         commit(AUTH_ERROR, err);
         localStorage.removeItem('access');
         localStorage.removeItem('refresh');

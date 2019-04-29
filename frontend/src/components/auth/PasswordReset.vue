@@ -13,7 +13,7 @@
           <p class="help is-danger" v-for="error in getAccountPasswordResetErrors.email">{{ error }}</p>
         </p>
       </div>
-      <button class="button is-primary is-small is-fullwidth" v-on:click="passwordReset()">Resset password</button>
+      <button class="button is-primary is-small is-fullwidth" v-on:click="passwordReset()">Reset password</button>
     </form>
   </section>
 </template>
