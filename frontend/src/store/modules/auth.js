@@ -140,6 +140,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       apiCall.post('/api/auth/password/reset/confirm/', data)
       .then(resp => {
+        console.log('hasło zmienione')
         commit(AUTH_PASSWORD_RESET_CONFIRM_SUCCESS, resp);
         resolve(resp);
       })

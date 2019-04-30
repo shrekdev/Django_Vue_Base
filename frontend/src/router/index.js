@@ -6,7 +6,7 @@ import store from '../store'
 import Home from '@/components/home/Home.vue'
 import UserAuth from '@/components/auth/UserAuth.vue'
 import AccountActivate from '@/components/auth/AccountActivate.vue'
-import PasswordResetConfirm from '@/components/auth/PasswordResetConfirm.vue'
+import PasswordResetConfirmRedirect from '@/components/auth/PasswordResetConfirmRedirect.vue'
 import DashboardMain from '@/components/dashboard/DashboardMain.vue'
 
 
@@ -38,7 +38,7 @@ const router = new Router({
       beforeEnter: ifAuthenticated,
     },
     {
-      path: '/:uid?/:token?',
+      path: '/',
       name: 'UserAuth',
       component: UserAuth,
       beforeEnter: ifNotAuthenticated,
@@ -51,8 +51,8 @@ const router = new Router({
     },
     {
       path: '/password-reset/:uid/:token',
-      name: 'PasswordResetConfirm',
-      component: PasswordResetConfirm,
+      name: 'PasswordResetConfirmRedirect',
+      component: PasswordResetConfirmRedirect,
       beforeEnter: ifNotAuthenticated,
     },
     {

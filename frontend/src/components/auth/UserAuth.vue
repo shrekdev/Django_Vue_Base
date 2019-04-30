@@ -13,7 +13,7 @@
     <section class="hero is-fullheight">
       <div class="hero-body align-baseline">
         <div v-if="passwordResetConfirm" class="container">
-          <PasswordResetConfirm2 />
+          <PasswordResetConfirm @eventname="updateparent" />
         </div>
         <div v-else class="container">
           <div class="tabs is-small is-centered is-right is-toggle is-fullwidth">
@@ -45,7 +45,7 @@
 <script>
   import LogIn from './LogIn.vue';
   import SignUp from './SignUp.vue';
-  import PasswordResetConfirm2 from './PasswordResetConfirm2.vue';
+  import PasswordResetConfirm from './PasswordResetConfirm.vue';
   import { mapGetters } from 'vuex';
 
   export default {
@@ -54,12 +54,12 @@
         sign_in_active: true,
         sign_up_active: false,
         passwordResetConfirm: false,
+        uid: this.$route.params.uid,
+        token: this.$route.params.token,
       }
     },
     mounted() {
-      console.log(this.$route.params.uid);
-      console.log(this.$route.params.token);
-      if(this.$route.params.uid && this.$route.params.token) {
+      if(this.uid && this.token) {
         console.log('password reset confirm');
         this.passwordResetConfirm = true
       } else {
@@ -67,6 +67,16 @@
       }
     },
     methods: {
+      updateparent(variable) {
+        console.log('got event');
+        this.uid = ''
+        this.token = ''
+        if(this.passwordResetConfirm) {
+            this.passwordResetConfirm = false;
+        } else {
+            this.passwordResetConfirm = true;
+        }
+      },
       switch_tab(tab) {
         if(tab === 'sign_in') {
           this.sign_in_active = true,
@@ -81,7 +91,7 @@
     components: {
       LogIn,
       SignUp,
-      PasswordResetConfirm2
+      PasswordResetConfirm
     }
   }
 </script>
