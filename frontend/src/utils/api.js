@@ -47,8 +47,12 @@ async function refreshToken() {
 
 apiCall.interceptors.request.use(async function (config) {
   if (!tokensExist()) {
+
+//  token verify functionality / by API
+
 //    console.log('bad tokens!')
 //    store.dispatch(AUTH_LOGOUT);
+//
     return config
   } else {
     if (isTokenExpValid(store.getters.getAccessToken)) {

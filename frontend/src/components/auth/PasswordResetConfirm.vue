@@ -1,8 +1,12 @@
 <template>
 <div>
+  <label class="help is-small is-info has-text-centered">
+    To complete the procedure enter the correct new password and then just remember it ;)
+  </label>
   <p v-if="getAccountPasswordResetConfirmErrors.length">
     <p class="help is-danger has-text-centered" v-for="error in getAccountPasswordResetConfirmErrors.non_field_errors">{{ error }}</p>
   </p>
+  <br>
   <form>
     <div class="field">
       <label class="label is-small">New password</label>
@@ -25,7 +29,7 @@
         </span>
       </p>
     </div>
-    <button class="button is-secondary is-small is-fullwidth" v-on:click="passwordResetConfirm()">
+    <button class="button is-primary is-small is-fullwidth" v-on:click="passwordResetConfirm()">
       Change password
     </button>
   </form>
@@ -63,14 +67,13 @@
                 title: 'Success!',
                 text: 'You can log in now with your new password ;)'
               });
-              this.$emit('eventname', this.variable)
-              this.$router.push({
-                name: 'Home',
-                params: {
-                  uid: '',
-                  token: '',
-                }
-              })
+              this.$emit('resetConfirmed')
+            } else if(this.$store.getters.getAccountPasswordResetConfirmStatus === 'error') {
+              this.$swal({
+                type: 'error',
+                title: 'Something went wrong...',
+                text: "We can't reset your password, sorry ;("
+              });
             }
           })
         }

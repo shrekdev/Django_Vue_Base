@@ -6,8 +6,8 @@ import {
     AUTH_ACCOUNT_ACTIVATE_SUCCESS,
     AUTH_ACCOUNT_ACTIVATE_ERROR,
     AUTH_LOG_IN,
-    AUTH_ERROR,
-    AUTH_SUCCESS,
+    AUTH_LOG_IN_ERROR,
+    AUTH_LOG_IN_SUCCESS,
     AUTH_LOGOUT,
     TEST_ACTION,
     AUTH_TOKEN_REFRESH,
@@ -32,7 +32,7 @@ const state = {
   accountPasswordResetConfirmStatus: "",
   accountPasswordResetConfirmErrors: {},
   status: '',
-  errors: {},
+  logInErrors: {},
   signup_errors: {},
 }
 
@@ -41,8 +41,8 @@ const getters = {
   getAccessToken: state => state.accessToken,
   getRefreshToken: state => state.refreshToken,
   isAuthenticated: state => !!state.accessToken && !!state.refreshToken,
-  authStatus: state => state.status,
-  authErrors: state => state.errors,
+  getLogInStatus: state => state.logInStatus,
+  getLogInErrors: state => state.logInErrors,
   signUpErrors: state => state.signup_errors,
   getAccountSignUpStatus: state => state.accountSignUpStatus,
   getAccountActivationStatus: state => state.accountActivationStatus,
@@ -73,12 +73,10 @@ const actions = {
     return new Promise((resolve, reject) => {
       apiCall.post('/api/auth/users/confirm/', data)
       .then(resp => {
-        console.log('AUTH_ACCOUNT_ACTIVATE_SUCCESS: ', resp);
         commit(AUTH_ACCOUNT_ACTIVATE_SUCCESS, resp);
         resolve(resp);
       })
       .catch(err => {
-        console.log('AUTH_ACCOUNT_ACTIVATE_ERROR: ', err);
         commit(AUTH_ACCOUNT_ACTIVATE_ERROR, err);
         reject(err);
       })
@@ -87,19 +85,17 @@ const actions = {
 
   [AUTH_LOG_IN]: ({commit, dispatch}, user) => {
     return new Promise((resolve, reject) => {
-      commit(AUTH_LOG_IN)
       apiCall.post('/api/auth/jwt/create/', user)
       .then(resp => {
         localStorage.setItem('access', resp.data.access);
         localStorage.setItem('refresh', resp.data.refresh);
-        commit(AUTH_SUCCESS, resp);
+        commit(AUTH_LOG_IN_SUCCESS, resp);
         resolve(resp);
       })
       .catch(err => {
-      console.log('error: ', err)
-        commit(AUTH_ERROR, err);
         localStorage.removeItem('access');
         localStorage.removeItem('refresh');
+        commit(AUTH_LOG_IN_ERROR, err);
         reject(err);
       })
     })
@@ -107,9 +103,9 @@ const actions = {
 
   [AUTH_LOGOUT]: ({commit, dispatch}) => {
     return new Promise((resolve, reject) => {
-      commit(AUTH_LOGOUT);
       localStorage.removeItem('access');
       localStorage.removeItem('refresh');
+      commit(AUTH_LOGOUT);
       resolve();
     })
   },
@@ -173,19 +169,17 @@ const mutations = {
   },
 
 
-  [AUTH_LOG_IN]: (state) => {
-    state.status = 'loading';
-  },
-
-  [AUTH_SUCCESS]: (state, resp) => {
-    state.status = 'success'
+  [AUTH_LOG_IN_SUCCESS]: (state, resp) => {
+    state.logInStatus = 'success';
+    state.logInErrors = '';
     state.accessToken = resp.data.access;
     state.refreshToken = resp.data.refresh;
   },
-
-  [AUTH_ERROR]: (state, err) => {
-    state.errors = err.response.data;
+  [AUTH_LOG_IN_ERROR]: (state, err) => {
+    state.logInErrors = err.response.data;
+    state.logInStatus = 'error';
   },
+
 
   [AUTH_LOGOUT]: (state) => {
     state.accessToken = '';
@@ -198,6 +192,7 @@ const mutations = {
 
   [AUTH_PASSWORD_RESET_SUCCESS]: (state, resp) => {
     state.accountPasswordResetStatus = 'success';
+    state.accountPasswordResetErrors = {};
   },
   [AUTH_PASSWORD_RESET_ERROR]: (state, err) => {
     state.accountPasswordResetStatus = 'error';
@@ -205,6 +200,7 @@ const mutations = {
   },
 
   [AUTH_PASSWORD_RESET_CONFIRM_SUCCESS]: (state, resp) => {
+    state.accountPasswordResetConfirmErrors = {}
     state.accountPasswordResetConfirmStatus = 'success';
   },
   [AUTH_PASSWORD_RESET_CONFIRM_ERROR]: (state, err) => {

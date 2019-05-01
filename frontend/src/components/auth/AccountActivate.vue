@@ -19,6 +19,12 @@
             title: 'Success!',
             text: 'You can log in now ;)'
           });
+        } else if(this.$store.getters.getAccountActivationStatus === 'success') {
+          this.$swal({
+            type: 'error',
+            title: 'Error!',
+            text: "We can't activate your account ;("
+          });
         }
         this.$router.push('/');
       })

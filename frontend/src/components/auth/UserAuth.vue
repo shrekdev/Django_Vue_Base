@@ -13,24 +13,24 @@
     <section class="hero is-fullheight">
       <div class="hero-body align-baseline">
         <div v-if="passwordResetConfirm" class="container">
-          <PasswordResetConfirm @eventname="updateparent" />
+          <PasswordResetConfirm @resetConfirmed="updateResetPasswordState" />
         </div>
         <div v-else class="container">
           <div class="tabs is-small is-centered is-right is-toggle is-fullwidth">
             <ul>
-              <li :class="sign_in_active ? 'is-active' : null" v-on:click="switch_tab('sign_in')">
+              <li :class="logInActive ? 'is-active' : null" v-on:click="switch_tab('sign_in')">
                 <a>Log in</a>
               </li>
-              <li :class="sign_up_active ? 'is-active' : null" v-on:click="switch_tab('sign_up')">
+              <li :class="signUpActive ? 'is-active' : null" v-on:click="switch_tab('sign_up')">
                 <a>Sign up</a>
               </li>
             </ul>
           </div>
           <div id="tab-content">
-            <p :class="sign_in_active ? 'is-active' : null">
+            <p :class="logInActive ? 'is-active' : null">
               <LogIn />
             </p>
-            <p :class="sign_up_active ? 'is-active' : null">
+            <p :class="signUpActive ? 'is-active' : null">
               <SignUp />
             </p>
           </div>
@@ -51,39 +51,31 @@
   export default {
     data() {
       return {
-        sign_in_active: true,
-        sign_up_active: false,
-        passwordResetConfirm: false,
+        logInActive: true,
+        signUpActive: false,
         uid: this.$route.params.uid,
         token: this.$route.params.token,
+        passwordResetConfirm: false,
       }
     },
     mounted() {
       if(this.uid && this.token) {
         console.log('password reset confirm');
         this.passwordResetConfirm = true
-      } else {
-        this.passwordResetConfirm = false
       }
     },
     methods: {
-      updateparent(variable) {
+      updateResetPasswordState() {
         console.log('got event');
-        this.uid = ''
-        this.token = ''
-        if(this.passwordResetConfirm) {
-            this.passwordResetConfirm = false;
-        } else {
-            this.passwordResetConfirm = true;
-        }
+        this.passwordResetConfirm = !this.passwordResetConfirm
       },
       switch_tab(tab) {
         if(tab === 'sign_in') {
-          this.sign_in_active = true,
-          this.sign_up_active = false
+          this.logInActive = true,
+          this.signUpActive = false
         } else {
-          this.sign_in_active = false,
-          this.sign_up_active = true
+          this.logInActive = false,
+          this.signUpActive = true
         }
       }
     },

@@ -4,7 +4,7 @@
       <div class="field">
         <label class="label is-small">E-mail</label>
         <div class="control has-icons-left has-icons-right">
-          <input v-model="email" type="input" class="input" required>
+          <input v-model="email" type="email" class="input" required>
           <span class="icon is-small is-left">
             <i class="fas fa-user"></i>
           </span>
@@ -31,7 +31,7 @@
     },
     methods: {
       passwordReset: function() {
-        if(this.email) {
+        if(this.email.indexOf('@') > -1) {
           this.$store.dispatch(AUTH_PASSWORD_RESET, {
             email: this.email,
           }).then(() => {
