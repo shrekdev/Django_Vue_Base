@@ -1,5 +1,8 @@
 import os
 
+from .utils import get_env_variable
+
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = '^b^%dr2c^jdt*cui42x+o=b%oo1i=trui%qp(^k_svtvp68rkg'
@@ -70,16 +73,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-from .utils import get_env_variable
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': get_env_variable('DATABASE_NAME'),
         'USER': get_env_variable('DATABASE_USER'),
-        'PASSWORD': get_env_variable('DATABASE_PASSWORD'),
-        'HOST': '',
-        'PORT': '',
+        'HOST': get_env_variable('DATABASE_HOST'),
+        'PORT': get_env_variable('DATABASE_PORT'),
     }
 }
 
