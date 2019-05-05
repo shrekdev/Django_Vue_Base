@@ -3,8 +3,6 @@ node_modules/
 migrations/
 dist/
 
-# DB files
-*.sqlite3
 
 # Log files
 npm-debug.log*
@@ -14,6 +12,7 @@ yarn-error.log*
 
 # Bash & config files
 *.sh
+*.env
 
 
 # Editor directories and files
