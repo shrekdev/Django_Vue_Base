@@ -4,6 +4,8 @@ services:
 
   db:
     image: postgres
+    networks:
+      - main
 
   backend:
     container_name: backend_dev
@@ -16,3 +18,25 @@ services:
     env_file: .env
     depends_on:
       - db
+    networks:
+      - main
+
+  frontend:
+    container_name: frontend_dev
+    build:
+      context: ./frontend
+    command: ./scripts/start_dev.sh
+    volumes:
+      - ./frontend:/frontend_app/:ro
+      - /frontend_app/node_modules
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
+      - db
+    networks:
+      - main
+
+networks:
+  main:
+    driver: bridge
