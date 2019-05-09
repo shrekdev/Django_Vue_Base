@@ -13,6 +13,7 @@ services:
     command: ./scripts/start_dev.sh
     volumes:
       - ./backend:/code
+      - django-static:/backend/static
     ports:
       - "8000:8000"
     env_file: .env
@@ -38,15 +39,23 @@ services:
       - main
 
   nginx:
-    image: nginx:alpine
+    container_name: nginx_dev
+    build:
+      context: .
+      dockerfile: nginx/dev/Dockerfile
     ports:
       - "80:80"
     depends_on:
       - backend
+      - frontend
     volumes:
-      - ./nginx/dev.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/dev/dev.conf:/etc/nginx/nginx.conf:ro
+      - django-static:/usr/src/app/static
     networks:
       - main
+
+volumes:
+  django-static:
 
 networks:
   main:
