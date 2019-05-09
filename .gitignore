@@ -2,7 +2,7 @@
 node_modules/
 migrations/
 dist/
-
+static/
 
 # Log files
 npm-debug.log*
@@ -10,8 +10,7 @@ yarn-debug.log*
 yarn-error.log*
 
 
-# Bash & config files
-*.sh
+# Environment settings
 *.env
 
 

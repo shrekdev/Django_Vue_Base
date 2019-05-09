@@ -1,7 +1,7 @@
+import datetime
 import os
 
 from .utils import get_env_variable
-
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -130,11 +130,9 @@ DJOSER_EMAIL = {
 }
 
 
-
-from datetime import timedelta
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1),
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=1),
 }
 
 LANGUAGE_CODE = 'en-us'
@@ -148,3 +146,9 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = 'static'
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = 'media'
