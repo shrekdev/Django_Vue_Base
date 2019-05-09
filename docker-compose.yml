@@ -37,6 +37,17 @@ services:
     networks:
       - main
 
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    volumes:
+      - ./nginx/dev.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - main
+
 networks:
   main:
     driver: bridge
