@@ -70,7 +70,7 @@
             password: this.password
           }).then(() => {
             if(this.$store.getters.getLogInStatus === 'success') {
-              this.$router.push('/home');
+              this.$router.push('/');
             } else if(this.$store.getters.getLogInStatus === 'error') {
               this.$swal({
                 type: 'error',

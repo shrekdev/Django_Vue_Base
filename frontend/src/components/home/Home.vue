@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="isAuthenticated">
+    <div>
       <h2>You are now logged in.</h2>
 
       <button class="button is-primary" v-on:click="test_home()">
@@ -8,9 +8,7 @@
       </button>
 
     </div>
-    <div v-if="!isAuthenticated && authStatus !== 'loading'">
-      <UserAuth />
-    </div>
+
   </div>
 </template>
 
@@ -33,15 +31,5 @@
           this.$store.dispatch(TEST_ACTION);
         }
       },
-    components: {
-      UserAuth,
-    },
-    name: 'Home',
-    computed: {
-      ...mapGetters(['refresh_token_exp', 'access_token_exp', 'is_authenticated', 'isAuthenticated']),
-      loading: function () {
-        return this.authStatus === 'loading' && !this.isAuthenticated
-      }
-    },
   }
 </script>
