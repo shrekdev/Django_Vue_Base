@@ -1,25 +1,21 @@
 <template>
   <section>
-    <form>
-      <div class="field">
-        <label class="label is-small">E-mail</label>
-        <div class="control has-icons-left has-icons-right">
-          <input v-model="email" type="email" class="input" required>
-          <span class="icon is-small is-left">
-            <i class="fas fa-user"></i>
-          </span>
-        </div>
-        <p v-if="getAccountPasswordResetErrors.length">
-          <p class="help is-danger" v-for="error in getAccountPasswordResetErrors.email">{{ error }}</p>
-        </p>
-      </div>
-      <button class="button is-primary is-small is-fullwidth" v-on:click="passwordReset()">Reset password</button>
-    </form>
+    <v-form ref="form" v-model="valid" lazy-validation>
+      <v-text-field label="E-mail"
+        v-model="email"
+        :error-messages="passwordResetErrors"
+        :rules="emailRules">
+      </v-text-field>
+      <v-btn :disabled="!valid" color="success" @click="passwordReset">
+        Reset password
+      </v-btn>
+    </v-form>
   </section>
 </template>
 
+
 <script>
-  import { AUTH_PASSWORD_RESET } from '@/store/actions/auth';
+  import { AUTH_PASSWORD_RESET, AUTH_ERRORS_CLEAR } from '@/store/actions/auth';
   import { mapGetters } from 'vuex';
 
   export default {
@@ -27,9 +23,17 @@
     data() {
       return {
         email: '',
+        emailRules: [
+          v => !!v || 'E-mail is required',
+          v => /.+@.+/.test(v) || 'E-mail must be valid'
+        ],
+        valid: true,
       }
     },
     methods: {
+      resetForm() {
+//        this.$refs.form.reset()
+      },
       passwordReset: function() {
         if(this.email.indexOf('@') > -1) {
           this.$store.dispatch(AUTH_PASSWORD_RESET, {
@@ -42,14 +46,23 @@
                 title: 'Success!',
                 text: 'To continue check your email and follow the steps'
               });
+              this.$refs.form.resetValidation()
             }
             this.$router.push('/');
           })
         }
+        this.$store.dispatch(AUTH_ERRORS_CLEAR);
       }
     },
     computed: {
       ...mapGetters(['getAccountPasswordResetErrors']),
+      passwordResetErrors() {
+        const errors = []
+        console.log("this.getAccountPasswordResetErrors.email -> ", this.getAccountPasswordResetErrors.email)
+        this.getAccountPasswordResetErrors.email && errors.push(this.getAccountPasswordResetErrors.email)
+        this.resetForm()
+        return errors
+      },
     },
   }
 </script>

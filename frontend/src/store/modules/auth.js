@@ -16,7 +16,8 @@ import {
     AUTH_PASSWORD_RESET_ERROR,
     AUTH_PASSWORD_RESET_CONFIRM,
     AUTH_PASSWORD_RESET_CONFIRM_SUCCESS,
-    AUTH_PASSWORD_RESET_CONFIRM_ERROR
+    AUTH_PASSWORD_RESET_CONFIRM_ERROR,
+    AUTH_ERRORS_CLEAR,
 } from '../actions/auth.js';
 import apiCall from '../../utils/api';
 import jwt_decode from 'jwt-decode';
@@ -147,6 +148,14 @@ const actions = {
       })
     })
   },
+
+  [AUTH_ERRORS_CLEAR]: ({commit, dispatch}) => {
+    return new Promise((resolve, reject) => {
+      console.log('IN AUTH_ERRORS_CLEAR');
+      commit(AUTH_ERRORS_CLEAR);
+      resolve();
+    })
+  },
 }
 
 const mutations = {
@@ -206,6 +215,11 @@ const mutations = {
   [AUTH_PASSWORD_RESET_CONFIRM_ERROR]: (state, err) => {
     state.accountPasswordResetConfirmErrors = err.response.data;
     state.accountPasswordResetConfirmStatus = 'error';
+  },
+
+
+  [AUTH_ERRORS_CLEAR]: (state) => {
+    state.accountPasswordResetErrors = {};
   },
 }
 

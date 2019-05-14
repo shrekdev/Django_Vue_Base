@@ -1,41 +1,28 @@
 <template>
   <section>
-    <div v-if="getLogInErrors.detail">
-      <p class="help is-danger">{{ getLogInErrors.detail }}</p>
-    </div>
-    <br>
-    <form>
-      <div class="field">
-        <label class="label is-small">E-mail</label>
-        <div class="control has-icons-left has-icons-right">
-          <input v-model="email" type="email" :class="getLogInErrors.email ? 'input is-danger' : 'input'" required>
-          <span class="icon is-small is-left">
-            <i class="fas fa-user"></i>
-          </span>
-        </div>
-        <p v-if="getLogInErrors.length">
-          <p class="help is-danger" v-for="error in getLogInErrors.email">{{ error }}</p>
-        </p>
-      </div>
-      <div class="field">
-        <label class="label is-small">Password</label>
-        <p class="control has-icons-left">
-          <input v-model="password" type="password" :class="getLogInErrors.password ? 'input is-danger' : 'input'" required>
-          <span class="icon is-small is-left">
-            <i class="fas fa-lock"></i>
-          </span>
-        </p>
-        <p v-if="getLogInErrors.length">
-          <p class="help is-danger" v-for="error in getLogInErrors.password">{{ error }}</p>
-        </p>
-      </div>
-      <button class="button is-primary is-small is-fullwidth" v-on:click="logIn()">Log in</button>
-    </form>
+    <v-form ref="form" v-model="valid" lazy-validation>
+      <v-text-field required label="E-mail"
+        v-model="email"
+        :error-messages="emailErrors"
+        :rules="emailRules">
+      </v-text-field>
+
+      <v-text-field required label="Password"
+        type="password"
+        v-model="password"
+        :counter="4"
+        :rules="passwordRules">
+      </v-text-field>
+      <v-btn :disabled="!valid" color="success" @click="logIn">
+        Log in
+      </v-btn>
+    </v-form>
+
     <div>
       <a class="help is-info has-text-centered" v-on:click="showPasswordResetForm = !showPasswordResetForm">
         Have you forgotten your password?
       </a>
-      <div v-bind:class="showPasswordResetForm ? null : 'is-hidden'">
+      <div v-show="showPasswordResetForm">
         <PasswordReset />
       </div>
     </div>
@@ -48,14 +35,22 @@
   import { mapGetters } from 'vuex';
   import { AUTH_LOG_IN } from '@/store/actions/auth';
 
-
   export default {
     name: 'LogIn',
     data() {
       return {
+        valid: true,
         email: '',
         password: '',
         showPasswordResetForm: false,
+        passwordRules: [
+          v => !!v || 'Password is required',
+          v => (v && v.length >= 4) || 'Password must be longer than 4 characters'
+        ],
+        emailRules: [
+          v => !!v || 'E-mail is required',
+          v => /.+@.+/.test(v) || 'E-mail must be valid'
+        ],
       }
     },
     methods: {
@@ -77,13 +72,19 @@
                 title: 'Something went wrong...',
                 text: "We can't log you in, sorry ;("
               });
+              this.$refs.form.resetValidation();
             }
           })
         }
       },
     },
     computed: {
-      ...mapGetters(['getLogInErrors', 'getAccountActivationStatus']),
+      ...mapGetters(['getLogInErrors']),
+      emailErrors() {
+        const errors = []
+        this.getLogInErrors.detail && errors.push(this.getLogInErrors.detail)
+        return errors
+      },
     },
     components: {
       PasswordReset

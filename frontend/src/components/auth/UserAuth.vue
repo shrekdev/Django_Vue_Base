@@ -3,16 +3,16 @@
 
     <v-content>
       <v-container fluid ma-0 pa-0 fill-height>
-        <v-layout justify-center align-center>
+        <v-layout>
 
           <v-flex xs9 fluid ma-0 pa-0 fill-height>
-            <v-sheet class="d-flex" color="blue" style="height: 100%">
+            <v-sheet tile class="d-flex" color="blue" style="height: 100%">
             </v-sheet>
           </v-flex>
 
           <v-flex xs3>
             <div>
-              <v-tabs dark color="blue" slider-color="yellow">
+              <v-tabs dark color="dark" slider-color="yellow" fixed-tabs>
                 <v-tab :key="1" ripple>Log in</v-tab>
                 <v-tab :key="2" ripple>Sign up</v-tab>
                 <v-tab-item :key="1">
@@ -50,8 +50,8 @@
   export default {
     data() {
       return {
-        logInActive: true,
-        signUpActive: false,
+//        logInActive: true,
+//        signUpActive: false,
         uid: this.$route.params.uid,
         token: this.$route.params.token,
         passwordResetConfirm: false,
@@ -68,15 +68,15 @@
         console.log('got event');
         this.passwordResetConfirm = !this.passwordResetConfirm
       },
-      switch_tab(tab) {
-        if(tab === 'sign_in') {
-          this.logInActive = true,
-          this.signUpActive = false
-        } else {
-          this.logInActive = false,
-          this.signUpActive = true
-        }
-      }
+//      switch_tab(tab) {
+//        if(tab === 'sign_in') {
+//          this.logInActive = true,
+//          this.signUpActive = false
+//        } else {
+//          this.logInActive = false,
+//          this.signUpActive = true
+//        }
+//      }
     },
     name: 'UserAuth',
     components: {
@@ -88,16 +88,4 @@
 </script>
 
 
-<style scoped>
-  #tab-content p {
-    display: none;
-  }
-
-  #tab-content p.is-active {
-    display: block;
-  }
-
-  .align-baseline {
-    align-items: baseline !important;
-  }
-</style>
+<style scoped></style>
