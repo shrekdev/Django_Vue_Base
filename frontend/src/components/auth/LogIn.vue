@@ -74,7 +74,15 @@
               });
               this.$refs.form.resetValidation();
             }
+          }).catch(reason => {
+            this.$refs.form.reset()
+            this.$refs.form.resetValidation()
           })
+
+
+
+
+
         }
       },
     },

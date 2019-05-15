@@ -1,15 +1,12 @@
 <template>
   <v-app id="inspire">
-
     <v-content>
       <v-container fluid ma-0 pa-0 fill-height>
         <v-layout>
-
           <v-flex xs9 fluid ma-0 pa-0 fill-height>
             <v-sheet tile class="d-flex" color="blue" style="height: 100%">
             </v-sheet>
           </v-flex>
-
           <v-flex xs3>
             <div>
               <v-tabs dark color="dark" slider-color="yellow" fixed-tabs>
@@ -36,7 +33,6 @@
       <v-spacer></v-spacer>
       <span class="white--text">&copy; 2019</span>
     </v-footer>
-
   </v-app>
 </template>
 
@@ -50,8 +46,6 @@
   export default {
     data() {
       return {
-//        logInActive: true,
-//        signUpActive: false,
         uid: this.$route.params.uid,
         token: this.$route.params.token,
         passwordResetConfirm: false,
@@ -68,15 +62,6 @@
         console.log('got event');
         this.passwordResetConfirm = !this.passwordResetConfirm
       },
-//      switch_tab(tab) {
-//        if(tab === 'sign_in') {
-//          this.logInActive = true,
-//          this.signUpActive = false
-//        } else {
-//          this.logInActive = false,
-//          this.signUpActive = true
-//        }
-//      }
     },
     name: 'UserAuth',
     components: {

@@ -1,71 +1,38 @@
 <template>
   <section>
-  <br>
-    <form>
-      <div class="field">
-        <label class="label is-small">First name</label>
-        <div class="control has-icons-left has-icons-right">
-          <input v-model="first_name" type="input" :class="signUpErrors.first_name ? 'input is-danger' : 'input'" required>
-          <span class="icon is-small is-left">
-            <i class="fas fa-user"></i>
-          </span>
-        </div>
-        <p v-if="signUpErrors.length">
-          <p class="help is-danger" v-for="error in signUpErrors.first_name">{{ error }}</p>
-        </p>
-      </div>
-      <div class="field">
-        <label class="label is-small">E-mail</label>
-        <p class="control has-icons-left">
-          <input v-model="email1" type="email" :class="signUpErrors.email ? 'input is-danger' : 'input'" required>
-          <span class="icon is-small is-left">
-            <i class="fas fa-envelope"></i>
-          </span>
-        </p>
-        <p v-if="signUpErrors.length">
-          <p class="help is-danger" v-for="error in signUpErrors.email">{{ error }}</p>
-        </p>
-      </div>
-      <div class="field">
-        <label class="label is-small">E-mail (repeated)</label>
-        <p class="control has-icons-left">
-          <input v-model="email2" type="email" :class="signUpErrors.email ? 'input is-danger' : 'input'" required>
-          <span class="icon is-small is-left">
-            <i class="fas fa-envelope"></i>
-          </span>
-        </p>
-        <p v-if="signUpErrors.length">
-          <p class="help is-danger" v-for="error in signUpErrors.email">{{ error }}</p>
-        </p>
-      </div>
-      <div class="field">
-        <label class="label is-small">Password</label>
-        <p class="control has-icons-left">
-          <input v-model="password1" type="password" :class="signUpErrors.password ? 'input is-danger' : 'input'" required>
-          <span class="icon is-small is-left">
-            <i class="fas fa-envelope"></i>
-         </span>
-        </p>
-        <p v-if="signUpErrors.length">
-          <p class="help is-danger" v-for="error in signUpErrors.password">{{ error }}</p>
-        </p>
-      </div>
-      <div class="field">
-        <label class="label is-small">Password (repeated)</label>
-        <p class="control has-icons-left">
-          <input v-model="password2" type="password" :class="signUpErrors.password ? 'input is-danger' : 'input'" required>
-          <span class="icon is-small is-left">
-            <i class="fas fa-envelope"></i>
-          </span>
-        </p>
-        <p v-if="signUpErrors.length">
-          <p class="help is-danger" v-for="error in signUpErrors.password">{{ error }}</p>
-        </p>
-      </div>
-      <button class="button is-primary is-small is-fullwidth" v-on:click="signUp()">
+    <v-form ref="form" v-model="valid" lazy-validation>
+      <v-text-field required label="First name"
+        v-model="first_name"
+        :counter="15"
+        :error-messages="firstNameErrors"
+        :rules="nameRules">
+      </v-text-field>
+      <v-text-field required label="E-mail"
+        v-model="email1"
+        :error-messages="emailErrors"
+        :rules="emailRules">
+      </v-text-field>
+      <v-text-field required label="E-mail confirmation"
+        v-model="email2"
+        :rules="[v => (!!v && v) === this.email1 || 'E-mails do not match']">>
+      </v-text-field>
+      <v-text-field required label="Password"
+        type="password"
+        v-model="password1"
+        :counter="4"
+        :rules="passwordRules"
+        :error-messages="passwordErrors">
+      </v-text-field>
+      <v-text-field required label="Password confirmation"
+        type="password"
+        v-model="password2"
+        :counter="4"
+        :rules="[v => (!!v && v) === this.password1 || 'Passwords do not match']">
+      </v-text-field>
+      <v-btn :disabled="!valid" color="success" @click="signUp">
         Sign up
-      </button>
-    </form>
+      </v-btn>
+    </v-form>
   </section>
 </template>
 
@@ -78,16 +45,30 @@
     name: 'SignUp',
     data() {
       return {
+        valid: true,
         first_name: '',
         email1: '',
         email2: '',
         password1: '',
         password2: '',
+        passwordRules: [
+          v => !!v || 'Password is required',
+          v => (v && v.length >= 4) || 'Password must be longer than 4 characters'
+        ],
+        emailRules: [
+          v => !!v || 'E-mail is required',
+          v => /.+@.+/.test(v) || 'E-mail must be valid'
+        ],
+        nameRules: [
+          v => !!v || 'First name is required',
+          v => v.length <= 15 || 'First name must be less than 15 characters'
+        ],
       }
     },
     methods: {
       signUp: function () {
-        if (this.password1 === this.password2) {
+        if (this.first_name && this.email1 && this.email2 && this.password1 && this.password2) {
+          console.log('passwords OK')
           this.$store.dispatch(AUTH_SIGN_UP, {
             first_name: this.first_name,
             email: this.email1,
@@ -118,6 +99,21 @@
     },
     computed: {
       ...mapGetters(['signUpErrors']),
+      firstNameErrors() {
+        const errors = []
+        this.signUpErrors.first_name && errors.push(this.signUpErrors.first_name)
+        return errors
+      },
+      emailErrors() {
+        const errors = []
+        this.signUpErrors.email && errors.push(this.signUpErrors.email)
+        return errors
+      },
+      passwordErrors() {
+        const errors = []
+        this.signUpErrors.password && errors.push(this.signUpErrors.password)
+        return errors
+      },
     },
   }
 </script>

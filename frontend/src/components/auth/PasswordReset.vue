@@ -31,9 +31,6 @@
       }
     },
     methods: {
-      resetForm() {
-//        this.$refs.form.reset()
-      },
       passwordReset: function() {
         if(this.email.indexOf('@') > -1) {
           this.$store.dispatch(AUTH_PASSWORD_RESET, {
@@ -49,6 +46,9 @@
               this.$refs.form.resetValidation()
             }
             this.$router.push('/');
+          }).catch(reason => {
+            this.$refs.form.reset()
+            this.$refs.form.resetValidation()
           })
         }
         this.$store.dispatch(AUTH_ERRORS_CLEAR);
@@ -58,9 +58,7 @@
       ...mapGetters(['getAccountPasswordResetErrors']),
       passwordResetErrors() {
         const errors = []
-        console.log("this.getAccountPasswordResetErrors.email -> ", this.getAccountPasswordResetErrors.email)
         this.getAccountPasswordResetErrors.email && errors.push(this.getAccountPasswordResetErrors.email)
-        this.resetForm()
         return errors
       },
     },
