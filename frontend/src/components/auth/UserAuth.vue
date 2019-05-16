@@ -1,5 +1,5 @@
 <template>
-  <v-app id="inspire">
+  <v-app>
     <v-content>
       <v-container fluid ma-0 pa-0 fill-height>
         <v-layout>
@@ -8,7 +8,12 @@
             </v-sheet>
           </v-flex>
           <v-flex xs3>
-            <div>
+            <div v-if="passwordResetConfirm">
+              <v-container>
+                <PasswordResetConfirm @resetConfirmed="updateResetPasswordState" />
+              </v-container>
+            </div>
+            <div v-else>
               <v-tabs dark color="dark" slider-color="yellow" fixed-tabs>
                 <v-tab :key="1" ripple>Log in</v-tab>
                 <v-tab :key="2" ripple>Sign up</v-tab>
@@ -53,13 +58,11 @@
     },
     mounted() {
       if(this.uid && this.token) {
-        console.log('password reset confirm');
         this.passwordResetConfirm = true
       }
     },
     methods: {
       updateResetPasswordState() {
-        console.log('got event');
         this.passwordResetConfirm = !this.passwordResetConfirm
       },
     },

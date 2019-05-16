@@ -14,19 +14,23 @@
         token: this.$route.params.token
       }).then(() => {
         if(this.$store.getters.getAccountActivationStatus === 'success') {
+          this.$router.push('/');
           this.$swal({
             type: 'success',
             title: 'Success!',
             text: 'You can log in now ;)'
           });
-        } else if(this.$store.getters.getAccountActivationStatus === 'success') {
-          this.$swal({
-            type: 'error',
-            title: 'Error!',
-            text: "We can't activate your account ;("
-          });
+          this.$refs.form.reset()
+          this.$refs.form.resetValidation()
         }
-        this.$router.push('/');
+      }).catch(reason => {
+        this.$refs.form.reset()
+        this.$refs.form.resetValidation()
+        this.$swal({
+          type: 'error',
+          title: 'Error!',
+          text: "We can't activate your account ;("
+        });
       })
     },
   }

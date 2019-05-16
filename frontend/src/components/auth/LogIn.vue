@@ -1,30 +1,28 @@
 <template>
   <section>
     <v-form ref="form" v-model="valid" lazy-validation>
-      <v-text-field required label="E-mail"
+      <v-text-field box required label="E-mail"
         v-model="email"
         :error-messages="emailErrors"
         :rules="emailRules">
       </v-text-field>
-
-      <v-text-field required label="Password"
+      <v-text-field box required label="Password"
         type="password"
         v-model="password"
-        :counter="4"
         :rules="passwordRules">
       </v-text-field>
-      <v-btn :disabled="!valid" color="success" @click="logIn">
-        Log in
+      <v-btn :disabled="!valid" color="primary" @click="logIn">
+        Login
+      </v-btn>
+      <v-btn color="secondary" @click="showPasswordResetForm = !showPasswordResetForm">
+        Password?
       </v-btn>
     </v-form>
-
     <div>
-      <a class="help is-info has-text-centered" v-on:click="showPasswordResetForm = !showPasswordResetForm">
-        Have you forgotten your password?
-      </a>
-      <div v-show="showPasswordResetForm">
-        <PasswordReset />
-      </div>
+    <br>
+    <div v-show="showPasswordResetForm">
+      <PasswordReset />
+    </div>
     </div>
   </section>
 </template>
@@ -66,23 +64,11 @@
           }).then(() => {
             if(this.$store.getters.getLogInStatus === 'success') {
               this.$router.push('/');
-            } else if(this.$store.getters.getLogInStatus === 'error') {
-              this.$swal({
-                type: 'error',
-                title: 'Something went wrong...',
-                text: "We can't log you in, sorry ;("
-              });
-              this.$refs.form.resetValidation();
             }
           }).catch(reason => {
             this.$refs.form.reset()
             this.$refs.form.resetValidation()
           })
-
-
-
-
-
         }
       },
     },

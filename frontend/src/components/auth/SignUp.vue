@@ -1,32 +1,30 @@
 <template>
   <section>
     <v-form ref="form" v-model="valid" lazy-validation>
-      <v-text-field required label="First name"
+      <v-text-field box required label="First name"
         v-model="first_name"
         :counter="15"
         :error-messages="firstNameErrors"
         :rules="nameRules">
       </v-text-field>
-      <v-text-field required label="E-mail"
+      <v-text-field box required label="E-mail"
         v-model="email1"
         :error-messages="emailErrors"
         :rules="emailRules">
       </v-text-field>
-      <v-text-field required label="E-mail confirmation"
+      <v-text-field box required label="E-mail confirmation"
         v-model="email2"
         :rules="[v => (!!v && v) === this.email1 || 'E-mails do not match']">>
       </v-text-field>
-      <v-text-field required label="Password"
+      <v-text-field box required label="Password"
         type="password"
         v-model="password1"
-        :counter="4"
         :rules="passwordRules"
         :error-messages="passwordErrors">
       </v-text-field>
-      <v-text-field required label="Password confirmation"
+      <v-text-field box required label="Password confirmation"
         type="password"
         v-model="password2"
-        :counter="4"
         :rules="[v => (!!v && v) === this.password1 || 'Passwords do not match']">
       </v-text-field>
       <v-btn :disabled="!valid" color="success" @click="signUp">
@@ -85,14 +83,13 @@
                 title: 'E-mail confirmation',
                 text: 'Check your e-mail box and confirm your e-mail address ;)'
               });
+              this.$refs.form.reset()
+              this.$refs.form.resetValidation();
               this.$router.push('/');
-            } else if(this.$store.getters.getAccountSignUpStatus === 'error') {
-              this.$swal({
-                type: 'error',
-                title: 'Something went wrong...',
-                text: "We can't sign you up, sorry ;("
-              });
             }
+          }).catch(reason => {
+            this.$refs.form.reset()
+            this.$refs.form.resetValidation()
           })
         }
       },

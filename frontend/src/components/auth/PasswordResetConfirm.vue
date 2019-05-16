@@ -1,39 +1,30 @@
 <template>
-<div>
-  <label class="help is-small is-info has-text-centered">
-    To complete the procedure enter the correct new password and then just remember it ;)
-  </label>
-  <p v-if="getAccountPasswordResetConfirmErrors.length">
-    <p class="help is-danger has-text-centered" v-for="error in getAccountPasswordResetConfirmErrors.non_field_errors">{{ error }}</p>
-  </p>
-  <br>
-  <form>
-    <div class="field">
-      <label class="label is-small">New password</label>
-      <p class="control has-icons-left">
-        <input v-model="new_password" type="password" class="input" required>
-        <span class="icon is-small is-left">
-          <i class="fas fa-lock"></i>
-        </span>
+  <section>
+    <v-label>
+      <p class="text-xs-center">
+        To complete the procedure enter the correct new password and then just remember it ;)
       </p>
-      <p v-if="getAccountPasswordResetConfirmErrors.length">
-        <p class="help is-danger has-text-centered" v-for="error in getAccountPasswordResetConfirmErrors.new_password">{{ error }}</p>
-      </p>
-    </div>
-    <div class="field">
-      <label class="label is-small">Confirm new password</label>
-      <p class="control has-icons-left">
-        <input v-model="re_new_password" type="password" class="input" required>
-        <span class="icon is-small is-left">
-          <i class="fas fa-lock"></i>
-        </span>
-      </p>
-    </div>
-    <button class="button is-primary is-small is-fullwidth" v-on:click="passwordResetConfirm()">
-      Change password
-    </button>
-  </form>
-</div>
+    </v-label>
+    <br>
+    <v-form ref="form" v-model="valid" lazy-validation>
+      <v-text-field box required label="New password"
+        type="password"
+        v-model="new_password"
+        :error-messages="passwordErrors"
+        :rules="passwordRules">
+      </v-text-field>
+
+      <v-text-field box required label="Confirm new password"
+        type="password"
+        v-model="re_new_password"
+        :rules="[v => (!!v && v) === this.new_password || 'Passwords do not match']">
+      </v-text-field>
+
+      <v-btn :disabled="!valid" color="success" @click="passwordResetConfirm">
+        Change password
+      </v-btn>
+    </v-form>
+  </section>
 </template>
 
 <script>
@@ -46,8 +37,13 @@
     },
     data() {
       return {
+        valid: true,
         new_password: "",
         re_new_password: "",
+        passwordRules: [
+          v => !!v || 'Password is required',
+          v => (v && v.length >= 4) || 'Password must be longer than 4 characters'
+        ],
       }
     },
     methods: {
@@ -81,6 +77,18 @@
     },
     computed: {
       ...mapGetters(['getAccountPasswordResetConfirmErrors']),
+
+      passwordErrors() {
+        const error_list = []
+        const errors = this.getAccountPasswordResetConfirmErrors.new_password;
+        if(errors !== undefined) {
+          for (const error of errors){
+            error_list.push(error);
+          }
+        }
+        return error_list
+      }
     },
+
   }
 </script>

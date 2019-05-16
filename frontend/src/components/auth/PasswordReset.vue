@@ -1,7 +1,7 @@
 <template>
   <section>
     <v-form ref="form" v-model="valid" lazy-validation>
-      <v-text-field label="E-mail"
+      <v-text-field box label="E-mail"
         v-model="email"
         :error-messages="passwordResetErrors"
         :rules="emailRules">
@@ -41,7 +41,7 @@
               this.$swal({
                 type: 'success',
                 title: 'Success!',
-                text: 'To continue check your email and follow the steps'
+                text: 'To continue check your email and follow the steps ;)'
               });
               this.$refs.form.resetValidation()
             }
@@ -57,10 +57,15 @@
     computed: {
       ...mapGetters(['getAccountPasswordResetErrors']),
       passwordResetErrors() {
-        const errors = []
-        this.getAccountPasswordResetErrors.email && errors.push(this.getAccountPasswordResetErrors.email)
-        return errors
-      },
+        const error_list = []
+        const errors = this.getAccountPasswordResetErrors.email;
+        if(errors !== undefined) {
+          for (const error of errors){
+            error_list.push(error);
+          }
+        }
+        return error_list
+      }
     },
   }
 </script>
