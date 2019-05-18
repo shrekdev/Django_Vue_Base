@@ -8,10 +8,10 @@ import { AUTH_TOKEN_REFRESH, AUTH_LOGOUT } from '@/store/actions/auth';
 
 const apiCall = axios.create({
   timeout: 5000,
-//  headers: {
-//    'Content-Type': 'application/json',
-////    'X-CSRFToken': Cookies.get('csrftoken')
-//  }
+  headers: {
+    'Content-Type': 'application/json',
+//    'X-CSRFToken': Cookies.get('csrftoken')
+  }
 })
 
 
@@ -21,12 +21,13 @@ function tokensExist() {
 }
 
 
-function isTokenExpValid(token) {
-  if (token) {
-    let decodedToken = jwt_decode(token);
-    return (new Date().valueOf() / 1000) <= decodedToken.exp    // or .getTime()
-  }
-}
+// Currently unused - RM, 18.05.2019
+//function isTokenExpValid(token) {
+//  if (token) {
+//    let decodedToken = jwt_decode(token);
+//    return (new Date().valueOf() / 1000) <= decodedToken.exp    // or .getTime()
+//  }
+//}
 
 
 async function refreshToken() {
@@ -36,34 +37,45 @@ async function refreshToken() {
   try {
     const response = await axios.post('/api/auth/jwt/refresh/', data);
     localStorage.setItem('access', response.data.access);
-    store.commit(AUTH_TOKEN_REFRESH, response);     // TODO: not by dispatch? verify
+    store.commit(AUTH_TOKEN_REFRESH, response);
     return response.data.access;
   } catch (err) {
-//    console.log(err);
-    return Promise.reject(error)
+    return Promise.reject(err)
+  }
+}
+
+
+async function verifyToken(token) {
+  const data = {
+    token: token
+  }
+  try {
+    const response = await axios.post('/api/auth/jwt/verify/', data);
+//    console.log('verifyToken returning: ', response.status)
+    return response.status;
+  } catch (err) {
+//    console.error('verifyToken: ', err);
   }
 }
 
 
 apiCall.interceptors.request.use(async function (config) {
   if (!tokensExist()) {
-
-//  token verify functionality / by API
-
-//    console.log('bad tokens!')
-//    store.dispatch(AUTH_LOGOUT);
-//
     return config
   } else {
-    if (isTokenExpValid(store.getters.getAccessToken)) {
+    if(await verifyToken(store.getters.getAccessToken) === 200) {
+//      console.log('verifyToken: getAccessToken OK!');
       config.headers.Authorization = `JWT ${store.getters.getAccessToken}`;
       return config;
-    }
-    if (isTokenExpValid(store.getters.getRefreshToken)) {
-      config.headers.Authorization = `JWT ${await refreshToken()}`;
     } else {
-      store.dispatch(AUTH_LOGOUT);
-      router.push('/');
+//      console.log('Trying to refresh token...')
+      if(await verifyToken(store.getters.getRefreshToken) === 200) {
+//          console.log('verifyToken: getRefreshToken OK!')
+          config.headers.Authorization = `JWT ${await refreshToken()}`;
+      } else {
+        store.dispatch(AUTH_LOGOUT);
+        router.push('/');
+      }
     }
   }
   return config
@@ -81,7 +93,6 @@ apiCall.interceptors.response.use(function (config) {
       return Promise.reject(error)
     }
   }
-
   if (error.request !== undefined && (error.request.responseURL.includes('refresh') ||
       error.request.status === 401 && error.config.__isRetryRequest)) {
     store.dispatch(AUTH_LOGOUT);
