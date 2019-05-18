@@ -1,35 +1,41 @@
 <template>
-  <div>
-    <div>
-      <h2>You are now logged in.</h2>
 
-      <button class="button is-primary" v-on:click="test_home()">
-        API test
-      </button>
 
-    </div>
+  <v-app>
+    <v-content>
+      <v-container>
+        <v-layout justify-center>
+          <v-btn @click="test_home()">
+            API test
+          </v-btn>
+        </v-layout>
+      </v-container>
 
-  </div>
+      <Menu />
+
+    </v-content>
+  </v-app>
+
+
+
 </template>
 
-<style>
-  .home {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-  }
-</style>
 
 <script>
   import { mapGetters } from 'vuex';
   import UserAuth from '../auth/UserAuth.vue';
   import { TEST_ACTION } from '@/store/actions/auth';
+  import Menu from './Menu.vue';
+
 
   export default {
     methods: {
       test_home: function () {
-          this.$store.dispatch(TEST_ACTION);
-        }
-      },
+        this.$store.dispatch(TEST_ACTION);
+      }
+    },
+    components: {
+      Menu
+    }
   }
 </script>
