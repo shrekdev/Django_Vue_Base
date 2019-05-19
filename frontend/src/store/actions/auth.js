@@ -25,6 +25,3 @@ export const AUTH_TOKEN_VERIFY = 'AUTH_TOKEN_VERIFY'
 
 // Test
 export const TEST_ACTION = 'TEST_ACTION'
-
-
-export const AUTH_ERRORS_CLEAR = 'AUTH_ERRORS_CLEAR'
