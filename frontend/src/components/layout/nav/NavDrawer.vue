@@ -1,6 +1,5 @@
 <template>
-  <v-layout wrap>
-    <v-navigation-drawer permanent v-model="drawer" :mini-variant="mini" absolute dark>
+    <v-navigation-drawer permanent persistent v-model="drawer" :mini-variant="mini" dark app>
       <v-list class="pa-1">
         <v-list-tile avatar tag="div">
           <v-list-tile-avatar>
@@ -26,13 +25,13 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-  </v-layout>
+
 </template>
 
 
 <script>
   export default {
-    name: 'Menu',
+    name: 'NavDrawer',
     data () {
       return {
         drawer: true,

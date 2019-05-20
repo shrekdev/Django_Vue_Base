@@ -4,8 +4,7 @@
       <v-container fluid ma-0 pa-0 fill-height>
         <v-layout>
           <v-flex xs9 fluid ma-0 pa-0 fill-height>
-            <v-sheet tile class="d-flex" color="blue" style="height: 100%">
-            </v-sheet>
+            <News />
           </v-flex>
           <v-flex xs3>
             <div v-if="passwordResetConfirm">
@@ -45,6 +44,7 @@
 <script>
   import LogIn from './LogIn.vue';
   import SignUp from './SignUp.vue';
+  import News from './News.vue';
   import PasswordResetConfirm from './PasswordResetConfirm.vue';
   import { mapGetters } from 'vuex';
 
@@ -70,6 +70,7 @@
     components: {
       LogIn,
       SignUp,
+      News,
       PasswordResetConfirm
     }
   }

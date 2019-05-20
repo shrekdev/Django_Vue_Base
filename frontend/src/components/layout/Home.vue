@@ -1,15 +1,11 @@
 <template>
   <v-app>
+    <NavToolbar />
+    <NavDrawer />
     <v-content>
-      <v-container>
-        <v-layout justify-center>
-          <v-btn @click="test_home()">
-            API test
-          </v-btn>
-        </v-layout>
+      <v-container fluid>
+        <router-view></router-view>
       </v-container>
-
-      <Menu />
     </v-content>
   </v-app>
 </template>
@@ -17,16 +13,19 @@
 
 <script>
   import { TEST_ACTION } from '@/store/actions/auth';
-  import Menu from './Menu.vue';
+  import NavDrawer from './nav/NavDrawer.vue';
+  import NavToolbar from './nav/NavToolbar.vue';
 
   export default {
+    name: 'Home',
     methods: {
       test_home: function () {
         this.$store.dispatch(TEST_ACTION);
       }
     },
     components: {
-      Menu
+      NavDrawer,
+      NavToolbar
     }
   }
 </script>

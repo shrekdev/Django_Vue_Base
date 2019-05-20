@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import store from '../store'
 
 
-import Home from '@/components/home/Home.vue'
+import Home from '@/components/layout/Home.vue'
 import UserAuth from '@/components/auth/UserAuth.vue'
 import Logout from '@/components/auth/Logout.vue'
 import AccountActivate from '@/components/auth/AccountActivate.vue'
@@ -37,6 +37,14 @@ const router = new Router({
       name: 'Home',
       component: Home,
       beforeEnter: ifAuthenticated,
+      children: [
+        {
+          path: '/dashboard',
+          name: 'Dashboard',
+          component: DashboardMain,
+          beforeEnter: ifAuthenticated,
+        },
+      ],
     },
     {
       path: '/login',
@@ -61,12 +69,6 @@ const router = new Router({
       name: 'PasswordResetConfirmRedirect',
       component: PasswordResetConfirmRedirect,
       beforeEnter: ifNotAuthenticated,
-    },
-    {
-      path: '/dashboard',
-      name: 'Dashboard',
-      component: DashboardMain,
-      beforeEnter: ifAuthenticated,
     },
   ]
 })

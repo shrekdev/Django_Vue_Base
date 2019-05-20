@@ -6,7 +6,7 @@
         :error-messages="passwordResetErrors"
         :rules="emailRules">
       </v-text-field>
-      <v-btn :disabled="!valid" color="success" @click="passwordReset">
+      <v-btn :disabled="!valid" color="accent" @click="passwordReset">
         Reset password
       </v-btn>
     </v-form>
