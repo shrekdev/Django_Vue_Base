@@ -17,7 +17,7 @@
   import NavToolbar from './nav/NavToolbar.vue';
 
   export default {
-    name: 'Home',
+    name: 'Layout',
     methods: {
       test_home: function () {
         this.$store.dispatch(TEST_ACTION);

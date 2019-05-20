@@ -3,12 +3,12 @@ import Router from 'vue-router'
 import store from '../store'
 
 
-import Home from '@/components/layout/Home.vue'
+import Layout from '@/components/layout/Layout.vue'
 import UserAuth from '@/components/auth/UserAuth.vue'
 import Logout from '@/components/auth/Logout.vue'
 import AccountActivate from '@/components/auth/AccountActivate.vue'
 import PasswordResetConfirmRedirect from '@/components/auth/PasswordResetConfirmRedirect.vue'
-import DashboardMain from '@/components/dashboard/DashboardMain.vue'
+import Dashboard from '@/components/dashboard/Dashboard.vue'
 
 
 Vue.use(Router)
@@ -35,13 +35,13 @@ const router = new Router({
     {
       path: '/',
       name: 'Home',
-      component: Home,
+      component: Layout,
       beforeEnter: ifAuthenticated,
       children: [
         {
           path: '/dashboard',
           name: 'Dashboard',
-          component: DashboardMain,
+          component: Dashboard,
           beforeEnter: ifAuthenticated,
         },
       ],

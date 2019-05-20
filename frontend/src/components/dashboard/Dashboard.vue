@@ -22,7 +22,7 @@
   import { TEST_ACTION } from '@/store/actions/auth';
 
   export default {
-    name: 'DashboardMain',
+    name: 'Dashboard',
     methods: {
       test_home: function () {
         this.$store.dispatch(TEST_ACTION);
