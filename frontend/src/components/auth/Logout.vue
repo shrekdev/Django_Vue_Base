@@ -8,7 +8,7 @@
     name: 'Logout',
     mounted() {
       this.$store.dispatch(AUTH_LOGOUT).then(() => {
-        this.$router.push({name: 'UserAuth'});
+        this.$router.push({name: 'News'});
       })
     },
   }

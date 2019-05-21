@@ -96,7 +96,7 @@ apiCall.interceptors.response.use(function (config) {
   if (error.request !== undefined && (error.request.responseURL.includes('refresh') ||
       error.request.status === 401 && error.config.__isRetryRequest)) {
     store.dispatch(AUTH_LOGOUT);
-    router.push({name: 'UserAuth'})
+    router.push({name: 'News'})
   } else if (error.request !== undefined && error.request.status === 401) {
     error.config.__isRetryRequest = true
     return apiCall.request(error.config)

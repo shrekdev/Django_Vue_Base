@@ -3,8 +3,22 @@
     <v-content>
       <v-container fluid ma-0 pa-0 fill-height>
         <v-layout>
-          <v-flex xs9 fluid ma-0 pa-0 fill-height>
-            <News />
+          <v-flex xs9 fluid>
+            <v-toolbar dense dark color="secondary" >
+              <v-toolbar-items class="hidden-sm-and-down">
+                <v-btn flat left><router-link to="/" class="v-tabs__item">news</router-link></v-btn>
+                <v-btn flat><router-link to="about" class="v-tabs__item">about app</router-link></v-btn>
+              </v-toolbar-items>
+            </v-toolbar>
+<!--
+              <v-container fluid fill-height>
+                <v-layout>
+                  <router-view></router-view>
+                </v-layout>
+              </v-container>
+-->
+              <router-view></router-view>
+
           </v-flex>
           <v-flex xs3>
             <div v-if="passwordResetConfirm">
@@ -13,7 +27,7 @@
               </v-container>
             </div>
             <div v-else>
-              <v-tabs dark color="dark" slider-color="yellow" fixed-tabs>
+              <v-tabs dark color="secondary" slider-color="yellow" fixed-tabs>
                 <v-tab :key="1" ripple>Log in</v-tab>
                 <v-tab :key="2" ripple>Sign up</v-tab>
                 <v-tab-item :key="1">
@@ -32,7 +46,6 @@
         </v-layout>
       </v-container>
     </v-content>
-
     <v-footer dark app>
       <v-spacer></v-spacer>
       <span class="white--text">&copy; 2019</span>
@@ -44,7 +57,6 @@
 <script>
   import LogIn from './LogIn.vue';
   import SignUp from './SignUp.vue';
-  import News from './News.vue';
   import PasswordResetConfirm from './PasswordResetConfirm.vue';
   import { mapGetters } from 'vuex';
 
@@ -70,7 +82,6 @@
     components: {
       LogIn,
       SignUp,
-      News,
       PasswordResetConfirm
     }
   }

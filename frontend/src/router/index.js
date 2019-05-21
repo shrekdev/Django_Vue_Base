@@ -9,6 +9,8 @@ import Logout from '@/components/auth/Logout.vue'
 import AccountActivate from '@/components/auth/AccountActivate.vue'
 import PasswordResetConfirmRedirect from '@/components/auth/PasswordResetConfirmRedirect.vue'
 import Dashboard from '@/components/dashboard/Dashboard.vue'
+import AboutSite from '@/components/info/AboutSite.vue'
+import News from '@/components/info/News.vue'
 
 
 Vue.use(Router)
@@ -48,9 +50,22 @@ const router = new Router({
     },
     {
       path: '/login',
-      name: 'UserAuth',
       component: UserAuth,
       beforeEnter: ifNotAuthenticated,
+      children: [
+        {
+          path: '/',
+          name: 'News',
+          component: News,
+          beforeEnter: ifNotAuthenticated,
+        },
+        {
+          path: '/about',
+          name: 'AboutSite',
+          component: AboutSite,
+          beforeEnter: ifNotAuthenticated,
+        },
+      ],
     },
     {
       path: '/logout',
