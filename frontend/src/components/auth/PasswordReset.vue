@@ -6,7 +6,7 @@
         :error-messages="passwordResetErrors"
         :rules="emailRules">
       </v-text-field>
-      <v-btn :disabled="!valid" color="accent" @click="passwordReset">
+      <v-btn :disabled="!valid" color="primary" @click="passwordReset">
         Reset password
       </v-btn>
     </v-form>
@@ -15,7 +15,7 @@
 
 
 <script>
-  import { AUTH_PASSWORD_RESET, AUTH_ERRORS_CLEAR } from '@/store/actions/auth';
+  import { AUTH_PASSWORD_RESET } from '@/store/actions/auth';
   import { mapGetters } from 'vuex';
 
   export default {
@@ -51,7 +51,6 @@
             this.$refs.form.resetValidation()
           })
         }
-        this.$store.dispatch(AUTH_ERRORS_CLEAR);
       }
     },
     computed: {

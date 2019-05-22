@@ -107,7 +107,14 @@ REST_FRAMEWORK = {
     ),
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = get_env_variable('EMAIL_HOST')
+EMAIL_PORT = get_env_variable('EMAIL_PORT')
+EMAIL_USE_TLS = get_env_variable('EMAIL_USE_TLS')
+EMAIL_HOST_USER = get_env_variable('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = get_env_variable('EMAIL_HOST_PASSWORD')
+
 
 DJOSER = {
     'PASSWORD_RESET_CONFIRM_URL': '#/password-reset/{uid}/{token}',
@@ -125,8 +132,8 @@ DJOSER = {
 }
 
 DJOSER_EMAIL = {
-    'DOMAIN': 'example.com',
-    'SITE_NAME': 'Foo Website',
+    'DOMAIN': '192.168.0.143',
+    'SITE_NAME': 'Django&Vue RM app',
 }
 
 

@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <RequestProcessing />
     <NavToolbar />
     <NavDrawer />
     <v-content>
@@ -15,6 +16,7 @@
   import { TEST_ACTION } from '@/store/actions/auth';
   import NavDrawer from './nav/NavDrawer.vue';
   import NavToolbar from './nav/NavToolbar.vue';
+  import RequestProcessing from './utils/RequestProcessing.vue';
 
   export default {
     name: 'Layout',
@@ -25,7 +27,8 @@
     },
     components: {
       NavDrawer,
-      NavToolbar
+      NavToolbar,
+      RequestProcessing,
     }
   }
 </script>

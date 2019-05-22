@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <RequestProcessing />
     <v-content>
       <v-container fluid ma-0 pa-0 fill-height>
         <v-layout>
@@ -7,18 +8,10 @@
             <v-toolbar dense dark color="secondary" >
               <v-toolbar-items class="hidden-sm-and-down">
                 <v-btn flat left><router-link to="/" class="v-tabs__item">news</router-link></v-btn>
-                <v-btn flat><router-link to="about" class="v-tabs__item">about app</router-link></v-btn>
+                <v-btn flat><router-link to="/about" class="v-tabs__item">about app</router-link></v-btn>
               </v-toolbar-items>
             </v-toolbar>
-<!--
-              <v-container fluid fill-height>
-                <v-layout>
-                  <router-view></router-view>
-                </v-layout>
-              </v-container>
--->
-              <router-view></router-view>
-
+            <router-view></router-view>
           </v-flex>
           <v-flex xs3>
             <div v-if="passwordResetConfirm">
@@ -58,11 +51,13 @@
   import LogIn from './LogIn.vue';
   import SignUp from './SignUp.vue';
   import PasswordResetConfirm from './PasswordResetConfirm.vue';
-  import { mapGetters } from 'vuex';
+  import RequestProcessing from '../layout/utils/RequestProcessing.vue';
 
   export default {
+    name: 'UserAuth',
     data() {
       return {
+        showLoading: false,
         uid: this.$route.params.uid,
         token: this.$route.params.token,
         passwordResetConfirm: false,
@@ -78,14 +73,15 @@
         this.passwordResetConfirm = !this.passwordResetConfirm
       },
     },
-    name: 'UserAuth',
     components: {
       LogIn,
       SignUp,
-      PasswordResetConfirm
+      PasswordResetConfirm,
+      RequestProcessing,
     }
   }
 </script>
 
 
-<style scoped></style>
+<style scoped>
+</style>

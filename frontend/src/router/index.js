@@ -54,7 +54,7 @@ const router = new Router({
       beforeEnter: ifNotAuthenticated,
       children: [
         {
-          path: '/',
+          path: '',
           name: 'News',
           component: News,
           beforeEnter: ifNotAuthenticated,

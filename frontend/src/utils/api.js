@@ -2,7 +2,12 @@ import axios from 'axios';
 import store from '../store';
 import router from '../router';
 import jwt_decode from 'jwt-decode';
-import { AUTH_TOKEN_REFRESH, AUTH_LOGOUT } from '@/store/actions/auth';
+import {
+    AUTH_TOKEN_REFRESH,
+    AUTH_LOGOUT,
+    REQUEST_PROCESSING_TRUE,
+    REQUEST_PROCESSING_FALSE
+} from '@/store/actions/auth';
 
 
 
@@ -60,6 +65,7 @@ async function verifyToken(token) {
 
 
 apiCall.interceptors.request.use(async function (config) {
+  store.commit(REQUEST_PROCESSING_TRUE);
   if (!tokensExist()) {
     return config
   } else {
@@ -81,11 +87,13 @@ apiCall.interceptors.request.use(async function (config) {
   return config
 
 }, function (error) {
+  store.commit(REQUEST_PROCESSING_FALSE);
   return Promise.reject(error)
 })
 
 
 apiCall.interceptors.response.use(function (config) {
+  store.commit(REQUEST_PROCESSING_FALSE);
   return config
 }, function (error) {
   if (error.request !== undefined) {
@@ -101,6 +109,7 @@ apiCall.interceptors.response.use(function (config) {
     error.config.__isRetryRequest = true
     return apiCall.request(error.config)
   }
+  store.commit(REQUEST_PROCESSING_FALSE);
   return Promise.reject(error)
 })
 

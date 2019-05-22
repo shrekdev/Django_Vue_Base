@@ -17,12 +17,15 @@ import {
     AUTH_PASSWORD_RESET_CONFIRM,
     AUTH_PASSWORD_RESET_CONFIRM_SUCCESS,
     AUTH_PASSWORD_RESET_CONFIRM_ERROR,
+    REQUEST_PROCESSING_TRUE,
+    REQUEST_PROCESSING_FALSE,
 } from '../actions/auth.js';
 import apiCall from '../../utils/api';
 import jwt_decode from 'jwt-decode';
 
 
 const state = {
+  requestProcessing: false,
   accessToken: localStorage.getItem('access'),
   refreshToken: localStorage.getItem('refresh'),
   accountSignUpStatus: "",
@@ -38,6 +41,7 @@ const state = {
 
 
 const getters = {
+  getRequestProcessing: state => state.requestProcessing,
   getAccessToken: state => state.accessToken,
   getRefreshToken: state => state.refreshToken,
   isAuthenticated: state => !!state.accessToken && !!state.refreshToken,
@@ -206,6 +210,14 @@ const mutations = {
   [AUTH_PASSWORD_RESET_CONFIRM_ERROR]: (state, err) => {
     state.accountPasswordResetConfirmErrors = err.response.data;
     state.accountPasswordResetConfirmStatus = 'error';
+  },
+
+
+  [REQUEST_PROCESSING_TRUE]: (state) => {
+    state.requestProcessing = true;
+  },
+  [REQUEST_PROCESSING_FALSE]: (state) => {
+    state.requestProcessing = false;
   },
 }
 
