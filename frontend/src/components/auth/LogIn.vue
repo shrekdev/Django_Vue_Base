@@ -63,7 +63,7 @@
             password: this.password
           }).then(() => {
             if(this.$store.getters.getLogInStatus === 'success') {
-              this.$router.push('/');
+              this.$router.push({name: 'Dashboard'});
             }
           }).catch(reason => {
             this.$refs.form.reset()

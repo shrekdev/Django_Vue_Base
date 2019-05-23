@@ -12,7 +12,7 @@
       </v-list>
 
       <v-list class="pt-0" dense>
-        <v-divider light></v-divider>
+        <v-divider></v-divider>
         <v-spacer></v-spacer>
         <v-list-tile v-for="item in items" :key="item.title" @click="">
 
@@ -36,7 +36,9 @@
       return {
         drawer: true,
         items: [
-          { title: 'Home', icon: 'dashboard', url: '/dashboard' },
+          { title: 'Dashboard', icon: 'dashboard', url: '/' },
+          { title: 'List', icon: 'list', url: '/task-list' },
+          { title: 'Settings', icon: 'settings', url: '/settings' },
           { title: 'Logout', icon: 'logout', url: '/logout'}
         ],
         mini: true,

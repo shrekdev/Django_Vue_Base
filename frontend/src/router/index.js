@@ -2,15 +2,11 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store'
 
-
 import Layout from '@/components/layout/Layout.vue'
-import UserAuth from '@/components/auth/UserAuth.vue'
+import AuthLayout from '@/components/auth/AuthLayout.vue'
 import Logout from '@/components/auth/Logout.vue'
 import AccountActivate from '@/components/auth/AccountActivate.vue'
 import PasswordResetConfirmRedirect from '@/components/auth/PasswordResetConfirmRedirect.vue'
-import Dashboard from '@/components/dashboard/Dashboard.vue'
-import AboutSite from '@/components/info/AboutSite.vue'
-import News from '@/components/info/News.vue'
 
 
 Vue.use(Router)
@@ -36,42 +32,47 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'Home',
       component: Layout,
       beforeEnter: ifAuthenticated,
       children: [
         {
-          path: '/dashboard',
+          path: '',
           name: 'Dashboard',
-          component: Dashboard,
+          component: () => import('@/components/dashboard/Dashboard.vue'),
+          beforeEnter: ifAuthenticated,
+        },
+        {
+          path: 'task-list',
+          name: 'TaskList',
+          component: () => import('@/components/task/TaskList.vue'),
+          beforeEnter: ifAuthenticated,
+        },
+        {
+          path: 'settings',
+          name: 'Settings',
+          component: () => import('@/components/settings/Settings.vue'),
           beforeEnter: ifAuthenticated,
         },
       ],
     },
     {
       path: '/login',
-      component: UserAuth,
+      component: AuthLayout,
       beforeEnter: ifNotAuthenticated,
       children: [
         {
           path: '',
           name: 'News',
-          component: News,
+          component: () => import('@/components/info/News.vue'),
           beforeEnter: ifNotAuthenticated,
         },
         {
           path: '/about',
           name: 'AboutSite',
-          component: AboutSite,
+          component: () => import('@/components/info/AboutSite.vue'),
           beforeEnter: ifNotAuthenticated,
         },
       ],
-    },
-    {
-      path: '/logout',
-      name: 'Logout',
-      component: Logout,
-      beforeEnter: ifAuthenticated,
     },
     {
       path: '/activate/:uid/:token',
@@ -84,6 +85,12 @@ const router = new Router({
       name: 'PasswordResetConfirmRedirect',
       component: PasswordResetConfirmRedirect,
       beforeEnter: ifNotAuthenticated,
+    },
+    {
+      path: '/logout',
+      name: 'Logout',
+      component: Logout,
+      beforeEnter: ifAuthenticated,
     },
   ]
 })
