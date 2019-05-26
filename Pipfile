@@ -11,9 +11,10 @@ djangorestframework = "*"
 djoser = "*"
 django-cors-headers = "*"
 djangorestframework-simplejwt = "*"
-requests = "*"
 django-templated-mail = "*"
 psycopg2 = "*"
+pytest-django = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.7"
