@@ -8,6 +8,7 @@ def test_custom_user_object_save(db):
         password="secret@password123"
     )
 
+    assert str(custom_user) == "test_user_1"
     assert custom_user.first_name == "test_user_1"
     assert custom_user.email == "test_user@test_mail.com"
     assert custom_user.username is None
