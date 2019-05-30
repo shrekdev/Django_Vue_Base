@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 class CustomUserManager(UserManager):
     """
-    CustomUserManager provide possibility to log in both with username and email address
+    CustomUserManager provide possibility to login both with username and email address
     """
 
     use_in_migrations = True
@@ -51,7 +51,7 @@ class CustomUser(AbstractUser):
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-    # to register and log in only by e-mail
+    # to register and login only by e-mail
     username = None
 
     first_name = models.CharField(
