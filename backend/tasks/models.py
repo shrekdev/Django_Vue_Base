@@ -3,6 +3,51 @@ from django.conf import settings
 import datetime
 
 
+class TaskCategory(models.Model):
+    """
+    Model representing a single category for Task model
+    """
+
+    CATEGORY_COLORS = (
+        ('#FFFFFF', 'white'),
+        ('#000000', 'black'),
+        ('#808080', 'gray'),
+        ('#C0C0C0', 'silver'),
+        ('#800000', 'maroon'),
+        ('#FF0000', 'red'),
+        ('#808000', 'olive'),
+        ('#FFFF00', 'yellow'),
+        ('#00FF00', 'lime'),
+        ('#008080', 'teal'),
+        ('#00FFFF', 'aqua'),
+        ('#000080', 'navy'),
+        ('#0000FF', 'blue'),
+        ('#800080', 'purple'),
+        ('#FF00FF', 'fuchsia'),
+    )
+
+    name = models.CharField(
+        verbose_name='category name',
+        help_text='Category name (up to 30 characters)',
+        max_length=30,
+    )
+
+    color = models.CharField(
+        verbose_name='color',
+        help_text='Color of category (HEX)',
+        choices=CATEGORY_COLORS,
+        default='#FFFFFF',
+        max_length=7,
+    )
+
+    class Meta:
+        verbose_name = 'Note category'
+        verbose_name_plural = 'Note categories'
+
+    def __str__(self):
+        return self.name
+
+
 class Task(models.Model):
     """
     Model representing a single Task with optional SubTasks
@@ -92,6 +137,13 @@ class Task(models.Model):
         on_delete=models.CASCADE,
     )
 
+    category = models.ManyToManyField(
+        to=TaskCategory,
+        related_name='tasks',
+        verbose_name='category',
+        help_text='The category the task will be marked',
+    )
+
     # TODO: ForeignKey to SubTask model
 
     def save(self, *args, **kwargs):
@@ -107,6 +159,6 @@ class Task(models.Model):
     def __str__(self):
         return self.title
 
+
 # TODO: SubTask model
-# TODO: Category model
 # TODO: Comment model
