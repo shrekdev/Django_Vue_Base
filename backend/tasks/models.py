@@ -1,6 +1,5 @@
 from django.db import models
-from django.conf import settings
-import datetime
+from .mixins import BaseTaskFieldsMixin
 
 
 class TaskCategory(models.Model):
@@ -48,7 +47,7 @@ class TaskCategory(models.Model):
         return self.name
 
 
-class Task(models.Model):
+class Task(BaseTaskFieldsMixin):
     """
     Model representing a single Task with optional SubTasks
     """
@@ -74,25 +73,6 @@ class Task(models.Model):
         max_length=120,
     )
 
-    created = models.DateTimeField(
-        verbose_name='created',
-        help_text='Created date and time',
-        auto_now_add=True,
-    )
-
-    updated = models.DateTimeField(
-        verbose_name='updated',
-        help_text='Updated date and time',
-        auto_now=True,
-    )
-
-    due_to = models.DateTimeField(
-        verbose_name='due to',
-        help_text='Expected date and time of completion',
-        null=True,
-        blank=True,
-    )
-
     priority = models.CharField(
         verbose_name='task priority',
         help_text='Task priority (according to The Eisenhover Matrix)',
@@ -109,34 +89,6 @@ class Task(models.Model):
         default='1',
     )
 
-    completed = models.BooleanField(
-        verbose_name='completed',
-        default=False,
-    )
-
-    completed_date = models.DateTimeField(
-        blank=True,
-        null=True,
-    )
-
-    created_by = models.ForeignKey(
-        to=settings.AUTH_USER_MODEL,
-        verbose_name='created by',
-        help_text='The user who created task',
-        related_name="tasks_created",
-        on_delete=models.CASCADE,
-    )
-
-    assigned_to = models.ForeignKey(
-        to=settings.AUTH_USER_MODEL,
-        verbose_name='assigned by',
-        help_text='The user for whom the task has been assigned',
-        blank=True,
-        null=True,
-        related_name="tasks_assigned",
-        on_delete=models.CASCADE,
-    )
-
     category = models.ManyToManyField(
         to=TaskCategory,
         related_name='tasks',
@@ -144,21 +96,59 @@ class Task(models.Model):
         help_text='The category the task will be marked',
     )
 
-    # TODO: ForeignKey to SubTask model
-
-    def save(self, *args, **kwargs):
-        if self.completed:
-            self.completed_date = datetime.datetime.now()
-        super().save(*args, **kwargs)
-
     class Meta:
         verbose_name = 'Task'
         verbose_name_plural = 'Tasks'
-        ordering = ['created', 'priority']
+        ordering = ['created', 'priority', 'status']
 
     def __str__(self):
         return self.title
 
 
-# TODO: SubTask model
+class SubTask(BaseTaskFieldsMixin):
+    """
+    Model representing a single SubTask
+    """
+
+    SUBTASK_STATUSES = (
+        ('1', 'New'),
+        ('2', 'In Progress'),
+        ('3', 'Suspended'),
+        ('4', 'Cancelled'),
+        ('5', 'Completed'),
+    )
+
+    task = models.ForeignKey(
+        to=Task,
+        verbose_name='task',
+        help_text='Task to which the subtask will be connected',
+        blank=True,
+        null=True,
+        related_name='sub_tasks',
+        on_delete=models.CASCADE,
+    )
+
+    title = models.CharField(
+        verbose_name='subtask title',
+        help_text='Title of your subtask (up to 80 characters)',
+        max_length=80,
+    )
+
+    status = models.CharField(
+        verbose_name='subtask status',
+        help_text='Current subtask status',
+        max_length=1,
+        choices=SUBTASK_STATUSES,
+        default='1',
+    )
+
+    class Meta:
+        verbose_name = 'SubTask'
+        verbose_name_plural = 'SubTasks'
+        ordering = ['created', 'status']
+
+    def __str__(self):
+        return self.title
+
+
 # TODO: Comment model
