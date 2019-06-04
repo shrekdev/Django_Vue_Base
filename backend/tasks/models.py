@@ -40,16 +40,16 @@ class TaskCategory(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Note category'
-        verbose_name_plural = 'Note categories'
+        verbose_name = 'Task category'
+        verbose_name_plural = 'Task categories'
 
     def __str__(self):
         return self.name
 
 
-class Task(BaseTaskFieldsMixin):
+class BaseTask(BaseTaskFieldsMixin):
     """
-    Model representing a single Task with optional SubTasks
+    Model representing a single BaseTask with optional SubTasks
     """
 
     CHOICES_MATRIX = (
@@ -97,12 +97,19 @@ class Task(BaseTaskFieldsMixin):
     )
 
     class Meta:
-        verbose_name = 'Task'
-        verbose_name_plural = 'Tasks'
-        ordering = ['created', 'priority', 'status']
+        verbose_name = 'Base Task'
+        verbose_name_plural = 'Base Tasks'
+        ordering = ['status', 'priority']
 
     def __str__(self):
         return self.title
+
+    def display_category(self):
+        """
+        Create a string for the BaseTask (to display category in Admin site)
+        """
+
+        return ', '.join([category.name for category in self.category.all()[:3]])
 
 
 class SubTask(BaseTaskFieldsMixin):
@@ -119,11 +126,9 @@ class SubTask(BaseTaskFieldsMixin):
     )
 
     task = models.ForeignKey(
-        to=Task,
+        to=BaseTask,
         verbose_name='task',
         help_text='Task to which the subtask will be connected',
-        blank=True,
-        null=True,
         related_name='sub_tasks',
         on_delete=models.CASCADE,
     )
@@ -143,9 +148,9 @@ class SubTask(BaseTaskFieldsMixin):
     )
 
     class Meta:
-        verbose_name = 'SubTask'
-        verbose_name_plural = 'SubTasks'
-        ordering = ['created', 'status']
+        verbose_name = 'Sub Task'
+        verbose_name_plural = 'Sub Tasks'
+        ordering = ['status']
 
     def __str__(self):
         return self.title

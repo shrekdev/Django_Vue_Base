@@ -50,10 +50,8 @@ class BaseTaskFieldsMixin(models.Model):
 
     assigned_to = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
-        verbose_name='assigned by',
+        verbose_name='assigned to',
         help_text='The user for whom the task has been assigned',
-        blank=True,
-        null=True,
         related_name="tasks_assigned",
         on_delete=models.CASCADE,
     )
