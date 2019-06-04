@@ -1,5 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from .mixins import BaseTaskFieldsMixin
+
+
+CustomUser = get_user_model()
 
 
 class TaskCategory(models.Model):
@@ -29,6 +33,7 @@ class TaskCategory(models.Model):
         verbose_name='category name',
         help_text='Category name (up to 30 characters)',
         max_length=30,
+        unique=True,
     )
 
     color = models.CharField(
@@ -67,6 +72,22 @@ class BaseTask(BaseTaskFieldsMixin):
         ('5', 'Completed'),
     )
 
+    created_by = models.ForeignKey(
+        to=CustomUser,
+        verbose_name='created by',
+        help_text='The user who created task',
+        related_name="base_tasks",
+        on_delete=models.CASCADE,
+    )
+
+    assigned_to = models.ForeignKey(
+        to=CustomUser,
+        verbose_name='assigned to',
+        help_text='The user for whom the subtask has been assigned',
+        related_name="base_tasks_assigned",
+        on_delete=models.CASCADE,
+    )
+
     title = models.CharField(
         verbose_name='task title',
         help_text='Title of your task (up to 120 characters)',
@@ -99,6 +120,7 @@ class BaseTask(BaseTaskFieldsMixin):
     class Meta:
         verbose_name = 'Base Task'
         verbose_name_plural = 'Base Tasks'
+        unique_together = ['title', 'created_by']
         ordering = ['status', 'priority']
 
     def __str__(self):
@@ -123,6 +145,22 @@ class SubTask(BaseTaskFieldsMixin):
         ('3', 'Suspended'),
         ('4', 'Cancelled'),
         ('5', 'Completed'),
+    )
+
+    created_by = models.ForeignKey(
+        to=CustomUser,
+        verbose_name='created by',
+        help_text='The user who created subtask',
+        related_name="sub_tasks",
+        on_delete=models.CASCADE,
+    )
+
+    assigned_to = models.ForeignKey(
+        to=CustomUser,
+        verbose_name='assigned to',
+        help_text='The user for whom the subtask has been assigned',
+        related_name="sub_tasks_assigned",
+        on_delete=models.CASCADE,
     )
 
     task = models.ForeignKey(

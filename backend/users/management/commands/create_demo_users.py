@@ -1,9 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from django.db.utils import IntegrityError
+from faker import Faker
 
 
 CustomUser = get_user_model()
+fake = Faker('pl_PL')
+fake.seed(4321)
 
 
 class Command(BaseCommand):
@@ -11,60 +14,23 @@ class Command(BaseCommand):
     Custom django-admin command to create demo users
     """
 
-    help = "Create five demo users"
+    help = "Create ten demo users"
 
     def handle(self, *args, **options):
         _DEFAULT_USER_PASSWORD = "password123"
+        _HOW_MUCH_DEMO_USERS = 10
 
-        demo_users = [
-            {
-                "first_name": "John",
-                "email": "john@john.com",
-                "password": _DEFAULT_USER_PASSWORD,
-                "is_active": True,
-                "is_staff": False,
-            },
-            {
-                "first_name": "Mary",
-                "email": "mary@mary.com",
-                "password": _DEFAULT_USER_PASSWORD,
-                "is_active": True,
-                "is_staff": False,
-            },
-            {
-                "first_name": "Margaret",
-                "email": "margaret@margaret.com",
-                "password": _DEFAULT_USER_PASSWORD,
-                "is_active": True,
-                "is_staff": False,
-            },
-            {
-                "first_name": "David",
-                "email": "david@david.com",
-                "password": _DEFAULT_USER_PASSWORD,
-                "is_active": True,
-                "is_staff": False,
-            },
-            {
-                "first_name": "Karen",
-                "email": "karen@karen.com",
-                "password": _DEFAULT_USER_PASSWORD,
-                "is_active": True,
-                "is_staff": False,
-            },
-        ]
-
-        for user in demo_users:
+        for _ in range(_HOW_MUCH_DEMO_USERS):
             try:
-                new_user = CustomUser.objects.create_user(
-                    first_name=user["first_name"],
-                    email=user["email"],
-                    password=user["password"],
-                    is_active=user["is_active"],
-                    is_staff=user["is_staff"],
+                user = CustomUser.objects.create_user(
+                    first_name=fake.first_name(),
+                    email=fake.email(),
+                    password=_DEFAULT_USER_PASSWORD,
+                    is_active=True,
+                    is_staff=False,
                 )
-                new_user.save()
+                user.save()
             except IntegrityError:
-                self.stderr.write(self.style.ERROR(f"User {user['first_name']} already exist!"))
+                self.stderr.write(self.style.ERROR(f"User {fake.first_name()} already exist!"))
             else:
-                self.stdout.write(self.style.SUCCESS(f"Successfully created user: {user['first_name']}"))
+                self.stdout.write(self.style.SUCCESS(f"Successfully created user: {fake.first_name()}"))

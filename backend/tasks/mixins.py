@@ -1,5 +1,4 @@
 import datetime
-from django.conf import settings
 from django.db import models
 
 
@@ -38,22 +37,6 @@ class BaseTaskFieldsMixin(models.Model):
         help_text='Task completed - date and time',
         blank=True,
         null=True,
-    )
-
-    created_by = models.ForeignKey(
-        to=settings.AUTH_USER_MODEL,
-        verbose_name='created by',
-        help_text='The user who created task',
-        related_name="tasks_created",
-        on_delete=models.CASCADE,
-    )
-
-    assigned_to = models.ForeignKey(
-        to=settings.AUTH_USER_MODEL,
-        verbose_name='assigned to',
-        help_text='The user for whom the task has been assigned',
-        related_name="tasks_assigned",
-        on_delete=models.CASCADE,
     )
 
     def save(self, *args, **kwargs):
