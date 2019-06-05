@@ -1,4 +1,4 @@
-import datetime
+from django.utils import timezone
 from django.db import models
 
 
@@ -39,7 +39,10 @@ class BaseTaskFieldsMixin(models.Model):
         null=True,
     )
 
+    class Meta:
+        abstract = True
+
     def save(self, *args, **kwargs):
         if self.completed:
-            self.completed_date = datetime.datetime.now()
+            self.completed_date = timezone.now()
         super().save(*args, **kwargs)
