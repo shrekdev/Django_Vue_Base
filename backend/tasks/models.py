@@ -188,10 +188,8 @@ class SubTask(BaseTaskFieldsMixin):
     class Meta:
         verbose_name = 'Sub Task'
         verbose_name_plural = 'Sub Tasks'
+        unique_together = ['title', 'created_by']
         ordering = ['status']
 
     def __str__(self):
         return self.title
-
-
-# TODO: Comment model

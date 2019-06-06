@@ -23,13 +23,13 @@ class Command(BaseCommand):
                 )
                 category.save()
             except IntegrityError:
-                self.stderr.write(self.style.ERROR(f"Category {DEMO_TASK_CATEGORY_NAME[i]} already exist!"))
+                self.stderr.write(self.style.ERROR(f"TaskCategory {DEMO_TASK_CATEGORY_NAME[i]} already exist!"))
             else:
-                self.stdout.write(self.style.SUCCESS(f"Successfully created category: {DEMO_TASK_CATEGORY_NAME[i]}"))
+                self.stdout.write(self.style.SUCCESS(f"Successfully created TaskCategory: {DEMO_TASK_CATEGORY_NAME[i]}"))
 
         self.stdout.write("Creating BaseTask objects...")
 
-        DEMO_TASK_RANDOM_CATEGORY = [
+        demo_random_task_categories = [
             random.choice(TaskCategory.objects.all()) for _ in range(HOW_MUCH_TASKS)
         ]
 
@@ -43,9 +43,35 @@ class Command(BaseCommand):
                     status=DEMO_TASK_RANDOM_STATUS[i],
                     completed=True if DEMO_TASK_RANDOM_STATUS[i] == '5' else False
                 )
-                task.category.set([DEMO_TASK_RANDOM_CATEGORY[i]])
+                task.category.set([demo_random_task_categories[i]])
                 task.save()
             except IntegrityError:
-                self.stderr.write(self.style.ERROR(f"Task with title {DEMO_TASK_RANDOM_TITLE[i]} already exist!"))
+                self.stderr.write(self.style.ERROR(f"BaseTask with title {DEMO_TASK_RANDOM_TITLE[i]} already exist!"))
             else:
-                self.stdout.write(self.style.SUCCESS(f"Successfully created task with title: {DEMO_TASK_RANDOM_TITLE[i]}"))
+                self.stdout.write(self.style.SUCCESS(f"Successfully created BaseTask with title: {DEMO_TASK_RANDOM_TITLE[i]}"))
+
+        self.stdout.write("Creating SubTask objects...")
+
+        demo_random_tasks = [
+            random.choice(BaseTask.objects.all()) for _ in range(HOW_MUCH_SUB_TASKS)
+        ]
+
+        for i in range(HOW_MUCH_SUB_TASKS):
+            try:
+                task = SubTask.objects.create(
+                    created_by=DEMO_TASK_RANDOM_USER[i],
+                    assigned_to=DEMO_TASK_RANDOM_USER[i],
+                    task=demo_random_tasks[i],
+                    title=DEMO_SUB_TASK_RANDOM_TITLE[i],
+                    status=DEMO_SUB_TASK_RANDOM_STATUS[i],
+                    completed=True if DEMO_SUB_TASK_RANDOM_STATUS[i] == '5' else False
+                )
+                task.save()
+            except IntegrityError:
+                self.stderr.write(
+                    self.style.ERROR(f"SubTask with title {DEMO_SUB_TASK_RANDOM_TITLE[i]} already exist!")
+                )
+            else:
+                self.stdout.write(
+                    self.style.SUCCESS(f"Successfully created SubTask with title: {DEMO_SUB_TASK_RANDOM_TITLE[i]}")
+                )

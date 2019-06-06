@@ -45,4 +45,6 @@ class BaseTaskFieldsMixin(models.Model):
     def save(self, *args, **kwargs):
         if self.completed:
             self.completed_date = timezone.now()
+        if not self.completed and self.completed_date:
+            self.completed_date = None
         super().save(*args, **kwargs)
