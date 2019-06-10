@@ -44,7 +44,7 @@ const router = new Router({
         {
           path: 'task-list',
           name: 'TaskList',
-          component: () => import('@/components/task/TaskList.vue'),
+          component: () => import('@/components/tasks/TaskList.vue'),
           beforeEnter: ifAuthenticated,
         },
         {

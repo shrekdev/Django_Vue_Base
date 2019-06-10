@@ -12,8 +12,6 @@ class TaskCategory(models.Model):
     """
 
     CATEGORY_COLORS = (
-        ('#FFFFFF', 'white'),
-        ('#000000', 'black'),
         ('#808080', 'gray'),
         ('#C0C0C0', 'silver'),
         ('#800000', 'maroon'),
@@ -40,7 +38,7 @@ class TaskCategory(models.Model):
         verbose_name='color',
         help_text='Color of category (HEX)',
         choices=CATEGORY_COLORS,
-        default='#FFFFFF',
+        default='#0000FF',
         max_length=7,
     )
 

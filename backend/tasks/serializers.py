@@ -17,6 +17,7 @@ class SubTaskSerializer(serializers.ModelSerializer):
 class BaseTaskSerializer(serializers.ModelSerializer):
     # sub_tasks = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     sub_tasks = SubTaskSerializer(many=True, read_only=True)
+    category = TaskCategorySerializer(many=True, read_only=True)
 
     class Meta:
         model = models.BaseTask

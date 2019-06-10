@@ -11,7 +11,7 @@ fake.seed(4321)
 random.seed(4321)
 
 
-HOW_MUCH_TASK_CATEGORIES = 6
+HOW_MUCH_TASK_CATEGORIES = 4
 DEMO_TASK_CATEGORY_NAME = [
     fake.word() for _ in range(HOW_MUCH_TASK_CATEGORIES)
 ]
