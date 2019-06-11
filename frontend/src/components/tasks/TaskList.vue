@@ -46,10 +46,10 @@
 <style scoped>
 .v-sub-chip {
   margin-left: 60px;
-  width: 60% !important;
+  width: 80% !important;
 }
 .v-chip {
-  width: 80%;
+  width: 100%;
 }
 .v-cursor-default {
   cursor: default;
