@@ -1,6 +1,7 @@
 <template>
-  <section>
-
+<section>
+  <AddTask />
+  <v-card>
     <v-item-group v-for="item in getTasksList" :key="item.id" class="v-cursor-default">
       <v-chip color="secondary" text-color="white" class="v-chip v-cursor-default">
         <v-avatar :color="item.category[0].color">
@@ -17,14 +18,15 @@
         </v-item-group>
       </div>
     </v-item-group>
-
-  </section>
+  </v-card>
+</section>
 </template>
 
 
 <script>
   import { mapGetters } from 'vuex';
   import { TASKS_LOAD_TASK_LIST } from '@/store/actions/tasks';
+  import AddTask from './AddTask.vue';
 
   export default {
     name: 'TaskList',
@@ -38,6 +40,9 @@
     },
     computed: {
       ...mapGetters(['getTasksList']),
+    },
+    components: {
+      AddTask,
     }
   }
 </script>
@@ -49,7 +54,7 @@
   width: 80% !important;
 }
 .v-chip {
-  width: 100%;
+  width: 98%;
 }
 .v-cursor-default {
   cursor: default;
