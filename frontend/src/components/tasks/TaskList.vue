@@ -1,6 +1,8 @@
 <template>
 <section>
-  <AddTask />
+  <div v-if="getTasksAddTaskStatus">
+    <AddTask />
+  </div>
   <v-card>
     <v-item-group v-for="item in getTasksList" :key="item.id" class="v-cursor-default">
       <v-chip color="secondary" text-color="white" class="v-chip v-cursor-default">
@@ -9,7 +11,6 @@
         </v-avatar>
         {{ item.title }}
       </v-chip>
-
       <div v-if="item.sub_tasks.length > 0">
         <v-item-group v-for="sub_task in item.sub_tasks" :key="item.sub_tasks.id" class="v-cursor-default">
           <v-chip color="accent" text-color="white" class="v-sub-chip v-cursor-default">
@@ -30,7 +31,6 @@
 
   export default {
     name: 'TaskList',
-
     created() {
       this.$store.dispatch(TASKS_LOAD_TASK_LIST).then(() => {
         console.log('fetched');
@@ -39,7 +39,7 @@
       })
     },
     computed: {
-      ...mapGetters(['getTasksList']),
+      ...mapGetters(['getTasksList', 'getTasksAddTaskStatus']),
     },
     components: {
       AddTask,

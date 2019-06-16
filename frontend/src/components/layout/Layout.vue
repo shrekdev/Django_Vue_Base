@@ -1,6 +1,5 @@
 <template>
   <v-app>
-    <RequestProcessing />
     <NavToolbar />
     <NavDrawer />
     <NavDrawerRight />
