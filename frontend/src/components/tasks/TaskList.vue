@@ -3,23 +3,50 @@
   <div v-if="getTasksAddTaskStatus">
     <AddTask />
   </div>
-  <v-card>
-    <v-item-group v-for="item in getTasksList" :key="item.id" class="v-cursor-default">
-      <v-chip color="secondary" text-color="white" class="v-chip v-cursor-default">
-        <v-avatar :color="item.category[0].color">
-          {{ item.category[0].name[0] }}
-        </v-avatar>
-        {{ item.title }}
-      </v-chip>
-      <div v-if="item.sub_tasks.length > 0">
-        <v-item-group v-for="sub_task in item.sub_tasks" :key="item.sub_tasks.id" class="v-cursor-default">
-          <v-chip color="accent" text-color="white" class="v-sub-chip v-cursor-default">
-            {{ sub_task.title }}
-          </v-chip>
-        </v-item-group>
-      </div>
-    </v-item-group>
-  </v-card>
+    <v-list>
+      <template v-for="item in getTasksList">
+        <v-hover>
+          <section slot-scope="{ hover }">
+            <v-list-tile :key="item.id" ripple @click="">
+              <v-list-tile>
+                <v-checkbox v-model="selectedTasksArray" :value="item.id"></v-checkbox>
+              </v-list-tile>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  {{ item.title }}
+                </v-list-tile-title>
+              </v-list-tile-content>
+              <v-list-tile-action v-if="hover">
+                <v-btn icon><v-icon color="primary">edit</v-icon></v-btn>
+              </v-list-tile-action>
+            </v-list-tile>
+            <v-divider></v-divider>
+          </section>
+        </v-hover>
+        <div v-if="item.sub_tasks.length > 0">
+        <template v-for="sub_task in item.sub_tasks">
+          <v-hover>
+            <section slot-scope="{ hover }">
+              <v-list-tile :key="item.sub_tasks.id" @click="" style="margin-left: 50px;">
+                <v-list-tile>
+                  <v-checkbox></v-checkbox>
+                </v-list-tile>
+                <v-list-tile-content>
+                  <v-list-tile-sub-title>
+                    {{ sub_task.title }}
+                  </v-list-tile-sub-title>
+                </v-list-tile-content>
+                <v-list-tile-action v-if="hover">
+                  <v-btn icon><v-icon color="primary">edit</v-icon></v-btn>
+                </v-list-tile-action>
+              </v-list-tile>
+              <v-divider></v-divider>
+            </section>
+          </v-hover>
+        </template>
+        </div>
+      </template>
+    </v-list>
 </section>
 </template>
 
@@ -31,6 +58,11 @@
 
   export default {
     name: 'TaskList',
+    data () {
+      return {
+        selectedTasksArray: [],
+      }
+    },
     created() {
       this.$store.dispatch(TASKS_LOAD_TASK_LIST).then(() => {
         console.log('fetched');

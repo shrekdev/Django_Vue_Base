@@ -13,7 +13,7 @@
     <v-divider></v-divider>
 
     <v-container fluid ma-0 pa-1>
-      <v-card color="accent">
+      <v-card color="secondary">
         aaaaaaaa<br>
         aaaaaaaa
         aaaaaaaa
@@ -21,7 +21,7 @@
     </v-container>
 
     <v-container fluid ma-0 pa-1>
-      <v-card color="accent">
+      <v-card color="secondary">
         aaaaaaaa<br>
         aaaaaaaa
         aaaaaaaa
