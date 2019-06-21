@@ -7,7 +7,7 @@
       <template v-for="item in getTasksList">
         <v-hover>
           <section slot-scope="{ hover }">
-            <v-list-tile :key="item.id" ripple @click="">
+            <v-list-tile :key="item.id" ripple @click="updateTask(item)">
               <v-list-tile>
                 <v-checkbox v-model="selectedTasksArray" :value="item.id"></v-checkbox>
               </v-list-tile>
@@ -18,13 +18,14 @@
               </v-list-tile-content>
               <v-list-tile-action v-if="hover">
                 <v-btn icon @click="updateTask(item)">
-                  <v-icon color="primary">edit</v-icon>
+                  <v-icon color="primary">done</v-icon>
                 </v-btn>
               </v-list-tile-action>
             </v-list-tile>
             <v-divider></v-divider>
           </section>
         </v-hover>
+<!--
         <div v-if="item.sub_tasks.length > 0">
         <template v-for="sub_task in item.sub_tasks">
           <v-hover>
@@ -39,7 +40,7 @@
                   </v-list-tile-sub-title>
                 </v-list-tile-content>
                 <v-list-tile-action v-if="hover">
-                  <v-btn icon><v-icon color="primary">edit</v-icon></v-btn>
+                  <v-btn icon><v-icon color="primary">done</v-icon></v-btn>
                 </v-list-tile-action>
               </v-list-tile>
               <v-divider></v-divider>
@@ -47,6 +48,7 @@
           </v-hover>
         </template>
         </div>
+-->
       </template>
     </v-list>
 </section>
