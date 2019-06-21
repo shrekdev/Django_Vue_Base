@@ -12,19 +12,15 @@
 
     <v-divider></v-divider>
 
-    <v-container fluid ma-0 pa-1>
-      <v-card color="secondary">
-        aaaaaaaa<br>
-        aaaaaaaa
-        aaaaaaaa
+
+    <v-container v-if="getTasksUpdateTaskStatus" fluid ma-0 pa-1>
+      <v-card color="">
+        <UpdateTask />
       </v-card>
     </v-container>
 
     <v-container fluid ma-0 pa-1>
       <v-card color="secondary">
-        aaaaaaaa<br>
-        aaaaaaaa
-        aaaaaaaa
       </v-card>
     </v-container>
   </v-navigation-drawer>
@@ -32,7 +28,16 @@
 
 
 <script>
+  import { mapGetters } from 'vuex';
+  import UpdateTask from '../../tasks/UpdateTask.vue';
+
   export default {
     name: 'NavDrawerRight',
+    computed: {
+      ...mapGetters(['getTasksUpdateTaskStatus']),
+    },
+    components: {
+      UpdateTask,
+    }
   }
 </script>

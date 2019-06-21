@@ -17,7 +17,9 @@
                 </v-list-tile-title>
               </v-list-tile-content>
               <v-list-tile-action v-if="hover">
-                <v-btn icon><v-icon color="primary">edit</v-icon></v-btn>
+                <v-btn icon @click="updateTask(item)">
+                  <v-icon color="primary">edit</v-icon>
+                </v-btn>
               </v-list-tile-action>
             </v-list-tile>
             <v-divider></v-divider>
@@ -54,6 +56,7 @@
 <script>
   import { mapGetters } from 'vuex';
   import { TASKS_LOAD_TASK_LIST } from '@/store/actions/tasks';
+  import { TASKS_UPDATE_TASK_STATUS } from '@/store/actions/tasks';
   import AddTask from './AddTask.vue';
 
   export default {
@@ -69,6 +72,12 @@
       }).catch(reason => {
         console.log('error: ', reason);
       })
+    },
+    methods: {
+      updateTask(task) {
+        console.log('title: ', task.title);
+        this.$store.commit(TASKS_UPDATE_TASK_STATUS, task);
+      }
     },
     computed: {
       ...mapGetters(['getTasksList', 'getTasksAddTaskStatus']),

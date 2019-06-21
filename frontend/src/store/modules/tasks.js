@@ -6,6 +6,8 @@ import {
   TASKS_LOAD_CATEGORY_LIST_SUCCESS,
   TASKS_LOAD_CATEGORY_LIST_ERROR,
   TASKS_ADD_TASK,
+  TASKS_UPDATE_TASK,
+  TASKS_UPDATE_TASK_STATUS,
 } from '../actions/tasks.js';
 import apiCall from '../../utils/api';
 
@@ -14,6 +16,8 @@ const state = {
   tasksList: {},
   tasksCategoryList: {},
   tasksAddTask: false,
+  tasksUpdateTaskStatus: false,
+  taskToUpdate: {},
 }
 
 
@@ -21,6 +25,8 @@ const getters = {
   getTasksList: state => state.tasksList,
   getTasksCategoryList: state => state.tasksCategoryList,
   getTasksAddTaskStatus: state => state.tasksAddTask,
+  getTasksUpdateTaskStatus: state => state.tasksUpdateTaskStatus,
+  getTaskToUpdate: state => state.taskToUpdate,
 }
 
 
@@ -70,6 +76,17 @@ const mutations = {
   },
   [TASKS_ADD_TASK]: (state) => {
     state.tasksAddTask = !state.tasksAddTask;
+  },
+  [TASKS_UPDATE_TASK_STATUS]: (state, taskToUpdate) => {
+    state.tasksUpdateTaskStatus = !state.tasksUpdateTaskStatus;
+    state.taskToUpdate = taskToUpdate;
+//    const index = state.tasksList.findIndex(block => block.id === update.id)
+//    console.log('index: ', index)
+//    update.title = "new"
+//    Vue.set(state.tasksList, index, update)
+  },
+  [TASKS_UPDATE_TASK]: (state, updated) => {
+    console.log('TASKS_UPDATE_TASK | updated: ', updated)
   },
 }
 
