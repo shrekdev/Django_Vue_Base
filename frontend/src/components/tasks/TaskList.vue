@@ -58,7 +58,7 @@
 <script>
   import { mapGetters } from 'vuex';
   import { TASKS_LOAD_TASK_LIST } from '@/store/actions/tasks';
-  import { TASKS_UPDATE_TASK_STATUS } from '@/store/actions/tasks';
+  import { TASKS_CHANGE_UPDATE_TASK_STATE } from '@/store/actions/tasks';
   import AddTask from './AddTask.vue';
 
   export default {
@@ -78,7 +78,7 @@
     methods: {
       updateTask(task) {
         console.log('title: ', task.title);
-        this.$store.commit(TASKS_UPDATE_TASK_STATUS, task);
+        this.$store.commit(TASKS_CHANGE_UPDATE_TASK_STATE, task);
       }
     },
     computed: {

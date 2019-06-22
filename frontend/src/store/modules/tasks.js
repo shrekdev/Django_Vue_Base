@@ -7,9 +7,10 @@ import {
   TASKS_LOAD_CATEGORY_LIST_ERROR,
   TASKS_ADD_TASK,
   TASKS_UPDATE_TASK,
-  TASKS_UPDATE_TASK_STATUS,
+  TASKS_CHANGE_UPDATE_TASK_STATE,
 } from '../actions/tasks.js';
 import apiCall from '../../utils/api';
+import Vue from 'vue';
 
 
 const state = {
@@ -77,16 +78,24 @@ const mutations = {
   [TASKS_ADD_TASK]: (state) => {
     state.tasksAddTask = !state.tasksAddTask;
   },
-  [TASKS_UPDATE_TASK_STATUS]: (state, taskToUpdate) => {
+  [TASKS_CHANGE_UPDATE_TASK_STATE]: (state, taskToUpdate) => {
     state.tasksUpdateTaskStatus = !state.tasksUpdateTaskStatus;
     state.taskToUpdate = taskToUpdate;
-//    const index = state.tasksList.findIndex(block => block.id === update.id)
-//    console.log('index: ', index)
-//    update.title = "new"
-//    Vue.set(state.tasksList, index, update)
   },
-  [TASKS_UPDATE_TASK]: (state, updated) => {
-    console.log('TASKS_UPDATE_TASK | updated: ', updated)
+  [TASKS_UPDATE_TASK]: (state, payload) => {
+    const index = state.tasksList.findIndex(block => block.id === payload.id)
+//    console.log('BEFORE: ', state.tasksList[index].title);
+//    console.log('BEFORE: ', state.tasksList[index].status);
+//    console.log('BEFORE: ', state.tasksList[index].category);
+//    console.log('BEFORE: ', state.tasksList[index].priority);
+    Vue.set(state.tasksList[index], 'title', payload.title)
+    Vue.set(state.tasksList[index], 'status', payload.status)
+    Vue.set(state.tasksList[index], 'category', payload.category)
+    Vue.set(state.tasksList[index], 'priority', payload.priority)
+//    console.log('AFTER: ', state.tasksList[index].title);
+//    console.log('AFTER: ', state.tasksList[index].status);
+//    console.log('AFTER: ', state.tasksList[index].category);
+//    console.log('AFTER: ', state.tasksList[index].priority);
   },
 }
 
