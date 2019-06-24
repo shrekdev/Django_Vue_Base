@@ -1,5 +1,14 @@
 <template>
-  <section>
+  <section v-if="getTaskToUpdate.id != -1">
+
+    <v-alert v-model="alertSuccess" type="success" dismissible>
+      Task added! :)
+    </v-alert>
+
+    <v-alert v-model="alertError" type="error" dismissible>
+      Something went wrong... :(
+    </v-alert>
+
     <v-textarea dark solo v-model="taskTitle"></v-textarea>
 
     <v-select solo v-model="statusListSelected" :items="statusList"
@@ -16,8 +25,12 @@
 
     <v-btn small>Cancel</v-btn>
     <v-btn small color="success" @click="updateTask(getTaskToUpdate.id)">Save</v-btn>
-
   </section>
+
+  <section v-else>
+    empty
+  </section>
+
 </template>
 
 
@@ -30,6 +43,8 @@
     name: 'UpdateTask',
     data() {
       return {
+        alertSuccess: false,
+        alertError: false,
         taskTitle: '',
         categoryListSelected: [],
         categoryList: [],
@@ -47,8 +62,19 @@
           status: this.statusListSelected,
           category: this.categoryListSelected,
           priority: this.priorityListSelected,
+          created_by: this.createdBy,
+          assigned_to: this.assignedTo,
         }
-        this.$store.commit(TASKS_UPDATE_TASK, payload);
+
+        // TODO: verify if anything has changed, prevent below request if not
+
+        this.$store.dispatch(TASKS_UPDATE_TASK, payload).then((response) => {
+          this.alertSuccess = true;
+          this.alertError = false;
+        }).catch(error => {
+          this.alertSuccess = false;
+          this.alertError = true;
+        });
       }
     },
     created() {
@@ -58,12 +84,11 @@
     },
     mounted() {
       for (var i = 0; i < this.categoryIds.length; i++) {
-        this.categoryListSelected.push(this.categoryIds[i].id)
+        this.categoryListSelected.push(this.categoryIds[i]);
       }
       this.statusListSelected = this.statusId;
       this.priorityListSelected = this.priorityId;
       this.taskTitle = this.taskText;
-      console.log('this.title ', this.taskText)
     },
     computed: {
       ...mapGetters(['getTasksCategoryList', 'getTaskToUpdate']),
@@ -77,7 +102,14 @@
         return this.getTaskToUpdate.priority;
       },
       taskText: function title() {
+        console.log('computing title...')
         return this.getTaskToUpdate.title;
+      },
+      createdBy: function created() {
+        return this.getTaskToUpdate.created_by;
+      },
+      assignedTo: function assigned() {
+        return this.getTaskToUpdate.assigned_to;
       },
     },
   }

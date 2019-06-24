@@ -12,10 +12,9 @@
 
     <v-divider></v-divider>
 
-
-    <v-container v-if="getTasksUpdateTaskStatus" fluid ma-0 pa-1>
+    <v-container fluid ma-0 pa-1>
       <v-card color="">
-        <UpdateTask />
+        <UpdateTask :key="getTaskToUpdate.id"/>
       </v-card>
     </v-container>
 
@@ -34,7 +33,7 @@
   export default {
     name: 'NavDrawerRight',
     computed: {
-      ...mapGetters(['getTasksUpdateTaskStatus']),
+      ...mapGetters(['getTaskToUpdate']),
     },
     components: {
       UpdateTask,

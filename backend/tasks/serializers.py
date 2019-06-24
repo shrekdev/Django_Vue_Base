@@ -14,11 +14,17 @@ class SubTaskSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+# TODO: merge with BaseTaskUpdateSerializer?
 class BaseTaskSerializer(serializers.ModelSerializer):
-    # sub_tasks = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    sub_tasks = SubTaskSerializer(many=True, read_only=True)
-    category = TaskCategorySerializer(many=True, read_only=True)
+    # sub_tasks = SubTaskSerializer(many=True, read_only=True)
+    # category = TaskCategorySerializer(many=True, read_only=True)
 
+    class Meta:
+        model = models.BaseTask
+        fields = "__all__"
+
+
+class BaseTaskUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.BaseTask
         fields = "__all__"

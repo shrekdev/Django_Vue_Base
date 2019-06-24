@@ -21,3 +21,9 @@ class SubTaskList(generics.ListAPIView):
     queryset = models.SubTask.objects.all()
     serializer_class = serializers.SubTaskSerializer
     permission_classes = (AllowAny,)
+
+
+class BaseTaskUpdate(generics.UpdateAPIView):
+    queryset = models.BaseTask.objects.all()
+    serializer_class = serializers.BaseTaskUpdateSerializer
+    permission_classes = (AllowAny,)

@@ -1,12 +1,11 @@
 import {
   TASKS_LOAD_TASK_LIST,
   TASKS_LOAD_TASK_LIST_SUCCESS,
-  TASKS_LOAD_TASK_LIST_ERROR,
   TASKS_LOAD_CATEGORY_LIST,
   TASKS_LOAD_CATEGORY_LIST_SUCCESS,
-  TASKS_LOAD_CATEGORY_LIST_ERROR,
   TASKS_ADD_TASK,
   TASKS_UPDATE_TASK,
+  TASKS_UPDATE_TASK_SUCCESS,
   TASKS_CHANGE_UPDATE_TASK_STATE,
 } from '../actions/tasks.js';
 import apiCall from '../../utils/api';
@@ -17,8 +16,14 @@ const state = {
   tasksList: {},
   tasksCategoryList: {},
   tasksAddTask: false,
-  tasksUpdateTaskStatus: false,
-  taskToUpdate: {},
+  // just to supply initial data to UpdateTask component
+  taskToUpdate: {
+    id: -1,
+    title: '',
+    category: [],
+    status: '',
+    priority: '',
+  },
 }
 
 
@@ -26,7 +31,6 @@ const getters = {
   getTasksList: state => state.tasksList,
   getTasksCategoryList: state => state.tasksCategoryList,
   getTasksAddTaskStatus: state => state.tasksAddTask,
-  getTasksUpdateTaskStatus: state => state.tasksUpdateTaskStatus,
   getTaskToUpdate: state => state.taskToUpdate,
 }
 
@@ -40,7 +44,6 @@ const actions = {
         resolve(resp);
       })
       .catch(err => {
-        commit(TASKS_LOAD_TASK_LIST_ERROR, err);
         reject(err);
       })
     })
@@ -54,7 +57,19 @@ const actions = {
         resolve(resp);
       })
       .catch(err => {
-        commit(TASKS_LOAD_CATEGORY_LIST_ERROR, err);
+        reject(err);
+      })
+    })
+  },
+
+  [TASKS_UPDATE_TASK]: ({commit, dispatch}, data) => {
+    return new Promise((resolve, reject) => {
+      apiCall.put(`/api/tasks/update/${data.id}/`, data)
+      .then(resp => {
+        commit(TASKS_UPDATE_TASK_SUCCESS, data);
+        resolve(resp);
+      })
+      .catch(err => {
         reject(err);
       })
     })
@@ -66,23 +81,17 @@ const mutations = {
   [TASKS_LOAD_TASK_LIST_SUCCESS]: (state, resp) => {
     state.tasksList = resp.data;
   },
-  [TASKS_LOAD_TASK_LIST_ERROR]: (state, err) => {
-    state.tasksList = err;
-  },
   [TASKS_LOAD_CATEGORY_LIST_SUCCESS]: (state, resp) => {
     state.tasksCategoryList = resp.data;
-  },
-  [TASKS_LOAD_CATEGORY_LIST_ERROR]: (state, err) => {
-    state.tasksCategoryListError = err;
   },
   [TASKS_ADD_TASK]: (state) => {
     state.tasksAddTask = !state.tasksAddTask;
   },
   [TASKS_CHANGE_UPDATE_TASK_STATE]: (state, taskToUpdate) => {
-    state.tasksUpdateTaskStatus = !state.tasksUpdateTaskStatus;
+  // TODO: first of below to delete
     state.taskToUpdate = taskToUpdate;
   },
-  [TASKS_UPDATE_TASK]: (state, payload) => {
+  [TASKS_UPDATE_TASK_SUCCESS]: (state, payload) => {
     const index = state.tasksList.findIndex(block => block.id === payload.id)
 //    console.log('BEFORE: ', state.tasksList[index].title);
 //    console.log('BEFORE: ', state.tasksList[index].status);
