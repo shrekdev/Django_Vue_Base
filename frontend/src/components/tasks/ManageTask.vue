@@ -1,5 +1,5 @@
 <template>
-  <section v-if="getTaskToUpdate.id != -1">
+  <section>
 
     <v-alert v-model="alertSuccess" type="success" dismissible>
       Task added! :)
@@ -23,13 +23,16 @@
       label="Priority" chips persistent-hint >
     </v-select>
 
-    <v-btn small>Cancel</v-btn>
-    <v-btn small color="success" @click="updateTask(getTaskToUpdate.id)">Save</v-btn>
+    <v-btn small @click="clearTaskFields()">Cancel</v-btn>
+    <v-btn small v-if="getTaskToUpdate.id == -1" color="success" @click="addTask()">
+      Add
+    </v-btn>
+    <v-btn small v-else color="success" @click="updateTask(getTaskToUpdate.id)">
+      Update
+    </v-btn>
   </section>
 
-  <section v-else>
-    empty
-  </section>
+
 
 </template>
 
@@ -40,7 +43,7 @@
   import { TASKS_STATUS_LIST, TASKS_PRIORITY_LIST } from './literals';
 
   export default {
-    name: 'UpdateTask',
+    name: 'ManageTask',
     data() {
       return {
         alertSuccess: false,
@@ -55,6 +58,17 @@
       }
     },
     methods: {
+      clearTaskFields() {
+        this.alertSuccess = false;
+        this.alertError = false;
+        this.taskTitle = '';
+        this.categoryListSelected = [];
+        this.statusListSelected = '';
+        this.priorityListSelected = '';
+      },
+      addTask() {
+        console.log('add');
+      },
       updateTask(taskId) {
         const payload = {
           id: taskId,

@@ -13,8 +13,11 @@
     <v-divider></v-divider>
 
     <v-container fluid ma-0 pa-1>
+
+      <TasksBulkAction />
+
       <v-card color="">
-        <UpdateTask :key="getTaskToUpdate.id"/>
+        <ManageTask :key="getTaskToUpdate.id"/>
       </v-card>
     </v-container>
 
@@ -28,7 +31,8 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import UpdateTask from '../../tasks/UpdateTask.vue';
+  import ManageTask from '../../tasks/ManageTask.vue';
+  import TasksBulkAction from '../../tasks/TasksBulkAction.vue';
 
   export default {
     name: 'NavDrawerRight',
@@ -36,7 +40,8 @@
       ...mapGetters(['getTaskToUpdate']),
     },
     components: {
-      UpdateTask,
+      ManageTask,
+      TasksBulkAction,
     }
   }
 </script>
