@@ -11,19 +11,18 @@
     </v-toolbar>
 
     <v-divider></v-divider>
-
     <v-container fluid ma-0 pa-1>
+      <v-card v-if="getTasksSelected.length > 0">
+        <TasksBulkAction :tasksChecked="getTasksSelected" />
+      </v-card>
 
-      <TasksBulkAction />
-
-      <v-card color="">
+      <v-card>
         <ManageTask :key="getTaskToUpdate.id"/>
       </v-card>
     </v-container>
 
     <v-container fluid ma-0 pa-1>
-      <v-card color="secondary">
-      </v-card>
+      <v-card></v-card>
     </v-container>
   </v-navigation-drawer>
 </template>
@@ -37,7 +36,7 @@
   export default {
     name: 'NavDrawerRight',
     computed: {
-      ...mapGetters(['getTaskToUpdate']),
+      ...mapGetters(['getTaskToUpdate', 'getTasksSelected']),
     },
     components: {
       ManageTask,

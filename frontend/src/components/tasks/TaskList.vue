@@ -9,7 +9,7 @@
           <section slot-scope="{ hover }">
             <v-list-tile :key="item.id" ripple @click="updateTask(item)">
               <v-list-tile>
-                <v-checkbox v-model="selectedTasksArray" :value="item.id"></v-checkbox>
+                <v-checkbox v-model="selectedTasks" :value="item.id" @change="tasksSelectedChange(item.id)"></v-checkbox>
               </v-list-tile>
               <v-list-tile-content>
                 <v-list-tile-title>
@@ -58,14 +58,14 @@
 <script>
   import { mapGetters } from 'vuex';
   import { TASKS_LOAD_TASK_LIST } from '@/store/actions/tasks';
-  import { TASKS_CHANGE_UPDATE_TASK_STATE } from '@/store/actions/tasks';
+  import { TASKS_CHANGE_UPDATE_TASK_STATE, TASKS_SELECTED_UPDATE } from '@/store/actions/tasks';
   import AddTask from './AddTask.vue';
 
   export default {
     name: 'TaskList',
     data () {
       return {
-        selectedTasksArray: [],
+        selectedTasks: [],
       }
     },
     created() {
@@ -77,8 +77,10 @@
     },
     methods: {
       updateTask(task) {
-        console.log('title: ', task.title);
         this.$store.commit(TASKS_CHANGE_UPDATE_TASK_STATE, task);
+      },
+      tasksSelectedChange(id) {
+        this.$store.commit(TASKS_SELECTED_UPDATE, this.selectedTasks);
       }
     },
     computed: {
@@ -86,7 +88,7 @@
     },
     components: {
       AddTask,
-    }
+    },
   }
 </script>
 

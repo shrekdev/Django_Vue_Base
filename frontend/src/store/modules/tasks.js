@@ -7,7 +7,11 @@ import {
   TASKS_UPDATE_TASK,
   TASKS_UPDATE_TASK_SUCCESS,
   TASKS_CHANGE_UPDATE_TASK_STATE,
+  TASKS_SELECTED_UPDATE,
+  TASKS_REMOVE_SELECTED,
+  TASKS_MARK_COMPLETE_SELECTED,
 } from '../actions/tasks.js';
+
 import apiCall from '../../utils/api';
 import Vue from 'vue';
 
@@ -24,6 +28,7 @@ const state = {
     status: '',
     priority: '',
   },
+  tasksChecked: [],
 }
 
 
@@ -32,6 +37,7 @@ const getters = {
   getTasksCategoryList: state => state.tasksCategoryList,
   getTasksAddTaskStatus: state => state.tasksAddTask,
   getTaskToUpdate: state => state.taskToUpdate,
+  getTasksSelected: state => state.tasksChecked,
 }
 
 
@@ -88,24 +94,34 @@ const mutations = {
     state.tasksAddTask = !state.tasksAddTask;
   },
   [TASKS_CHANGE_UPDATE_TASK_STATE]: (state, taskToUpdate) => {
-  // TODO: first of below to delete
     state.taskToUpdate = taskToUpdate;
   },
   [TASKS_UPDATE_TASK_SUCCESS]: (state, payload) => {
     const index = state.tasksList.findIndex(block => block.id === payload.id)
-//    console.log('BEFORE: ', state.tasksList[index].title);
-//    console.log('BEFORE: ', state.tasksList[index].status);
-//    console.log('BEFORE: ', state.tasksList[index].category);
-//    console.log('BEFORE: ', state.tasksList[index].priority);
     Vue.set(state.tasksList[index], 'title', payload.title)
     Vue.set(state.tasksList[index], 'status', payload.status)
     Vue.set(state.tasksList[index], 'category', payload.category)
     Vue.set(state.tasksList[index], 'priority', payload.priority)
-//    console.log('AFTER: ', state.tasksList[index].title);
-//    console.log('AFTER: ', state.tasksList[index].status);
-//    console.log('AFTER: ', state.tasksList[index].category);
-//    console.log('AFTER: ', state.tasksList[index].priority);
   },
+  [TASKS_SELECTED_UPDATE]: (state, updatedArray) => {
+    state.tasksChecked = updatedArray;
+  },
+  [TASKS_REMOVE_SELECTED]: (state, toRemove) => {
+    for (let i = toRemove.length - 1; i >= 0; i--) {
+      let r = toRemove[i];
+      const index = state.tasksList.findIndex(block => block.id === r);
+      state.tasksList.splice(index, 1);
+    }
+  },
+  [TASKS_MARK_COMPLETE_SELECTED]: (state, toComplete) => {
+    for (let i = toComplete.length - 1; i >= 0; i--) {
+      let r = toComplete[i];
+      const index = state.tasksList.findIndex(block => block.id === r);
+      Vue.set(state.tasksList[index], 'id', index);
+      Vue.set(state.tasksList[index], 'completed', true);
+      Vue.set(state.tasksList[index], 'status', '5');
+    }
+  }
 }
 
 

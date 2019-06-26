@@ -116,7 +116,6 @@
         return this.getTaskToUpdate.priority;
       },
       taskText: function title() {
-        console.log('computing title...')
         return this.getTaskToUpdate.title;
       },
       createdBy: function created() {

@@ -1,7 +1,7 @@
 <template>
   <section>
-    <v-btn fab small @click="markAsCompleted()"><v-icon>done</v-icon></v-btn>
-    <v-btn fab small @click="deleteTasks()"><v-icon>delete</v-icon></v-btn>
+    <v-btn fab small @click="markAsCompleted(tasksChecked)"><v-icon>done</v-icon></v-btn>
+    <v-btn fab small @click="deleteTasks(tasksChecked)"><v-icon>delete</v-icon></v-btn>
     <v-divider class="mx-3" vertical></v-divider>
     <v-divider></v-divider>
     <br>
@@ -11,20 +11,21 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import { TASKS_LOAD_CATEGORY_LIST, TASKS_UPDATE_TASK } from '@/store/actions/tasks';
+  import { TASKS_LOAD_CATEGORY_LIST, TASKS_UPDATE_TASK, TASKS_REMOVE_SELECTED, TASKS_MARK_COMPLETE_SELECTED } from '@/store/actions/tasks';
 
   export default {
     name: 'TasksBulkAction',
+    props: ['tasksChecked'],
     data() {
       return {
       }
     },
     methods: {
-      markAsCompleted() {
-        console.log('markAsCompleted');
+      markAsCompleted(tasks) {
+        this.$store.commit(TASKS_MARK_COMPLETE_SELECTED, tasks);
       },
-      deleteTasks() {
-        console.log('deleteTasks');
+      deleteTasks(tasks) {
+        this.$store.commit(TASKS_REMOVE_SELECTED, tasks);
       },
     },
     created() {
