@@ -5,9 +5,9 @@
         <v-hover>
           <section slot-scope="{ hover }">
             <v-list-tile :key="item.id" ripple @click="updateTask(item)">
-
+<!--
               <v-chip small style="width: auto;">{{ getStatusNameByValue(item.status)[0] }}</v-chip>
-
+-->
               <v-list-tile-content>
                 <v-list-tile-title>
                   {{ item.title }}

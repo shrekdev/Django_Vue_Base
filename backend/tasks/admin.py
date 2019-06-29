@@ -2,6 +2,12 @@ from django.contrib import admin
 from . import models
 
 
+@admin.register(models.TaskStatus)
+class TaskStatusAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'color',)
+    fields = ['name', 'color']
+
+
 @admin.register(models.TaskCategory)
 class TaskCategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'color',)

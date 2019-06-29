@@ -1,6 +1,6 @@
 <template>
   <section>
-
+{{getTaskToUpdate}}
     <v-alert v-model="alertSuccess" type="success" dismissible>
       Task added! :)
     </v-alert>
@@ -11,7 +11,7 @@
 
     <v-textarea dark solo v-model="taskTitle"></v-textarea>
 
-    <v-select solo v-model="statusListSelected" :items="statusList"
+    <v-select solo v-model="statusListSelected" item-text="name" item-value="id" :items="statusList"
       label="Status" chips persistent-hint >
     </v-select>
 

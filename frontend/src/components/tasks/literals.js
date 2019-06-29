@@ -1,9 +1,5 @@
 export const TASKS_STATUS_LIST = [
-  {'value': '1', 'text': 'New'},
-  {'value': '2', 'text': 'In Progress'},
-  {'value': '3', 'text': 'Suspended'},
-  {'value': '4', 'text': 'Cancelled'},
-  {'value': '5', 'text': 'Completed'},
+  {'id': 1, 'name': 'New'},
 ]
 
 export const TASKS_PRIORITY_LIST = [

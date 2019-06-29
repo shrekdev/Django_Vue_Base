@@ -50,6 +50,33 @@ class TaskCategory(models.Model):
         return self.name
 
 
+class TaskStatus(models.Model):
+    """
+    Model representing a single status for Task model
+    """
+
+    name = models.CharField(
+        verbose_name='status name',
+        help_text='status name (up to 30 characters)',
+        max_length=30,
+        unique=True,
+    )
+
+    color = models.CharField(
+        verbose_name='color',
+        help_text='Color of Task Status (HEX)',
+        default='#0000FF',
+        max_length=7,
+    )
+
+    class Meta:
+        verbose_name = 'Task Status'
+        verbose_name_plural = 'Task Status'
+
+    def __str__(self):
+        return self.name
+
+
 class BaseTask(BaseTaskFieldsMixin):
     """
     Model representing a single BaseTask with optional SubTasks
@@ -100,12 +127,19 @@ class BaseTask(BaseTaskFieldsMixin):
         default='1',
     )
 
-    status = models.CharField(
+    # status = models.CharField(
+    #     verbose_name='task status',
+    #     help_text='Current task status',
+    #     max_length=1,
+    #     choices=TASK_STATUSES,
+    #     default='1',
+    # )
+
+    status = models.ForeignKey(
+        to=TaskStatus,
         verbose_name='task status',
         help_text='Current task status',
-        max_length=1,
-        choices=TASK_STATUSES,
-        default='1',
+        on_delete=models.CASCADE,
     )
 
     category = models.ManyToManyField(
