@@ -10,4 +10,5 @@ urlpatterns = [
     # TODO: change to sub/list/
     path('sub_task_list/', views.SubTaskList.as_view()),
     path('update/<pk>/', views.BaseTaskUpdate.as_view()),
+    path('delete/<pk>/', views.BaseTaskDelete.as_view()),
 ]

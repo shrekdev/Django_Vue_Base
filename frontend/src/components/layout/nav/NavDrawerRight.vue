@@ -12,10 +12,6 @@
 
     <v-divider></v-divider>
     <v-container fluid ma-0 pa-1>
-      <v-card v-if="getTasksSelected.length > 0">
-        <TasksBulkAction :tasksChecked="getTasksSelected" />
-      </v-card>
-
       <v-card>
         <ManageTask :key="getTaskToUpdate.id"/>
       </v-card>
@@ -36,7 +32,7 @@
   export default {
     name: 'NavDrawerRight',
     computed: {
-      ...mapGetters(['getTaskToUpdate', 'getTasksSelected']),
+      ...mapGetters(['getTaskToUpdate']),
     },
     components: {
       ManageTask,

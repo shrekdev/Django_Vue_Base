@@ -7,13 +7,28 @@ import {
   TASKS_UPDATE_TASK,
   TASKS_UPDATE_TASK_SUCCESS,
   TASKS_CHANGE_UPDATE_TASK_STATE,
-  TASKS_SELECTED_UPDATE,
   TASKS_REMOVE_SELECTED,
   TASKS_MARK_COMPLETE_SELECTED,
+  COMPLETE_SINGLE_TASK,
+  COMPLETE_SINGLE_TASK_SUCCESS,
+  DELETE_SINGLE_TASK,
+  DELETE_SINGLE_TASK_SUCCESS,
 } from '../actions/tasks.js';
 
 import apiCall from '../../utils/api';
 import Vue from 'vue';
+
+
+function helper_CleanUpdateTaskStates() {
+//  state.tasksSelected = [];
+  state.taskToUpdate = {
+    id: -1,
+    title: '',
+    category: [],
+    status: '',
+    priority: '',
+  }
+}
 
 
 const state = {
@@ -28,7 +43,6 @@ const state = {
     status: '',
     priority: '',
   },
-  tasksChecked: [],
 }
 
 
@@ -37,7 +51,6 @@ const getters = {
   getTasksCategoryList: state => state.tasksCategoryList,
   getTasksAddTaskStatus: state => state.tasksAddTask,
   getTaskToUpdate: state => state.taskToUpdate,
-  getTasksSelected: state => state.tasksChecked,
 }
 
 
@@ -68,11 +81,11 @@ const actions = {
     })
   },
 
-  [TASKS_UPDATE_TASK]: ({commit, dispatch}, data) => {
+  [DELETE_SINGLE_TASK]: ({commit, dispatch}, taskId) => {
     return new Promise((resolve, reject) => {
-      apiCall.put(`/api/tasks/update/${data.id}/`, data)
+      apiCall.delete(`/api/tasks/delete/${taskId}/`)
       .then(resp => {
-        commit(TASKS_UPDATE_TASK_SUCCESS, data);
+        commit(DELETE_SINGLE_TASK_SUCCESS, taskId);
         resolve(resp);
       })
       .catch(err => {
@@ -80,6 +93,20 @@ const actions = {
       })
     })
   },
+
+  [COMPLETE_SINGLE_TASK]: ({commit, dispatch}, task) => {
+    return new Promise((resolve, reject) => {
+      apiCall.put(`/api/tasks/update/${task.id}/`, task)
+      .then(resp => {
+        commit(COMPLETE_SINGLE_TASK_SUCCESS, task);
+        resolve(resp);
+      })
+      .catch(err => {
+        reject(err);
+      })
+    })
+  },
+
 }
 
 
@@ -103,15 +130,13 @@ const mutations = {
     Vue.set(state.tasksList[index], 'category', payload.category)
     Vue.set(state.tasksList[index], 'priority', payload.priority)
   },
-  [TASKS_SELECTED_UPDATE]: (state, updatedArray) => {
-    state.tasksChecked = updatedArray;
-  },
   [TASKS_REMOVE_SELECTED]: (state, toRemove) => {
     for (let i = toRemove.length - 1; i >= 0; i--) {
       let r = toRemove[i];
       const index = state.tasksList.findIndex(block => block.id === r);
       state.tasksList.splice(index, 1);
     }
+    helper_CleanUpdateTaskStates();
   },
   [TASKS_MARK_COMPLETE_SELECTED]: (state, toComplete) => {
     for (let i = toComplete.length - 1; i >= 0; i--) {
@@ -121,6 +146,19 @@ const mutations = {
       Vue.set(state.tasksList[index], 'completed', true);
       Vue.set(state.tasksList[index], 'status', '5');
     }
+    helper_CleanUpdateTaskStates();
+  },
+
+  [DELETE_SINGLE_TASK_SUCCESS]: (state, taskId) => {
+    const index = state.tasksList.findIndex(block => block.id === taskId);
+    state.tasksList.splice(index, 1);
+    helper_CleanUpdateTaskStates();
+  },
+  [COMPLETE_SINGLE_TASK_SUCCESS]: (state, task) => {
+    const index = state.tasksList.findIndex(block => block.id === task.id);
+    Vue.set(state.tasksList[index], 'id', index);
+    Vue.set(state.tasksList[index], 'completed', true);
+    Vue.set(state.tasksList[index], 'status', '5');
   }
 }
 

@@ -27,3 +27,9 @@ class BaseTaskUpdate(generics.UpdateAPIView):
     queryset = models.BaseTask.objects.all()
     serializer_class = serializers.BaseTaskUpdateSerializer
     permission_classes = (AllowAny,)
+
+
+class BaseTaskDelete(generics.DestroyAPIView):
+    queryset = models.BaseTask.objects.all()
+    serializer_class = serializers.BaseTaskSerializer
+    permission_classes = (AllowAny,)
