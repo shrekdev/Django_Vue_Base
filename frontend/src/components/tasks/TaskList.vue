@@ -1,20 +1,10 @@
 <template>
 <section>
-  <div v-if="getTasksAddTaskStatus">
-    <AddTask />
-  </div>
     <v-list>
       <template v-for="item in getTasksList">
         <v-hover>
           <section slot-scope="{ hover }">
             <v-list-tile :key="item.id" ripple @click="updateTask(item)">
-              <!--
-              <v-list-tile>
-                <v-checkbox v-model="selectedTasks" :value="item.id" @change="tasksSelectedChange(item.id)"></v-checkbox>
-              </v-list-tile>
-              -->
-
-
 
               <v-chip small style="width: auto;">{{ getStatusNameByValue(item.status)[0] }}</v-chip>
 
@@ -74,7 +64,6 @@
     COMPLETE_SINGLE_TASK,
     DELETE_SINGLE_TASK,
   } from '@/store/actions/tasks';
-  import AddTask from './AddTask.vue';
 
   export default {
     name: 'TaskList',
@@ -102,24 +91,12 @@
       }
     },
     computed: {
-      ...mapGetters(['getTasksList', 'getTasksAddTaskStatus']),
+      ...mapGetters(['getTasksList']),
     },
     components: {
-      AddTask,
     },
   }
 </script>
 
 
-<style scoped>
-.v-sub-chip {
-  margin-left: 60px;
-  width: 80% !important;
-}
-.v-chip {
-  width: 98%;
-}
-.v-cursor-default {
-  cursor: default;
-}
-</style>
+<style scoped></style>

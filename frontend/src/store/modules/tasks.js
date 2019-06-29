@@ -3,12 +3,10 @@ import {
   TASKS_LOAD_TASK_LIST_SUCCESS,
   TASKS_LOAD_CATEGORY_LIST,
   TASKS_LOAD_CATEGORY_LIST_SUCCESS,
-  TASKS_ADD_TASK,
+//  TASKS_ADD_TASK,
   TASKS_UPDATE_TASK,
   TASKS_UPDATE_TASK_SUCCESS,
   TASKS_CHANGE_UPDATE_TASK_STATE,
-  TASKS_REMOVE_SELECTED,
-  TASKS_MARK_COMPLETE_SELECTED,
   COMPLETE_SINGLE_TASK,
   COMPLETE_SINGLE_TASK_SUCCESS,
   DELETE_SINGLE_TASK,
@@ -34,7 +32,7 @@ function helper_CleanUpdateTaskStates() {
 const state = {
   tasksList: {},
   tasksCategoryList: {},
-  tasksAddTask: false,
+//  tasksAddTask: false,
   // just to supply initial data to UpdateTask component
   taskToUpdate: {
     id: -1,
@@ -49,7 +47,6 @@ const state = {
 const getters = {
   getTasksList: state => state.tasksList,
   getTasksCategoryList: state => state.tasksCategoryList,
-  getTasksAddTaskStatus: state => state.tasksAddTask,
   getTaskToUpdate: state => state.taskToUpdate,
 }
 
@@ -117,9 +114,6 @@ const mutations = {
   [TASKS_LOAD_CATEGORY_LIST_SUCCESS]: (state, resp) => {
     state.tasksCategoryList = resp.data;
   },
-  [TASKS_ADD_TASK]: (state) => {
-    state.tasksAddTask = !state.tasksAddTask;
-  },
   [TASKS_CHANGE_UPDATE_TASK_STATE]: (state, taskToUpdate) => {
     state.taskToUpdate = taskToUpdate;
   },
@@ -130,25 +124,6 @@ const mutations = {
     Vue.set(state.tasksList[index], 'category', payload.category)
     Vue.set(state.tasksList[index], 'priority', payload.priority)
   },
-  [TASKS_REMOVE_SELECTED]: (state, toRemove) => {
-    for (let i = toRemove.length - 1; i >= 0; i--) {
-      let r = toRemove[i];
-      const index = state.tasksList.findIndex(block => block.id === r);
-      state.tasksList.splice(index, 1);
-    }
-    helper_CleanUpdateTaskStates();
-  },
-  [TASKS_MARK_COMPLETE_SELECTED]: (state, toComplete) => {
-    for (let i = toComplete.length - 1; i >= 0; i--) {
-      let r = toComplete[i];
-      const index = state.tasksList.findIndex(block => block.id === r);
-      Vue.set(state.tasksList[index], 'id', index);
-      Vue.set(state.tasksList[index], 'completed', true);
-      Vue.set(state.tasksList[index], 'status', '5');
-    }
-    helper_CleanUpdateTaskStates();
-  },
-
   [DELETE_SINGLE_TASK_SUCCESS]: (state, taskId) => {
     const index = state.tasksList.findIndex(block => block.id === taskId);
     state.tasksList.splice(index, 1);
@@ -160,6 +135,26 @@ const mutations = {
     Vue.set(state.tasksList[index], 'completed', true);
     Vue.set(state.tasksList[index], 'status', '5');
   }
+
+
+//  [TASKS_REMOVE_SELECTED]: (state, toRemove) => {
+//    for (let i = toRemove.length - 1; i >= 0; i--) {
+//      let r = toRemove[i];
+//      const index = state.tasksList.findIndex(block => block.id === r);
+//      state.tasksList.splice(index, 1);
+//    }
+//    helper_CleanUpdateTaskStates();
+//  },
+//  [TASKS_MARK_COMPLETE_SELECTED]: (state, toComplete) => {
+//    for (let i = toComplete.length - 1; i >= 0; i--) {
+//      let r = toComplete[i];
+//      const index = state.tasksList.findIndex(block => block.id === r);
+//      Vue.set(state.tasksList[index], 'id', index);
+//      Vue.set(state.tasksList[index], 'completed', true);
+//      Vue.set(state.tasksList[index], 'status', '5');
+//    }
+//    helper_CleanUpdateTaskStates();
+//  },
 }
 
 

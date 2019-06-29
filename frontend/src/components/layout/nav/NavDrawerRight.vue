@@ -27,7 +27,6 @@
 <script>
   import { mapGetters } from 'vuex';
   import ManageTask from '../../tasks/ManageTask.vue';
-  import TasksBulkAction from '../../tasks/TasksBulkAction.vue';
 
   export default {
     name: 'NavDrawerRight',
@@ -36,7 +35,6 @@
     },
     components: {
       ManageTask,
-      TasksBulkAction,
     }
   }
 </script>
