@@ -11,6 +11,12 @@ class TaskCategoryList(generics.ListAPIView):
     permission_classes = (AllowAny,)
 
 
+class TaskStatusList(generics.ListAPIView):
+    queryset = models.TaskStatus.objects.all()
+    serializer_class = serializers.TaskStatusSerializer
+    permission_classes = (AllowAny,)
+
+
 class BaseTaskList(generics.ListAPIView):
     queryset = models.BaseTask.objects.all()
     serializer_class = serializers.BaseTaskSerializer
@@ -27,6 +33,14 @@ class BaseTaskUpdate(generics.UpdateAPIView):
     queryset = models.BaseTask.objects.all()
     serializer_class = serializers.BaseTaskUpdateSerializer
     permission_classes = (AllowAny,)
+
+
+class BaseTaskCompleted(generics.UpdateAPIView):
+    queryset = models.BaseTask.objects.all()
+    serializer_class = serializers.BaseTaskUpdateSerializer
+    permission_classes = (AllowAny,)
+
+
 
 
 class BaseTaskDelete(generics.DestroyAPIView):

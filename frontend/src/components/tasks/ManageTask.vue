@@ -1,6 +1,7 @@
 <template>
   <section>
-{{getTaskToUpdate}}
+  {{getTaskToUpdate}}
+
     <v-alert v-model="alertSuccess" type="success" dismissible>
       Task added! :)
     </v-alert>
@@ -31,16 +32,13 @@
       Update
     </v-btn>
   </section>
-
-
-
 </template>
 
 
 <script>
   import { mapGetters } from 'vuex';
-  import { TASKS_LOAD_CATEGORY_LIST, TASKS_UPDATE_TASK } from '@/store/actions/tasks';
-  import { TASKS_STATUS_LIST, TASKS_PRIORITY_LIST } from './literals';
+  import { TASKS_LOAD_CATEGORY_LIST, TASKS_UPDATE_TASK, TASKS_LOAD_STATUS_LIST } from '@/store/actions/tasks';
+  import { TASKS_PRIORITY_LIST } from './literals';
 
   export default {
     name: 'ManageTask',
@@ -51,9 +49,9 @@
         taskTitle: '',
         categoryListSelected: [],
         categoryList: [],
+        statusList: [],
         statusListSelected: '',
         priorityListSelected: '',
-        statusList: TASKS_STATUS_LIST,
         priorityList: TASKS_PRIORITY_LIST,
       }
     },
@@ -82,18 +80,24 @@
 
         // TODO: verify if anything has changed, prevent below request if not
 
-        this.$store.dispatch(TASKS_UPDATE_TASK, payload).then((response) => {
-          this.alertSuccess = true;
-          this.alertError = false;
-        }).catch(error => {
-          this.alertSuccess = false;
-          this.alertError = true;
-        });
+        console.log('payload.status -> ', payload.status)
+
+        this.$store.dispatch(TASKS_UPDATE_TASK, payload);
+//        this.$store.dispatch(TASKS_UPDATE_TASK, payload).then((response) => {
+//          this.alertSuccess = true;
+//          this.alertError = false;
+//        }).catch(error => {
+//          this.alertSuccess = false;
+//          this.alertError = true;
+//        });
       }
     },
     created() {
       this.$store.dispatch(TASKS_LOAD_CATEGORY_LIST).then((response) => {
         this.categoryList = response.data;
+      })
+      this.$store.dispatch(TASKS_LOAD_STATUS_LIST).then((response) => {
+        this.statusList = response.data;
       })
     },
     mounted() {
@@ -110,7 +114,7 @@
         return this.getTaskToUpdate.category;
       },
       statusId: function status() {
-        return this.getTaskToUpdate.status;
+        return this.getTaskToUpdate.status.id;
       },
       priorityId: function priority() {
         return this.getTaskToUpdate.priority;

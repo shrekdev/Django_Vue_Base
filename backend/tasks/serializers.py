@@ -8,6 +8,12 @@ class TaskCategorySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class TaskStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.TaskStatus
+        fields = "__all__"
+
+
 class SubTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.SubTask
@@ -16,8 +22,7 @@ class SubTaskSerializer(serializers.ModelSerializer):
 
 # TODO: merge with BaseTaskUpdateSerializer?
 class BaseTaskSerializer(serializers.ModelSerializer):
-    # sub_tasks = SubTaskSerializer(many=True, read_only=True)
-    # category = TaskCategorySerializer(many=True, read_only=True)
+    status = TaskStatusSerializer(read_only=True)
 
     class Meta:
         model = models.BaseTask

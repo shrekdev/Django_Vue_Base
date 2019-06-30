@@ -13,7 +13,7 @@
     <v-divider></v-divider>
     <v-container fluid ma-0 pa-1>
       <v-card>
-        <ManageTask :key="getTaskToUpdate.id"/>
+        <ManageTask :key="generateKeyId(getTaskToUpdate.updated)"/>
       </v-card>
     </v-container>
 
@@ -32,6 +32,13 @@
     name: 'NavDrawerRight',
     computed: {
       ...mapGetters(['getTaskToUpdate']),
+    },
+    methods: {
+      generateKeyId(value) {
+        let seconds = Math.floor(new Date(value).getTime() / 1000);
+        console.log('return = ', `id_${seconds}`)
+        return `id_${seconds}`
+      },
     },
     components: {
       ManageTask,

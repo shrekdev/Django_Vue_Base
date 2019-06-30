@@ -2,29 +2,26 @@
 <section>
     <v-list>
       <template v-for="item in getTasksList">
-        <v-hover>
-          <section slot-scope="{ hover }">
-            <v-list-tile :key="item.id" ripple @click="updateTask(item)">
-<!--
-              <v-chip small style="width: auto;">{{ getStatusNameByValue(item.status)[0] }}</v-chip>
--->
-              <v-list-tile-content>
-                <v-list-tile-title>
-                  {{ item.title }}
-                </v-list-tile-title>
-              </v-list-tile-content>
-              <v-list-tile-action v-if="hover">
-                <v-btn icon @click="completeSingleTask(item)">
-                  <v-icon color="primary">done</v-icon>
-                </v-btn>
-                <v-btn icon @click="deleteSingleTask(item.id)">
-                  <v-icon color="primary">delete</v-icon>
-                </v-btn>
-              </v-list-tile-action>
-            </v-list-tile>
-            <v-divider></v-divider>
-          </section>
-        </v-hover>
+        <v-list-tile :key="item.id" @click="updateTask(item)" @mouseover="hover = true" @mouseleave="hover = false">
+          <v-chip small :color="item.status.color" style="width: auto;">{{ item.status.name[0] }}</v-chip>
+          <v-list-tile-content>
+            <v-list-tile-title>
+              {{ item.title }}
+            </v-list-tile-title>
+          </v-list-tile-content>
+          <v-list-tile-action v-if="hover">
+            <v-btn icon @click.stop="completeSingleTask(item.id)">
+              <v-icon color="primary">done</v-icon>
+            </v-btn>
+            <v-btn icon @click.stop="deleteSingleTask(item.id)">
+              <v-icon color="primary">delete</v-icon>
+            </v-btn>
+          </v-list-tile-action>
+        </v-list-tile>
+        <v-divider></v-divider>
+
+
+
 <!--
         <div v-if="item.sub_tasks.length > 0">
         <template v-for="sub_task in item.sub_tasks">
@@ -67,28 +64,26 @@
 
   export default {
     name: 'TaskList',
+    data() {
+      return {
+        hover: false,
+      }
+    },
     created() {
-      this.$store.dispatch(TASKS_LOAD_TASK_LIST).then(() => {
-        console.log('fetched');
-      }).catch(reason => {
-        console.log('error: ', reason);
-      })
+      this.$store.dispatch(TASKS_LOAD_TASK_LIST);
     },
     methods: {
       updateTask(task) {
+        console.log('UPDATE TASK')
         this.$store.commit(TASKS_CHANGE_UPDATE_TASK_STATE, task);
       },
-      completeSingleTask(task) {
-        task.completed = true;
-        task.status = '5';
-        this.$store.dispatch(COMPLETE_SINGLE_TASK, task);
+      completeSingleTask(taskId) {
+        console.log('COMPLETED TASK')
+        this.$store.dispatch(COMPLETE_SINGLE_TASK, taskId);
       },
       deleteSingleTask(taskId) {
         this.$store.dispatch(DELETE_SINGLE_TASK, taskId);
       },
-      getStatusNameByValue(value) {
-        return TASKS_STATUS_LIST.find(x => x.value === value).text;
-      }
     },
     computed: {
       ...mapGetters(['getTasksList']),

@@ -1,7 +1,3 @@
-export const TASKS_STATUS_LIST = [
-  {'id': 1, 'name': 'New'},
-]
-
 export const TASKS_PRIORITY_LIST = [
   {'value': '1', 'text': 'Urgent and important'},
   {'value': '2', 'text': 'Important and not urgent'},

@@ -3,6 +3,8 @@ import {
   TASKS_LOAD_TASK_LIST_SUCCESS,
   TASKS_LOAD_CATEGORY_LIST,
   TASKS_LOAD_CATEGORY_LIST_SUCCESS,
+  TASKS_LOAD_STATUS_LIST,
+  TASKS_LOAD_STATUS_LIST_SUCCESS,
 //  TASKS_ADD_TASK,
   TASKS_UPDATE_TASK,
   TASKS_UPDATE_TASK_SUCCESS,
@@ -23,7 +25,7 @@ function helper_CleanUpdateTaskStates() {
     id: -1,
     title: '',
     category: [],
-    status: '',
+    status: [],
     priority: '',
   }
 }
@@ -32,6 +34,7 @@ function helper_CleanUpdateTaskStates() {
 const state = {
   tasksList: {},
   tasksCategoryList: {},
+  tasksStatusList: {},
 //  tasksAddTask: false,
   // just to supply initial data to UpdateTask component
   taskToUpdate: {
@@ -47,12 +50,14 @@ const state = {
 const getters = {
   getTasksList: state => state.tasksList,
   getTasksCategoryList: state => state.tasksCategoryList,
+  getTasksStatusList: state => state.tasksStatusList,
   getTaskToUpdate: state => state.taskToUpdate,
 }
 
 
 const actions = {
   [TASKS_LOAD_TASK_LIST]: ({commit, dispatch}) => {
+    console.log('TASKS_LOAD_TASK_LIST')
     return new Promise((resolve, reject) => {
       apiCall.get('/api/tasks/task_list/')
       .then(resp => {
@@ -78,6 +83,34 @@ const actions = {
     })
   },
 
+  [TASKS_LOAD_STATUS_LIST]: ({commit, dispatch}) => {
+    return new Promise((resolve, reject) => {
+      apiCall.get('/api/tasks/status/list/')
+      .then(resp => {
+        commit(TASKS_LOAD_STATUS_LIST_SUCCESS, resp);
+        resolve(resp);
+      })
+      .catch(err => {
+        reject(err);
+      })
+    })
+  },
+
+  [TASKS_UPDATE_TASK]: ({commit, dispatch}, data) => {
+    console.log('data: ', data.status)
+    return new Promise((resolve, reject) => {
+      apiCall.put(`/api/tasks/update/${data.id}/`, data)
+      .then(resp => {
+//        commit(TASKS_UPDATE_TASK_SUCCESS, data);
+        dispatch(TASKS_LOAD_TASK_LIST);
+        resolve(resp);
+      })
+      .catch(err => {
+        reject(err);
+      })
+    })
+  },
+
   [DELETE_SINGLE_TASK]: ({commit, dispatch}, taskId) => {
     return new Promise((resolve, reject) => {
       apiCall.delete(`/api/tasks/delete/${taskId}/`)
@@ -91,11 +124,12 @@ const actions = {
     })
   },
 
-  [COMPLETE_SINGLE_TASK]: ({commit, dispatch}, task) => {
+  [COMPLETE_SINGLE_TASK]: ({commit, dispatch}, taskId) => {
     return new Promise((resolve, reject) => {
-      apiCall.put(`/api/tasks/update/${task.id}/`, task)
+      apiCall.patch(`/api/tasks/update/${taskId}/`, {status: 2})
       .then(resp => {
-        commit(COMPLETE_SINGLE_TASK_SUCCESS, task);
+        dispatch(TASKS_LOAD_TASK_LIST);
+        commit(COMPLETE_SINGLE_TASK_SUCCESS, taskId);
         resolve(resp);
       })
       .catch(err => {
@@ -103,7 +137,6 @@ const actions = {
       })
     })
   },
-
 }
 
 
@@ -114,47 +147,40 @@ const mutations = {
   [TASKS_LOAD_CATEGORY_LIST_SUCCESS]: (state, resp) => {
     state.tasksCategoryList = resp.data;
   },
+  [TASKS_LOAD_STATUS_LIST_SUCCESS]: (state, resp) => {
+    state.tasksStatusList = resp.data;
+  },
   [TASKS_CHANGE_UPDATE_TASK_STATE]: (state, taskToUpdate) => {
     state.taskToUpdate = taskToUpdate;
   },
   [TASKS_UPDATE_TASK_SUCCESS]: (state, payload) => {
+    console.log('payload: ', payload.status)
     const index = state.tasksList.findIndex(block => block.id === payload.id)
     Vue.set(state.tasksList[index], 'title', payload.title)
     Vue.set(state.tasksList[index], 'status', payload.status)
     Vue.set(state.tasksList[index], 'category', payload.category)
     Vue.set(state.tasksList[index], 'priority', payload.priority)
+    console.log('new status: ', state.tasksList[index].status);
   },
   [DELETE_SINGLE_TASK_SUCCESS]: (state, taskId) => {
     const index = state.tasksList.findIndex(block => block.id === taskId);
     state.tasksList.splice(index, 1);
     helper_CleanUpdateTaskStates();
   },
-  [COMPLETE_SINGLE_TASK_SUCCESS]: (state, task) => {
-    const index = state.tasksList.findIndex(block => block.id === task.id);
-    Vue.set(state.tasksList[index], 'id', index);
-    Vue.set(state.tasksList[index], 'completed', true);
-    Vue.set(state.tasksList[index], 'status', '5');
-  }
+  [COMPLETE_SINGLE_TASK_SUCCESS]: (state, taskId) => {
+//    const index = state.tasksList.findIndex(block => block.id === taskId);
+//    console.log('old status: ', state.taskToUpdate.status)
+//    console.log('new status: ', state.tasksList[index].status)
+//    state.taskToUpdate = state.tasksList[index];
 
+//    console.log('updated: ', state.tasksList[index].updated)
+////    let updated_datetime = new Date(state.tasksList[index].updated)
+//    let seconds = Math.floor(new Date(state.tasksList[index].updated).getTime() / 1000);
+//    console.log('seconds = ', `id_${seconds}`)
 
-//  [TASKS_REMOVE_SELECTED]: (state, toRemove) => {
-//    for (let i = toRemove.length - 1; i >= 0; i--) {
-//      let r = toRemove[i];
-//      const index = state.tasksList.findIndex(block => block.id === r);
-//      state.tasksList.splice(index, 1);
-//    }
-//    helper_CleanUpdateTaskStates();
-//  },
-//  [TASKS_MARK_COMPLETE_SELECTED]: (state, toComplete) => {
-//    for (let i = toComplete.length - 1; i >= 0; i--) {
-//      let r = toComplete[i];
-//      const index = state.tasksList.findIndex(block => block.id === r);
-//      Vue.set(state.tasksList[index], 'id', index);
-//      Vue.set(state.tasksList[index], 'completed', true);
-//      Vue.set(state.tasksList[index], 'status', '5');
-//    }
-//    helper_CleanUpdateTaskStates();
-//  },
+//    Vue.set(state.tasksList[index], 'completed', true);
+//    Vue.set(state.tasksList[index], 'priority', '1');
+  },
 }
 
 
