@@ -37,7 +37,7 @@ class BaseTaskUpdate(generics.UpdateAPIView):
 
 class BaseTaskCompleted(generics.UpdateAPIView):
     queryset = models.BaseTask.objects.all()
-    serializer_class = serializers.BaseTaskUpdateSerializer
+    serializer_class = serializers.BaseTaskSerializer
     permission_classes = (AllowAny,)
 
 

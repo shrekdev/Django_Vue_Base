@@ -22,7 +22,7 @@ class SubTaskSerializer(serializers.ModelSerializer):
 
 # TODO: merge with BaseTaskUpdateSerializer?
 class BaseTaskSerializer(serializers.ModelSerializer):
-    status = TaskStatusSerializer(read_only=True)
+    # status = TaskStatusSerializer(read_only=True)
 
     class Meta:
         model = models.BaseTask
@@ -30,6 +30,8 @@ class BaseTaskSerializer(serializers.ModelSerializer):
 
 
 class BaseTaskUpdateSerializer(serializers.ModelSerializer):
+    # status = TaskStatusSerializer(read_only=False)
+
     class Meta:
         model = models.BaseTask
         fields = "__all__"

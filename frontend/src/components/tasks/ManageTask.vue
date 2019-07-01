@@ -82,7 +82,10 @@
 
         console.log('payload.status -> ', payload.status)
 
-        this.$store.dispatch(TASKS_UPDATE_TASK, payload);
+        this.$store.dispatch(TASKS_UPDATE_TASK, payload).then((response) => {
+//          console.log('response.data: ', response.data)
+//          this.categoryListSelected = response.data.category;
+        })
 //        this.$store.dispatch(TASKS_UPDATE_TASK, payload).then((response) => {
 //          this.alertSuccess = true;
 //          this.alertError = false;
@@ -114,7 +117,7 @@
         return this.getTaskToUpdate.category;
       },
       statusId: function status() {
-        return this.getTaskToUpdate.status.id;
+        return this.getTaskToUpdate.status;
       },
       priorityId: function priority() {
         return this.getTaskToUpdate.priority;

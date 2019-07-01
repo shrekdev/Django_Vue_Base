@@ -101,8 +101,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       apiCall.put(`/api/tasks/update/${data.id}/`, data)
       .then(resp => {
-//        commit(TASKS_UPDATE_TASK_SUCCESS, data);
         dispatch(TASKS_LOAD_TASK_LIST);
+        commit(TASKS_UPDATE_TASK_SUCCESS, data);
         resolve(resp);
       })
       .catch(err => {
@@ -126,7 +126,7 @@ const actions = {
 
   [COMPLETE_SINGLE_TASK]: ({commit, dispatch}, taskId) => {
     return new Promise((resolve, reject) => {
-      apiCall.patch(`/api/tasks/update/${taskId}/`, {status: 2})
+      apiCall.patch(`/api/tasks/update/${taskId}/`, {status: 2, completed: true})
       .then(resp => {
         dispatch(TASKS_LOAD_TASK_LIST);
         commit(COMPLETE_SINGLE_TASK_SUCCESS, taskId);
@@ -152,15 +152,18 @@ const mutations = {
   },
   [TASKS_CHANGE_UPDATE_TASK_STATE]: (state, taskToUpdate) => {
     state.taskToUpdate = taskToUpdate;
+    console.log('tasks updated')
   },
   [TASKS_UPDATE_TASK_SUCCESS]: (state, payload) => {
-    console.log('payload: ', payload.status)
-    const index = state.tasksList.findIndex(block => block.id === payload.id)
-    Vue.set(state.tasksList[index], 'title', payload.title)
-    Vue.set(state.tasksList[index], 'status', payload.status)
-    Vue.set(state.tasksList[index], 'category', payload.category)
-    Vue.set(state.tasksList[index], 'priority', payload.priority)
-    console.log('new status: ', state.tasksList[index].status);
+    const index = state.tasksList.findIndex(block => block.id === payload.id);
+    console.log('new status: ', state.tasksList[index].status)
+    state.taskToUpdate = state.tasksList[index];
+
+//    const index = state.tasksList.findIndex(block => block.id === payload.id)
+//    Vue.set(state.tasksList[index], 'title', payload.title)
+//    Vue.set(state.tasksList[index], 'status', payload.status)
+//    Vue.set(state.tasksList[index], 'category', payload.category)
+//    Vue.set(state.tasksList[index], 'priority', payload.priority)
   },
   [DELETE_SINGLE_TASK_SUCCESS]: (state, taskId) => {
     const index = state.tasksList.findIndex(block => block.id === taskId);
@@ -168,6 +171,7 @@ const mutations = {
     helper_CleanUpdateTaskStates();
   },
   [COMPLETE_SINGLE_TASK_SUCCESS]: (state, taskId) => {
+//  helper_CleanUpdateTaskStates();
 //    const index = state.tasksList.findIndex(block => block.id === taskId);
 //    console.log('old status: ', state.taskToUpdate.status)
 //    console.log('new status: ', state.tasksList[index].status)

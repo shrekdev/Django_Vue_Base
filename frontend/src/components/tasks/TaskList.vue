@@ -1,9 +1,12 @@
 <template>
 <section>
+{{getTasksList}}
     <v-list>
       <template v-for="item in getTasksList">
         <v-list-tile :key="item.id" @click="updateTask(item)" @mouseover="hover = true" @mouseleave="hover = false">
+        <!--
           <v-chip small :color="item.status.color" style="width: auto;">{{ item.status.name[0] }}</v-chip>
+        -->
           <v-list-tile-content>
             <v-list-tile-title>
               {{ item.title }}
@@ -79,7 +82,10 @@
       },
       completeSingleTask(taskId) {
         console.log('COMPLETED TASK')
-        this.$store.dispatch(COMPLETE_SINGLE_TASK, taskId);
+        this.$store.dispatch(COMPLETE_SINGLE_TASK, taskId).then((response) => {
+          console.log('response.data.status: ', response.data)
+//          this.$store.commit(TASKS_CHANGE_UPDATE_TASK_STATE, response.data);
+        });
       },
       deleteSingleTask(taskId) {
         this.$store.dispatch(DELETE_SINGLE_TASK, taskId);
