@@ -2,13 +2,13 @@ import {
   TASKS_LOAD_TASK_LIST,
   TASKS_LOAD_TASK_LIST_SUCCESS,
   TASKS_LOAD_CATEGORY_LIST,
-  TASKS_LOAD_CATEGORY_LIST_SUCCESS,
+//  TASKS_LOAD_CATEGORY_LIST_SUCCESS,
   TASKS_LOAD_STATUS_LIST,
   TASKS_LOAD_STATUS_LIST_SUCCESS,
 //  TASKS_ADD_TASK,
   TASKS_UPDATE_TASK,
   TASKS_UPDATE_TASK_SUCCESS,
-  TASKS_CHANGE_UPDATE_TASK_STATE,
+  SET_TASK_ID_TO_UPDATE,
   COMPLETE_SINGLE_TASK,
   COMPLETE_SINGLE_TASK_SUCCESS,
   DELETE_SINGLE_TASK,
@@ -21,37 +21,30 @@ import Vue from 'vue';
 
 function helper_CleanUpdateTaskStates() {
 //  state.tasksSelected = [];
-  state.taskToUpdate = {
-    id: -1,
-    title: '',
-    category: [],
-    status: [],
-    priority: '',
-  }
+  state.taskToUpdate = 0;
 }
 
 
 const state = {
   tasksList: {},
-  tasksCategoryList: {},
+//  tasksCategoryList: {},
   tasksStatusList: {},
 //  tasksAddTask: false,
   // just to supply initial data to UpdateTask component
-  taskToUpdate: {
-    id: -1,
-    title: '',
-    category: [],
-    status: '',
-    priority: '',
-  },
+  taskToUpdate: 0,
 }
 
 
 const getters = {
   getTasksList: state => state.tasksList,
-  getTasksCategoryList: state => state.tasksCategoryList,
+//  getTasksCategoryList: state => state.tasksCategoryList,
   getTasksStatusList: state => state.tasksStatusList,
-  getTaskToUpdate: state => state.taskToUpdate,
+  getTaskIdToUpdate: state => state.taskToUpdate,
+    getTaskById(state) {
+      return id => state.tasksList.filter(item =>{
+        return item.id === id
+      });
+    },
 }
 
 
@@ -74,7 +67,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       apiCall.get('/api/tasks/category_list/')
       .then(resp => {
-        commit(TASKS_LOAD_CATEGORY_LIST_SUCCESS, resp);
+//        commit(TASKS_LOAD_CATEGORY_LIST_SUCCESS, resp);
         resolve(resp);
       })
       .catch(err => {
@@ -97,7 +90,7 @@ const actions = {
   },
 
   [TASKS_UPDATE_TASK]: ({commit, dispatch}, data) => {
-    console.log('data: ', data.status)
+    console.log('data: ', data)
     return new Promise((resolve, reject) => {
       apiCall.put(`/api/tasks/update/${data.id}/`, data)
       .then(resp => {
@@ -144,20 +137,20 @@ const mutations = {
   [TASKS_LOAD_TASK_LIST_SUCCESS]: (state, resp) => {
     state.tasksList = resp.data;
   },
-  [TASKS_LOAD_CATEGORY_LIST_SUCCESS]: (state, resp) => {
-    state.tasksCategoryList = resp.data;
-  },
+//  [TASKS_LOAD_CATEGORY_LIST_SUCCESS]: (state, resp) => {
+//    state.tasksCategoryList = resp.data;
+//  },
   [TASKS_LOAD_STATUS_LIST_SUCCESS]: (state, resp) => {
     state.tasksStatusList = resp.data;
   },
-  [TASKS_CHANGE_UPDATE_TASK_STATE]: (state, taskToUpdate) => {
-    state.taskToUpdate = taskToUpdate;
-    console.log('tasks updated')
+  [SET_TASK_ID_TO_UPDATE]: (state, taskId) => {
+    state.taskToUpdate = taskId;
   },
   [TASKS_UPDATE_TASK_SUCCESS]: (state, payload) => {
     const index = state.tasksList.findIndex(block => block.id === payload.id);
     console.log('new status: ', state.tasksList[index].status)
-    state.taskToUpdate = state.tasksList[index];
+    state.taskToUpdate = 0;
+//    state.taskToUpdate = state.tasksList[index];
 
 //    const index = state.tasksList.findIndex(block => block.id === payload.id)
 //    Vue.set(state.tasksList[index], 'title', payload.title)

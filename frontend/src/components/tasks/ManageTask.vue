@@ -1,11 +1,12 @@
 <template>
   <section>
-  {{getTaskToUpdate}}
+  {{getTaskIdToUpdate}}
 
+
+  {{categoryListSelected}}
     <v-alert v-model="alertSuccess" type="success" dismissible>
       Task added! :)
     </v-alert>
-
     <v-alert v-model="alertError" type="error" dismissible>
       Something went wrong... :(
     </v-alert>
@@ -25,10 +26,10 @@
     </v-select>
 
     <v-btn small @click="clearTaskFields()">Cancel</v-btn>
-    <v-btn small v-if="getTaskToUpdate.id == -1" color="success" @click="addTask()">
+    <v-btn small v-if="getTaskIdToUpdate == 0" color="success" @click="addTask()">
       Add
     </v-btn>
-    <v-btn small v-else color="success" @click="updateTask(getTaskToUpdate.id)">
+    <v-btn small v-else color="success" @click="updateTask(getTaskIdToUpdate)">
       Update
     </v-btn>
   </section>
@@ -52,6 +53,8 @@
         statusList: [],
         statusListSelected: '',
         priorityListSelected: '',
+        createdBy: '',
+        assignedTo: '',
         priorityList: TASKS_PRIORITY_LIST,
       }
     },
@@ -83,7 +86,7 @@
         console.log('payload.status -> ', payload.status)
 
         this.$store.dispatch(TASKS_UPDATE_TASK, payload).then((response) => {
-//          console.log('response.data: ', response.data)
+          console.log('response.data: ', response.data)
 //          this.categoryListSelected = response.data.category;
         })
 //        this.$store.dispatch(TASKS_UPDATE_TASK, payload).then((response) => {
@@ -104,32 +107,22 @@
       })
     },
     mounted() {
-      for (var i = 0; i < this.categoryIds.length; i++) {
-        this.categoryListSelected.push(this.categoryIds[i]);
-      }
-      this.statusListSelected = this.statusId;
-      this.priorityListSelected = this.priorityId;
-      this.taskTitle = this.taskText;
+        const t = this.taskToUpdate;
+        this.categoryListSelected = t.category;
+        this.statusListSelected = t.status;
+        this.priorityListSelected = t.priority;
+        this.taskTitle = t.title;
+        this.createdBy = t.created_by;
+        this.assignedTo = t.assigned_to;
     },
     computed: {
-      ...mapGetters(['getTasksCategoryList', 'getTaskToUpdate']),
-      categoryIds: function category() {
-        return this.getTaskToUpdate.category;
-      },
-      statusId: function status() {
-        return this.getTaskToUpdate.status;
-      },
-      priorityId: function priority() {
-        return this.getTaskToUpdate.priority;
-      },
-      taskText: function title() {
-        return this.getTaskToUpdate.title;
-      },
-      createdBy: function created() {
-        return this.getTaskToUpdate.created_by;
-      },
-      assignedTo: function assigned() {
-        return this.getTaskToUpdate.assigned_to;
+      ...mapGetters(['getTaskIdToUpdate', 'getTaskById']),
+      taskToUpdate: function taskId() {
+        const id = this.getTaskIdToUpdate;
+        if(id != 0) {
+          return this.getTaskById(id)[0]
+        }
+        return {};
       },
     },
   }
