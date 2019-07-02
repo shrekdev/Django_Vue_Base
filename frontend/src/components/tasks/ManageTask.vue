@@ -1,9 +1,6 @@
 <template>
   <section>
   {{getTaskIdToUpdate}}
-
-
-  {{categoryListSelected}}
     <v-alert v-model="alertSuccess" type="success" dismissible>
       Task added! :)
     </v-alert>
@@ -48,13 +45,13 @@
         alertSuccess: false,
         alertError: false,
         taskTitle: '',
-        categoryListSelected: [],
-        categoryList: [],
-        statusList: [],
-        statusListSelected: '',
-        priorityListSelected: '',
         createdBy: '',
         assignedTo: '',
+        statusListSelected: '',
+        priorityListSelected: '',
+        statusList: [],
+        categoryList: [],
+        categoryListSelected: [],
         priorityList: TASKS_PRIORITY_LIST,
       }
     },
@@ -64,17 +61,28 @@
         this.alertError = false;
         this.taskTitle = '';
         this.categoryListSelected = [];
-        this.statusListSelected = '';
+        this.statusListSelected = [];
         this.priorityListSelected = '';
       },
       addTask() {
         console.log('add');
       },
       updateTask(taskId) {
+        let status = this.statusListSelected;
+        if(typeof this.statusListSelected === 'object') {
+          status = this.statusListSelected.id
+        }
+
+        // TODO: from literals
+        let completed = false;
+        if(this.statusListSelected === 2) {
+          completed = true;
+        }
         const payload = {
           id: taskId,
+          status: status,
+          completed: completed,
           title: this.taskTitle,
-          status: this.statusListSelected,
           category: this.categoryListSelected,
           priority: this.priorityListSelected,
           created_by: this.createdBy,
@@ -82,20 +90,13 @@
         }
 
         // TODO: verify if anything has changed, prevent below request if not
-
-        console.log('payload.status -> ', payload.status)
-
         this.$store.dispatch(TASKS_UPDATE_TASK, payload).then((response) => {
-          console.log('response.data: ', response.data)
-//          this.categoryListSelected = response.data.category;
-        })
-//        this.$store.dispatch(TASKS_UPDATE_TASK, payload).then((response) => {
-//          this.alertSuccess = true;
-//          this.alertError = false;
-//        }).catch(error => {
-//          this.alertSuccess = false;
-//          this.alertError = true;
-//        });
+          this.alertSuccess = true;
+          this.alertError = false;
+        }).catch(error => {
+          this.alertSuccess = false;
+          this.alertError = true;
+        });
       }
     },
     created() {
@@ -107,13 +108,13 @@
       })
     },
     mounted() {
-        const t = this.taskToUpdate;
-        this.categoryListSelected = t.category;
-        this.statusListSelected = t.status;
-        this.priorityListSelected = t.priority;
-        this.taskTitle = t.title;
-        this.createdBy = t.created_by;
-        this.assignedTo = t.assigned_to;
+      const t = this.taskToUpdate;
+      this.categoryListSelected = t.category;
+      this.statusListSelected = t.status;
+      this.priorityListSelected = t.priority;
+      this.taskTitle = t.title;
+      this.createdBy = t.created_by;
+      this.assignedTo = t.assigned_to;
     },
     computed: {
       ...mapGetters(['getTaskIdToUpdate', 'getTaskById']),

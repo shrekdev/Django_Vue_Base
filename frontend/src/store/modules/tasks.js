@@ -2,10 +2,7 @@ import {
   TASKS_LOAD_TASK_LIST,
   TASKS_LOAD_TASK_LIST_SUCCESS,
   TASKS_LOAD_CATEGORY_LIST,
-//  TASKS_LOAD_CATEGORY_LIST_SUCCESS,
   TASKS_LOAD_STATUS_LIST,
-  TASKS_LOAD_STATUS_LIST_SUCCESS,
-//  TASKS_ADD_TASK,
   TASKS_UPDATE_TASK,
   TASKS_UPDATE_TASK_SUCCESS,
   SET_TASK_ID_TO_UPDATE,
@@ -20,25 +17,16 @@ import Vue from 'vue';
 
 
 function helper_CleanUpdateTaskStates() {
-//  state.tasksSelected = [];
   state.taskToUpdate = 0;
 }
 
-
 const state = {
   tasksList: {},
-//  tasksCategoryList: {},
-  tasksStatusList: {},
-//  tasksAddTask: false,
-  // just to supply initial data to UpdateTask component
   taskToUpdate: 0,
 }
 
-
 const getters = {
   getTasksList: state => state.tasksList,
-//  getTasksCategoryList: state => state.tasksCategoryList,
-  getTasksStatusList: state => state.tasksStatusList,
   getTaskIdToUpdate: state => state.taskToUpdate,
     getTaskById(state) {
       return id => state.tasksList.filter(item =>{
@@ -67,7 +55,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       apiCall.get('/api/tasks/category_list/')
       .then(resp => {
-//        commit(TASKS_LOAD_CATEGORY_LIST_SUCCESS, resp);
         resolve(resp);
       })
       .catch(err => {
@@ -80,7 +67,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       apiCall.get('/api/tasks/status/list/')
       .then(resp => {
-        commit(TASKS_LOAD_STATUS_LIST_SUCCESS, resp);
         resolve(resp);
       })
       .catch(err => {
@@ -117,12 +103,12 @@ const actions = {
     })
   },
 
-  [COMPLETE_SINGLE_TASK]: ({commit, dispatch}, taskId) => {
+  [COMPLETE_SINGLE_TASK]: ({commit, dispatch}, payload) => {
     return new Promise((resolve, reject) => {
-      apiCall.patch(`/api/tasks/update/${taskId}/`, {status: 2, completed: true})
+      apiCall.patch(`/api/tasks/update/${payload.id}/`, {status: payload.status, completed: payload.completed})
       .then(resp => {
         dispatch(TASKS_LOAD_TASK_LIST);
-        commit(COMPLETE_SINGLE_TASK_SUCCESS, taskId);
+        commit(COMPLETE_SINGLE_TASK_SUCCESS);
         resolve(resp);
       })
       .catch(err => {
@@ -137,46 +123,19 @@ const mutations = {
   [TASKS_LOAD_TASK_LIST_SUCCESS]: (state, resp) => {
     state.tasksList = resp.data;
   },
-//  [TASKS_LOAD_CATEGORY_LIST_SUCCESS]: (state, resp) => {
-//    state.tasksCategoryList = resp.data;
-//  },
-  [TASKS_LOAD_STATUS_LIST_SUCCESS]: (state, resp) => {
-    state.tasksStatusList = resp.data;
-  },
   [SET_TASK_ID_TO_UPDATE]: (state, taskId) => {
     state.taskToUpdate = taskId;
   },
   [TASKS_UPDATE_TASK_SUCCESS]: (state, payload) => {
-    const index = state.tasksList.findIndex(block => block.id === payload.id);
-    console.log('new status: ', state.tasksList[index].status)
     state.taskToUpdate = 0;
-//    state.taskToUpdate = state.tasksList[index];
-
-//    const index = state.tasksList.findIndex(block => block.id === payload.id)
-//    Vue.set(state.tasksList[index], 'title', payload.title)
-//    Vue.set(state.tasksList[index], 'status', payload.status)
-//    Vue.set(state.tasksList[index], 'category', payload.category)
-//    Vue.set(state.tasksList[index], 'priority', payload.priority)
   },
   [DELETE_SINGLE_TASK_SUCCESS]: (state, taskId) => {
     const index = state.tasksList.findIndex(block => block.id === taskId);
     state.tasksList.splice(index, 1);
     helper_CleanUpdateTaskStates();
   },
-  [COMPLETE_SINGLE_TASK_SUCCESS]: (state, taskId) => {
-//  helper_CleanUpdateTaskStates();
-//    const index = state.tasksList.findIndex(block => block.id === taskId);
-//    console.log('old status: ', state.taskToUpdate.status)
-//    console.log('new status: ', state.tasksList[index].status)
-//    state.taskToUpdate = state.tasksList[index];
-
-//    console.log('updated: ', state.tasksList[index].updated)
-////    let updated_datetime = new Date(state.tasksList[index].updated)
-//    let seconds = Math.floor(new Date(state.tasksList[index].updated).getTime() / 1000);
-//    console.log('seconds = ', `id_${seconds}`)
-
-//    Vue.set(state.tasksList[index], 'completed', true);
-//    Vue.set(state.tasksList[index], 'priority', '1');
+  [COMPLETE_SINGLE_TASK_SUCCESS]: (state) => {
+    state.taskToUpdate = 0;
   },
 }
 
