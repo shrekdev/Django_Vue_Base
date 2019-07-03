@@ -1,6 +1,5 @@
 <template>
 <section>
-{{getTasksList}}
   <v-list>
     <template v-for="item in getTasksList">
       <v-hover>
@@ -13,12 +12,14 @@
               </v-list-tile-title>
             </v-list-tile-content>
             <v-list-tile-action v-if="hover">
-              <v-btn v-if="!item.completed" icon @click.stop="completeSingleTask(item.id)">
-                <v-icon color="primary">done</v-icon>
-              </v-btn>
-              <v-btn icon @click.stop="deleteSingleTask(item.id)">
-                <v-icon color="primary">delete</v-icon>
-              </v-btn>
+              <span>
+                <v-btn v-if="!item.completed" icon @click.stop="completeSingleTask(item.id)">
+                  <v-icon color="primary">done</v-icon>
+                </v-btn>
+                <v-btn icon @click.stop="deleteSingleTask(item.id)">
+                  <v-icon color="primary">delete</v-icon>
+                </v-btn>
+              </span>
             </v-list-tile-action>
           </v-list-tile>
           <v-divider></v-divider>

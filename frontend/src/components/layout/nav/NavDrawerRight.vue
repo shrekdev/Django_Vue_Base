@@ -12,9 +12,7 @@
 
     <v-divider></v-divider>
     <v-container fluid ma-0 pa-1>
-      <v-card>
         <ManageTask :key="getTaskIdToUpdate"/>
-      </v-card>
     </v-container>
 
     <v-container fluid ma-0 pa-1>

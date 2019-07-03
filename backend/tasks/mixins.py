@@ -19,7 +19,7 @@ class BaseTaskFieldsMixin(models.Model):
         auto_now=True,
     )
 
-    due_to = models.DateTimeField(
+    due_to = models.DateField(
         verbose_name='due to',
         help_text='Expected date and time of completion',
         null=True,

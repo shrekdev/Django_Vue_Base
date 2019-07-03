@@ -1,12 +1,12 @@
 <template>
   <section>
-  {{getTaskIdToUpdate}}
     <v-alert v-model="alertSuccess" type="success" dismissible>
       Task added! :)
     </v-alert>
     <v-alert v-model="alertError" type="error" dismissible>
       Something went wrong... :(
     </v-alert>
+
 <v-form ref="form" v-model="valid" lazy-validation>
     <v-textarea dark solo v-model="taskTitle" required></v-textarea>
 
@@ -24,6 +24,18 @@
     <v-select solo v-model="priorityListSelected" :items="priorityList"
       label="Priority" chips persistent-hint >
     </v-select>
+
+    <v-menu ref="datePickerMenu" v-model="datePickerMenu" :close-on-content-click="false" :nudge-right="40"
+      :value="dueTo" lazy transition="scale-transition" offset-y full-width min-width="290px">
+      <template v-slot:activator="{ on }">
+        <v-text-field solo v-model="dueTo" label="Due date" readonly v-on="on"></v-text-field>
+      </template>
+      <v-date-picker v-model="dueTo" no-title scrollable>
+        <v-spacer></v-spacer>
+        <v-btn flat color="primary" @click="datePickerMenu = false">Cancel</v-btn>
+        <v-btn flat color="primary" @click="$refs.datePickerMenu.save(dueTo)">OK</v-btn>
+      </v-date-picker>
+    </v-menu>
 
     <v-btn small @click="clearTaskFields()">Cancel</v-btn>
     <v-btn small v-if="getTaskIdToUpdate == 0" color="success" @click="addTask()">
@@ -57,10 +69,12 @@
     name: 'ManageTask',
     data() {
       return {
+        datePickerMenu: false,
         valid: true,
         statusSelectedDefault: ID_FOR_NEW_TASK,
         alertSuccess: false,
         alertError: false,
+        dueTo: '',
         taskTitle: '',
         createdBy: '',
         assignedTo: '',
@@ -76,6 +90,7 @@
       clearTaskFields() {
         this.alertSuccess = false;
         this.alertError = false;
+        this.dueTo = '';
         this.taskTitle = '';
         this.priorityListSelected = '';
         this.categoryListSelected = [];
@@ -86,10 +101,11 @@
         const payload = {
           title: this.taskTitle,
           priority: this.priorityListSelected,
-          created_by: 1,
-          assigned_to: 1,
+          created_by: this.getUserId,
+          assigned_to: this.getUserId,
           status: ID_FOR_NEW_TASK,
           category: this.categoryListSelected,
+          due_to: this.dueTo,
         }
         this.$store.dispatch(ADD_TASK, payload).then((response) => {
           this.clearTaskFields();
@@ -143,9 +159,10 @@
       this.taskTitle = t.title;
       this.createdBy = t.created_by;
       this.assignedTo = t.assigned_to;
+      this.dueTo = t.due_to;
     },
     computed: {
-      ...mapGetters(['getTaskIdToUpdate', 'getTaskById']),
+      ...mapGetters(['getTaskIdToUpdate', 'getTaskById', 'getUserId']),
       taskToUpdate: function taskId() {
         const id = this.getTaskIdToUpdate;
         if(id != 0) {

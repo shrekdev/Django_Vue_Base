@@ -11,7 +11,6 @@ import {
   ADD_TASK,
   CLEAR_TASK_TO_UPDATE_STATE,
 } from '../actions/tasks.js';
-
 import apiCall from '../../utils/api';
 import Vue from 'vue';
 
@@ -28,11 +27,11 @@ const state = {
 const getters = {
   getTasksList: state => state.tasksList,
   getTaskIdToUpdate: state => state.taskToUpdate,
-    getTaskById(state) {
-      return id => state.tasksList.filter(item =>{
-        return item.id === id
-      });
-    },
+  getTaskById(state) {
+    return id => state.tasksList.filter(item =>{
+      return item.id === id
+    });
+  },
 }
 
 

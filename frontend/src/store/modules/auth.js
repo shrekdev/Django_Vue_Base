@@ -54,6 +54,9 @@ const getters = {
   getAccountPasswordResetErrors: state => state.accountPasswordResetErrors,
   getAccountPasswordResetConfirmStatus: state => state.accountPasswordResetConfirmStatus,
   getAccountPasswordResetConfirmErrors: state => state.accountPasswordResetConfirmErrors,
+  getUserId() {
+    return jwt_decode(state.accessToken).user_id;
+  }
 }
 
 
