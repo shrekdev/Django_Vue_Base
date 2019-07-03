@@ -12,5 +12,6 @@ urlpatterns = [
     path('update/<pk>/', views.BaseTaskUpdate.as_view()),
     # path('update/completed/<pk>/', views.BaseTaskCompleted.as_view()),
     path('delete/<pk>/', views.BaseTaskDelete.as_view()),
+    path('create/', views.BaseTaskCreate.as_view()),
     path('status/list/', views.TaskStatusList.as_view()),
 ]

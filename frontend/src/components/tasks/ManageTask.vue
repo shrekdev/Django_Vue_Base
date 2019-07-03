@@ -7,10 +7,13 @@
     <v-alert v-model="alertError" type="error" dismissible>
       Something went wrong... :(
     </v-alert>
+<v-form ref="form" v-model="valid" lazy-validation>
+    <v-textarea dark solo v-model="taskTitle" required></v-textarea>
 
-    <v-textarea dark solo v-model="taskTitle"></v-textarea>
-
-    <v-select solo v-model="statusListSelected" item-text="name" item-value="id" :items="statusList"
+    <v-select v-if="getTaskIdToUpdate == 0" solo v-model="statusSelectedDefault" item-text="name" item-value="id"
+      :items="statusList" disabled label="Status" chips persistent-hint >
+    </v-select>
+    <v-select v-else solo v-model="statusListSelected" item-text="name" item-value="id" :items="statusList"
       label="Status" chips persistent-hint >
     </v-select>
 
@@ -29,19 +32,33 @@
     <v-btn small v-else color="success" @click="updateTask(getTaskIdToUpdate)">
       Update
     </v-btn>
+</v-form>
   </section>
 </template>
 
 
 <script>
+  import {
+    TASKS_LOAD_CATEGORY_LIST,
+    TASKS_UPDATE_TASK,
+    TASKS_LOAD_STATUS_LIST,
+    CLEAR_TASK_TO_UPDATE_STATE,
+    ADD_TASK,
+  } from '@/store/actions/tasks';
+  import {
+    TASKS_PRIORITY_LIST,
+    ID_FOR_NEW_TASK,
+    ID_FOR_COMPLETED_TASK,
+  } from './literals';
   import { mapGetters } from 'vuex';
-  import { TASKS_LOAD_CATEGORY_LIST, TASKS_UPDATE_TASK, TASKS_LOAD_STATUS_LIST } from '@/store/actions/tasks';
-  import { TASKS_PRIORITY_LIST } from './literals';
+
 
   export default {
     name: 'ManageTask',
     data() {
       return {
+        valid: true,
+        statusSelectedDefault: ID_FOR_NEW_TASK,
         alertSuccess: false,
         alertError: false,
         taskTitle: '',
@@ -60,12 +77,23 @@
         this.alertSuccess = false;
         this.alertError = false;
         this.taskTitle = '';
+        this.priorityListSelected = '';
         this.categoryListSelected = [];
         this.statusListSelected = [];
-        this.priorityListSelected = '';
+        this.$store.commit(CLEAR_TASK_TO_UPDATE_STATE);
       },
       addTask() {
-        console.log('add');
+        const payload = {
+          title: this.taskTitle,
+          priority: this.priorityListSelected,
+          created_by: 1,
+          assigned_to: 1,
+          status: ID_FOR_NEW_TASK,
+          category: this.categoryListSelected,
+        }
+        this.$store.dispatch(ADD_TASK, payload).then((response) => {
+          this.clearTaskFields();
+        });
       },
       updateTask(taskId) {
         let status = this.statusListSelected;
@@ -73,11 +101,11 @@
           status = this.statusListSelected.id
         }
 
-        // TODO: from literals
         let completed = false;
-        if(this.statusListSelected === 2) {
+        if(this.statusListSelected === ID_FOR_COMPLETED_TASK) {
           completed = true;
         }
+
         const payload = {
           id: taskId,
           status: status,
