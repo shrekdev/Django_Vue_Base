@@ -127,14 +127,6 @@ class BaseTask(BaseTaskFieldsMixin):
         default='1',
     )
 
-    # status = models.CharField(
-    #     verbose_name='task status',
-    #     help_text='Current task status',
-    #     max_length=1,
-    #     choices=TASK_STATUSES,
-    #     default='1',
-    # )
-
     status = models.ForeignKey(
         to=TaskStatus,
         verbose_name='task status',
@@ -149,11 +141,17 @@ class BaseTask(BaseTaskFieldsMixin):
         help_text='The category the task will be marked',
     )
 
+    is_star = models.BooleanField(
+        verbose_name='star',
+        help_text='Special mark for the task',
+        default=False,
+    )
+
     class Meta:
         verbose_name = 'Base Task'
         verbose_name_plural = 'Base Tasks'
         unique_together = ['title', 'created_by']
-        ordering = ['status', 'priority']
+        ordering = ['created', 'status']
 
     def __str__(self):
         return self.title

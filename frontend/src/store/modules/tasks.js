@@ -5,11 +5,12 @@ import {
   TASKS_LOAD_STATUS_LIST,
   TASKS_UPDATE_TASK,
   SET_TASK_ID_TO_UPDATE,
-  COMPLETE_SINGLE_TASK,
+  PATCH_TASK,
   DELETE_SINGLE_TASK,
   DELETE_SINGLE_TASK_SUCCESS,
   ADD_TASK,
   CLEAR_TASK_TO_UPDATE_STATE,
+  CHANGE_SELECTED_TASK,
 } from '../actions/tasks.js';
 import apiCall from '../../utils/api';
 import Vue from 'vue';
@@ -22,11 +23,13 @@ function helper_CleanUpdateTaskStates() {
 const state = {
   tasksList: {},
   taskToUpdate: 0,
+  selectedTasks: [],
 }
 
 const getters = {
   getTasksList: state => state.tasksList,
   getTaskIdToUpdate: state => state.taskToUpdate,
+  getSelectedTasks: state => state.selectedTasks,
   getTaskById(state) {
     return id => state.tasksList.filter(item =>{
       return item.id === id
@@ -37,7 +40,6 @@ const getters = {
 
 const actions = {
   [TASKS_LOAD_TASK_LIST]: ({commit, dispatch}) => {
-    console.log('TASKS_LOAD_TASK_LIST')
     return new Promise((resolve, reject) => {
       apiCall.get('/api/tasks/task_list/')
       .then(resp => {
@@ -102,9 +104,11 @@ const actions = {
     })
   },
 
-  [COMPLETE_SINGLE_TASK]: ({commit, dispatch}, payload) => {
+  [PATCH_TASK]: ({commit, dispatch}, payload) => {
     return new Promise((resolve, reject) => {
-      apiCall.patch(`/api/tasks/update/${payload.id}/`, {status: payload.status, completed: payload.completed})
+      const id = payload.id;
+      delete payload.id;
+      apiCall.patch(`/api/tasks/update/${id}/`, payload)
       .then(resp => {
         dispatch(TASKS_LOAD_TASK_LIST);
         commit(CLEAR_TASK_TO_UPDATE_STATE);
@@ -146,6 +150,9 @@ const mutations = {
   },
   [CLEAR_TASK_TO_UPDATE_STATE]: (state) => {
     state.taskToUpdate = 0;
+  },
+  [CHANGE_SELECTED_TASK]: (state, newArray) => {
+    state.selectedTasks = newArray;
   },
 }
 
