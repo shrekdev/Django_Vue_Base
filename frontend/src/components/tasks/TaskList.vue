@@ -1,6 +1,5 @@
 <template>
 <section>
-{{this.getSelectedTasks}}
   <v-list>
     <template v-for="item in getTasksList">
       <v-hover>
@@ -18,7 +17,7 @@
                 <template v-slot:activator="{ on }">
                   <v-chip small :color="item.status.color" v-on="on" style="width: auto;">{{ item.status.name[0] }}</v-chip>
                 </template>
-                <span>{{ item.status.name }} - {{ item.id }}</span>
+                <span>{{ item.status.name }}</span>
               </v-tooltip>
             </v-list-tile>
             <v-list-tile-content>
@@ -31,6 +30,7 @@
                 <v-btn v-if="!item.completed" icon @click.stop="completeSingleTask(item.id)">
                   <v-icon color="primary">done</v-icon>
                 </v-btn>
+                <v-divider class="mx-1" vertical></v-divider>
                 <v-btn icon @click.stop="deleteSingleTask(item.id)">
                   <v-icon color="primary">delete</v-icon>
                 </v-btn>
@@ -116,7 +116,7 @@
       },
     },
     computed: {
-      ...mapGetters(['getTasksList', 'getSelectedTasks']),
+      ...mapGetters(['getTasksList', 'getSelectedTasksIds']),
     },
   }
 </script>

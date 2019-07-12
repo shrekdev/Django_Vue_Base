@@ -37,12 +37,12 @@
       </v-date-picker>
     </v-menu>
 
-    <v-btn small @click="clearTaskFields()">Cancel</v-btn>
-    <v-btn small v-if="getTaskIdToUpdate == 0" color="success" @click="addTask()">
-      Add
+    <v-btn big @click="clearTaskFields()"><v-icon left>cancel</v-icon>Cancel</v-btn>
+    <v-btn big v-if="getTaskIdToUpdate == 0" color="success" @click="addTask()">
+      <v-icon left>note_add</v-icon>Add
     </v-btn>
-    <v-btn small v-else color="success" @click="updateTask(getTaskIdToUpdate)">
-      Update
+    <v-btn big v-else color="success" @click="updateTask(getTaskIdToUpdate)">
+      <v-icon left>save</v-icon>Update
     </v-btn>
 </v-form>
   </section>

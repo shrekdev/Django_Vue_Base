@@ -11,11 +11,13 @@ import {
   ADD_TASK,
   CLEAR_TASK_TO_UPDATE_STATE,
   CHANGE_SELECTED_TASK,
+  SHOW_TASK_FORM,
 } from '../actions/tasks.js';
 import apiCall from '../../utils/api';
 import Vue from 'vue';
 
 
+// TODO: remove it
 function helper_CleanUpdateTaskStates() {
   state.taskToUpdate = 0;
 }
@@ -24,12 +26,15 @@ const state = {
   tasksList: {},
   taskToUpdate: 0,
   selectedTasks: [],
+  showTaskForm: false,
 }
 
 const getters = {
   getTasksList: state => state.tasksList,
   getTaskIdToUpdate: state => state.taskToUpdate,
-  getSelectedTasks: state => state.selectedTasks,
+  getSelectedTasksIds: state => state.selectedTasks,
+  getShowTakFormStatus: state => state.showTaskForm,
+
   getTaskById(state) {
     return id => state.tasksList.filter(item =>{
       return item.id === id
@@ -142,6 +147,7 @@ const mutations = {
   },
   [SET_TASK_ID_TO_UPDATE]: (state, taskId) => {
     state.taskToUpdate = taskId;
+    state.showTaskForm = true;
   },
   [DELETE_SINGLE_TASK_SUCCESS]: (state, taskId) => {
     const index = state.tasksList.findIndex(block => block.id === taskId);
@@ -150,9 +156,13 @@ const mutations = {
   },
   [CLEAR_TASK_TO_UPDATE_STATE]: (state) => {
     state.taskToUpdate = 0;
+    state.showTaskForm = false;
   },
   [CHANGE_SELECTED_TASK]: (state, newArray) => {
     state.selectedTasks = newArray;
+  },
+  [SHOW_TASK_FORM]: (state) => {
+    state.showTaskForm = !state.showTaskForm;
   },
 }
 

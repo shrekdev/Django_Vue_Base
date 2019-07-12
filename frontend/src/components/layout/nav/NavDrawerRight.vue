@@ -1,20 +1,16 @@
 <template>
-  <v-navigation-drawer permanent right app>
+  <v-navigation-drawer right app :value="getShowTakFormStatus">
     <v-toolbar flat>
       <v-list>
         <v-list-tile>
-          <v-list-tile-title class="title">
-
-          </v-list-tile-title>
+          <v-list-tile-title class="title"></v-list-tile-title>
         </v-list-tile>
       </v-list>
     </v-toolbar>
-
     <v-divider></v-divider>
     <v-container fluid ma-0 pa-1>
-        <ManageTask :key="getTaskIdToUpdate"/>
+      <ManageTask :key="getTaskIdToUpdate"/>
     </v-container>
-
     <v-container fluid ma-0 pa-1>
       <v-card></v-card>
     </v-container>
@@ -30,7 +26,7 @@
   export default {
     name: 'NavDrawerRight',
     computed: {
-      ...mapGetters(['getTaskIdToUpdate']),
+      ...mapGetters(['getTaskIdToUpdate', 'getShowTakFormStatus']),
     },
     components: {
       ManageTask,
