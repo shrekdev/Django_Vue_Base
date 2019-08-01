@@ -120,7 +120,10 @@ const actions = {
   [TEST_ACTION]: ({commit, dispatch}) => {
     return new Promise((resolve, reject) => {
       console.log('IN TEST_ACTION');
-      apiCall.get('/api/auth/me/');    // przykładowo, aby sprawdzić weryfikację jwt
+      const payload = {
+        ids: [],
+      }
+      apiCall.post('/api/tasks/delete/bulk/', payload);  // dla testów
       resolve();
     })
   },
