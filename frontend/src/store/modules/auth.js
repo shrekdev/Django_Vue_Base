@@ -121,7 +121,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       console.log('IN TEST_ACTION');
       const payload = {
-        ids: [],
+        ids: [504, 505],
       }
       apiCall.post('/api/tasks/delete/bulk/', payload);  // dla testów
       resolve();

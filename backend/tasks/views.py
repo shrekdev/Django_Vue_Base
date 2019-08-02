@@ -1,7 +1,7 @@
-from rest_framework import generics, status
+from rest_framework import generics
 from rest_framework.permissions import AllowAny
-from rest_framework.response import Response
 
+from . import mixins
 from . import models
 from . import serializers
 
@@ -48,29 +48,11 @@ class BaseTaskCreate(generics.CreateAPIView):
     permission_classes = (AllowAny,)
 
 
-class BaseTaskBulkDelete(generics.GenericAPIView):
+class BaseTaskBulkDelete(mixins.BaseTaskBulkActionMixin):
     serializer_class = serializers.BaseTaskSerializer
     permission_classes = (AllowAny,)
-    lookup_field = "ids"
 
-    _counter = 0
-
-    def get_queryset(self):
-        ids = self.request.data.get(self.lookup_field)
-        return models.BaseTask.objects.filter(id__in=ids)
-
-    def post(self, request, *args, **kwargs):
-        qs = self.get_queryset()
-        if not qs:
-            return Response(status=status.HTTP_204_NO_CONTENT)
-
-        self.perform_bulk_destroy(objects=qs)
-
-        if self._counter == len(qs):
-            return Response(status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
-
-    def perform_destroy(self, instance):
+    def perform_action(self, instance):
         try:
             instance.delete()
         # TODO: catch more specific exception
@@ -78,7 +60,3 @@ class BaseTaskBulkDelete(generics.GenericAPIView):
             pass
         else:
             self._counter += 1
-
-    def perform_bulk_destroy(self, objects):
-        for obj in objects:
-            self.perform_destroy(instance=obj)

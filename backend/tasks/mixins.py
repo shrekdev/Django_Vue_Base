@@ -1,5 +1,9 @@
-from django.utils import timezone
 from django.db import models
+from django.utils import timezone
+from rest_framework import generics, status
+from rest_framework.response import Response
+
+from . import models as tasks_models
 
 
 class BaseTaskFieldsMixin(models.Model):
@@ -48,3 +52,30 @@ class BaseTaskFieldsMixin(models.Model):
         if not self.completed and self.completed_date:
             self.completed_date = None
         super().save(*args, **kwargs)
+
+
+class BaseTaskBulkActionMixin(generics.GenericAPIView):
+    lookup_field = "ids"
+    _counter = 0
+
+    def get_queryset(self):
+        ids = self.request.data.get(self.lookup_field)
+        return tasks_models.BaseTask.objects.filter(id__in=ids)
+
+    def post(self, request, *args, **kwargs):
+        qs = self.get_queryset()
+        if not qs:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        self.perform_bulk_action(objects=qs)
+
+        if self._counter == len(qs):
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    def perform_action(self, instance):
+        pass
+
+    def perform_bulk_action(self, objects):
+        for obj in objects:
+            self.perform_action(instance=obj)
