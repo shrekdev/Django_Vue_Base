@@ -5,7 +5,7 @@
     </v-toolbar-title>
 
     <v-divider class="mx-4" inset vertical></v-divider>
-    <v-btn fab small @click.stop=""><v-icon>select_all</v-icon></v-btn>
+    <v-btn fab small @click.stop="selectAllTasks()"><v-icon>select_all</v-icon></v-btn>
     <v-btn fab :disabled="getSelectedTasksIds.length > 0 ? false : true" small @click.stop="markAsCompleted(tasksChecked)"><v-icon>done</v-icon></v-btn>
     <v-btn fab :disabled="getSelectedTasksIds.length > 0 ? false : true" small @click.stop="deleteTasks(tasksChecked)"><v-icon>star</v-icon></v-btn>
     <v-btn fab :disabled="getSelectedTasksIds.length > 0 ? false : true" small @click.stop="deleteTasks(tasksChecked)"><v-icon>delete</v-icon></v-btn>
@@ -22,12 +22,15 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import { SHOW_TASK_FORM } from '@/store/actions/tasks';
+  import { SHOW_TASK_FORM, SELECT_ALL_TASKS } from '@/store/actions/tasks';
 
 
   export default {
     name: 'NavToolbar',
     methods: {
+      selectAllTasks(tasks) {
+        this.$store.commit(SELECT_ALL_TASKS);
+      },
       markAsCompleted(tasks) {
 //        this.$store.commit(TASKS_MARK_COMPLETE_SELECTED, tasks);
       },

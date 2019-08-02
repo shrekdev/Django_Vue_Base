@@ -6,7 +6,7 @@
         <section slot-scope="{ hover }">
           <v-list-tile :key="item.id" @click="updateTask(item.id)">
             <v-list-tile>
-              <v-checkbox @click.stop="addTaskToSelected(item.id)" color="secondary" light v-model="selectedTasks" :value="item.id"></v-checkbox>
+              <v-checkbox @click.stop="addTaskToSelected(item.id)" color="secondary" light v-model="getSelectedTasksIds" :value="item.id"></v-checkbox>
               <div class="text-xs-center">
                 <v-btn @click.stop="stareTask(item.id, item.is_star)" text icon>
                   <v-icon v-if="item.is_star == false" color="grey">star</v-icon>
@@ -63,8 +63,6 @@
     data() {
       return {
         statusList: [],
-        selectedTasks: [],
-        taskRating: 0,
       }
     },
     created() {
@@ -102,17 +100,7 @@
         this.$store.dispatch(PATCH_TASK, payload);
       },
       addTaskToSelected(taskId) {
-        if (this.selectedTasks.includes(taskId)) {
-          for(let i = 0; i < this.selectedTasks.length; i++){
-            if (this.selectedTasks[i] === taskId) {
-              this.selectedTasks.splice(i, 1);
-              i--;
-            }
-          }
-        } else {
-          this.selectedTasks.push(taskId);
-        }
-        this.$store.commit(CHANGE_SELECTED_TASK, this.selectedTasks);
+        this.$store.commit(CHANGE_SELECTED_TASK, taskId);
       },
     },
     computed: {

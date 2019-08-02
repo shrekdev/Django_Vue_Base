@@ -12,6 +12,7 @@ import {
   CLEAR_TASK_TO_UPDATE_STATE,
   CHANGE_SELECTED_TASK,
   SHOW_TASK_FORM,
+  SELECT_ALL_TASKS,
 } from '../actions/tasks.js';
 import apiCall from '../../utils/api';
 import Vue from 'vue';
@@ -26,6 +27,7 @@ const state = {
   tasksList: {},
   taskToUpdate: 0,
   selectedTasks: [],
+  selectedAllTasks: false,
   showTaskForm: false,
 }
 
@@ -158,8 +160,29 @@ const mutations = {
     state.taskToUpdate = 0;
     state.showTaskForm = false;
   },
-  [CHANGE_SELECTED_TASK]: (state, newArray) => {
-    state.selectedTasks = newArray;
+  [CHANGE_SELECTED_TASK]: (state, taskId) => {
+    if (state.selectedTasks.includes(taskId)) {
+      for(let i = 0; i < state.selectedTasks.length; i++){
+        if (state.selectedTasks[i] === taskId) {
+          state.selectedTasks.splice(i, 1);
+          i--;
+        }
+      }
+    } else {
+      state.selectedTasks.push(taskId);
+    }
+  },
+  [SELECT_ALL_TASKS]: (state) => {
+    state.selectedAllTasks = !state.selectedAllTasks;
+    if (state.selectedAllTasks) {
+      for(let i=0; i<state.tasksList.length; i++) {
+        if(!state.selectedTasks.includes(state.tasksList[i].id)) {
+          state.selectedTasks.push(state.tasksList[i].id);
+        }
+      }
+    } else {
+      state.selectedTasks = [];
+    }
   },
   [SHOW_TASK_FORM]: (state) => {
     state.showTaskForm = !state.showTaskForm;
