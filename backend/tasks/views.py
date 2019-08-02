@@ -53,10 +53,41 @@ class BaseTaskBulkDelete(mixins.BaseTaskBulkActionMixin):
     permission_classes = (AllowAny,)
 
     def perform_action(self, instance):
-        try:
-            instance.delete()
-        # TODO: catch more specific exception
-        except Exception:
-            pass
-        else:
-            self._counter += 1
+        instance.delete()
+        self._counter += 1
+
+
+class BaseTaskBulkComplete(mixins.BaseTaskBulkActionMixin):
+    serializer_class = serializers.BaseTaskSerializer
+    permission_classes = (AllowAny,)
+
+    def get_queryset(self):
+        ids = self.request.data.get(self.lookup_field)
+        return models.BaseTask.objects.filter(
+            completed=False,
+            id__in=ids
+        )
+
+    def perform_action(self, instance):
+        status_completed = models.TaskStatus.objects.get(name='Completed')
+        instance.status = status_completed
+        instance.completed = True
+        instance.save()
+        self._counter += 1
+
+
+class BaseTaskBulkStar(mixins.BaseTaskBulkActionMixin):
+    serializer_class = serializers.BaseTaskSerializer
+    permission_classes = (AllowAny,)
+
+    def get_queryset(self):
+        ids = self.request.data.get(self.lookup_field)
+        return models.BaseTask.objects.filter(
+            is_star=False,
+            id__in=ids
+        )
+
+    def perform_action(self, instance):
+        instance.is_star = True
+        instance.save()
+        self._counter += 1

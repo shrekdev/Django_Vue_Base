@@ -55,6 +55,11 @@ class BaseTaskFieldsMixin(models.Model):
 
 
 class BaseTaskBulkActionMixin(generics.GenericAPIView):
+    """
+    Mixin for DRF views, which allows to bulk actions,
+    like mark multiple BaseTask objects as completed
+    """
+
     lookup_field = "ids"
     _counter = 0
 

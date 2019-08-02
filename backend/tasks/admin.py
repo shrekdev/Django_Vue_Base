@@ -21,7 +21,7 @@ class BaseTaskAdmin(admin.ModelAdmin):
         'completed', 'due_to', 'completed_date', 'created', 'updated', 'display_category',
     )
     fields = [
-        'title', ('status', 'completed'), 'priority', 'category',
+        ('title', 'is_star'), ('status', 'completed'), 'priority', 'category',
         ('created_by', 'assigned_to'), ('due_to', 'completed_date'),
     ]
 
