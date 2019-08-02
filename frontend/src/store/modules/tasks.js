@@ -13,6 +13,9 @@ import {
   CHANGE_SELECTED_TASK,
   SHOW_TASK_FORM,
   SELECT_ALL_TASKS,
+  MARK_SELECTED_TASKS_AS_COMPLETED,
+  MARK_SELECTED_TASKS_WITH_STAR,
+  DELETE_SELECTED_TASKS,
 } from '../actions/tasks.js';
 import apiCall from '../../utils/api';
 import Vue from 'vue';
@@ -140,8 +143,58 @@ const actions = {
       })
     })
   },
-}
 
+  [MARK_SELECTED_TASKS_AS_COMPLETED]: ({commit, dispatch}) => {
+    return new Promise((resolve, reject) => {
+      const payload = {
+        ids: state.selectedTasks
+      }
+      apiCall.post('/api/tasks/bulk/completed', payload)
+      .then(resp => {
+        dispatch(TASKS_LOAD_TASK_LIST);
+        state.selectedTasks = [];
+        state.selectedAllTasks = false;
+      })
+      .catch(err => {
+        reject(err);
+      })
+    })
+  },
+
+  [MARK_SELECTED_TASKS_WITH_STAR]: ({commit, dispatch}) => {
+    return new Promise((resolve, reject) => {
+      const payload = {
+        ids: state.selectedTasks
+      }
+      apiCall.post('/api/tasks/bulk/star', payload)
+      .then(resp => {
+        dispatch(TASKS_LOAD_TASK_LIST);
+        state.selectedTasks = [];
+        state.selectedAllTasks = false;
+      })
+      .catch(err => {
+        reject(err);
+      })
+    })
+  },
+
+  [DELETE_SELECTED_TASKS]: ({commit, dispatch}) => {
+    return new Promise((resolve, reject) => {
+      const payload = {
+        ids: state.selectedTasks
+      }
+      apiCall.post('/api/tasks/bulk/delete', payload)
+      .then(resp => {
+        dispatch(TASKS_LOAD_TASK_LIST);
+        state.selectedTasks = [];
+        state.selectedAllTasks = false;
+      })
+      .catch(err => {
+        reject(err);
+      })
+    })
+  },
+}
 
 const mutations = {
   [TASKS_LOAD_TASK_LIST_SUCCESS]: (state, resp) => {
