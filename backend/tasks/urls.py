@@ -15,7 +15,11 @@ urlpatterns = [
     path('create/', views.BaseTaskCreate.as_view()),
     path('status/list/', views.TaskStatusList.as_view()),
 
+    # url's for bulk actions
     path('bulk/delete', views.BaseTaskBulkDelete.as_view()),
     path('bulk/completed', views.BaseTaskBulkComplete.as_view()),
     path('bulk/star', views.BaseTaskBulkStar.as_view()),
+
+    # url's to get statistics for dashboard
+    path('stats/count/<user_id>/', views.BaseStats.as_view()),
 ]

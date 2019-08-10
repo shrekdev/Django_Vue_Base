@@ -81,12 +81,15 @@ class BaseTask(BaseTaskFieldsMixin):
     """
     Model representing a single BaseTask with optional SubTasks
     """
-
+    URGENT_AND_IMPORTANT = '1'
+    IMPORTANT_AND_NOT_URGENT = '2'
+    URGENT_AND_NOT_IMPORTANT = '3'
+    NOT_IMPORTANT_AND_NOT_URGENT = '4'
     CHOICES_MATRIX = (
-        ('1', 'Urgent and important'),
-        ('2', 'Important and not urgent'),
-        ('3', 'Urgent and not important'),
-        ('4', 'Not important and not urgent'),
+        (URGENT_AND_IMPORTANT, 'Urgent and important'),
+        (IMPORTANT_AND_NOT_URGENT, 'Important and not urgent'),
+        (URGENT_AND_NOT_IMPORTANT, 'Urgent and not important'),
+        (NOT_IMPORTANT_AND_NOT_URGENT, 'Not important and not urgent'),
     )
 
     TASK_STATUSES = (

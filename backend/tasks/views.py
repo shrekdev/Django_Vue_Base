@@ -1,9 +1,11 @@
-from rest_framework import generics
+from rest_framework import generics, views
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 
 from . import mixins
 from . import models
 from . import serializers
+from . import stats
 
 
 class TaskCategoryList(generics.ListAPIView):
@@ -91,3 +93,11 @@ class BaseTaskBulkStar(mixins.BaseTaskBulkActionMixin):
         instance.is_star = True
         instance.save()
         self._counter += 1
+
+
+class BaseStats(views.APIView):
+    permission_classes = (AllowAny,)
+
+    def get(self, request, user_id):
+        matrix = stats.gen_eisenhower_matrix_stats(user_id=user_id)
+        return Response(matrix)
