@@ -1,21 +1,34 @@
 <template>
   <section>
-    <v-content style="padding: 30px 0px 0px 10px;">
-      <v-container fluid ma-0 pa-0 fill-height>
-        <v-layout justify-space-between>
+    <v-content style="padding: 10px 0px 0px 10px;">
+      <v-container fluid>
+        <v-layout wrap>
 
-          <v-flex sm6 xs12 md6 lg3 color="primary" style="padding-right: 10px;">
+          <v-flex sm6 xs12 md6 lg3 color="primary" style="padding: 0px 10px 20px 0px;">
             <v-card light>
-              <v-btn @click="test_home()">
-                API test
-              </v-btn>
+
+              <div class="v-card-box" style="background-color: green;"></div>
+
+              <v-card-text style="padding: 15px 15px 0px 15px;">
+                <p style="text-align: right; color: gray; text-transform: uppercase; font-size: 13px;">do first</p>
+                <p style="text-align: center; text-indent: 50px; font-size: 30px; margin-bottom: 5px;">:: 5 ::</p>
+              </v-card-text>
+
+              <v-divider></v-divider>
+              <v-card-actions>
+                <p style="color: gray; text-transform: uppercase; font-size: 13px;">
+                  click to see them all
+                </p>
+              </v-card-actions>
             </v-card>
           </v-flex>
 
-          <v-flex sm6 xs12 md6 lg3 color="primary" style="padding-right: 10px;">
+
+
+          <v-flex sm6 xs12 md6 lg3 color="primary" style="padding: 0px 10px 20px 0px;">
             <v-card light>
 
-              <div class="v-card-box"></div>
+              <div class="v-card-box" style="background-color: blue;"></div>
 
               <v-card-text style="padding: 15px 15px 0px 15px;">
                 <p style="text-align: right; color: gray; text-transform: uppercase; font-size: 13px;">do later</p>
@@ -31,15 +44,104 @@
             </v-card>
           </v-flex>
 
-          <v-flex sm6 xs12 md6 lg3 color="primary" style="padding-right: 10px;">
-            <v-card light>a
+
+
+
+          <v-flex sm6 xs12 md6 lg3 color="primary" style="padding: 0px 10px 20px 0px;">
+            <v-card light>
+
+              <div class="v-card-box" style="background-color: orange;"></div>
+
+              <v-card-text style="padding: 15px 15px 0px 15px;">
+                <p style="text-align: right; color: gray; text-transform: uppercase; font-size: 13px;">delegate</p>
+                <p style="text-align: center; text-indent: 50px; font-size: 30px; margin-bottom: 5px;">:: 5 ::</p>
+              </v-card-text>
+
+              <v-divider></v-divider>
+              <v-card-actions>
+                <p style="color: gray; text-transform: uppercase; font-size: 13px;">
+                  click to see them all
+                </p>
+              </v-card-actions>
             </v-card>
           </v-flex>
 
-          <v-flex sm6 xs12 md6 lg3 color="primary" style="padding-right: 10px;">
-            <v-card light>a
+
+
+
+          <v-flex sm6 xs12 md6 lg3 color="primary" style="padding: 0px 10px 20px 0px;">
+            <v-card light>
+
+              <div class="v-card-box" style="background-color: pink;"></div>
+
+              <v-card-text style="padding: 15px 15px 0px 15px;">
+                <p style="text-align: right; color: gray; text-transform: uppercase; font-size: 13px;">eliminate</p>
+                <p style="text-align: center; text-indent: 50px; font-size: 30px; margin-bottom: 5px;">:: 3 ::</p>
+              </v-card-text>
+
+              <v-divider></v-divider>
+              <v-card-actions>
+                <p style="color: gray; text-transform: uppercase; font-size: 13px;">
+                  click to see them all
+                </p>
+              </v-card-actions>
             </v-card>
           </v-flex>
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <v-flex sm6 xs12 md6 lg6 color="primary" style="padding: 0px 10px 20px 0px;">
+            <v-card light>
+
+              <v-card-title style="padding: 8px 10px 8px 10px;">
+                <p style="text-align: right; color: gray; text-transform: uppercase; font-size: 13px; margin-bottom: 0px">
+                  deadline is upcoming
+                </p>
+              </v-card-title>
+              <v-divider></v-divider>
+
+              <v-card-text style="padding: 15px 15px 0px 15px;">
+                <v-list>
+                <v-list-tile>
+                  <v-list-tile>2019-10-10</v-list-tile><v-list-tile-content>task 1 deadline</v-list-tile-content>
+                </v-list-tile>
+                </v-list>
+              </v-card-text>
+
+            </v-card>
+          </v-flex>
+
+
+          <v-flex sm6 xs12 md6 lg6 color="primary" style="padding: 0px 10px 20px 0px;">
+            <v-card light>
+
+              <v-card-title style="padding: 8px 10px 8px 10px;">
+                <p style="text-align: right; color: gray; text-transform: uppercase; font-size: 13px; margin-bottom: 0px">
+                  newly added
+                </p>
+              </v-card-title>
+              <v-divider></v-divider>
+
+              <v-card-text style="padding: 15px 15px 0px 15px;">
+              </v-card-text>
+
+            </v-card>
+          </v-flex>
+
+
+
+
+
 
         </v-layout>
       </v-container>
