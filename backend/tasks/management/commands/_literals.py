@@ -2,7 +2,7 @@ import random
 from django.contrib.auth import get_user_model
 from faker import Faker
 
-from tasks.models import TaskCategory, BaseTask, SubTask
+from tasks.models import TaskCategory, BaseTask, SubTask, TaskStatus
 
 CustomUser = get_user_model()
 
@@ -20,7 +20,7 @@ DEMO_TASK_CATEGORY_COLOR = [
 ]
 
 
-HOW_MUCH_TASKS = 40
+HOW_MUCH_TASKS = 70
 DEMO_TASK_RANDOM_USER = [
     random.choice(CustomUser.objects.filter(is_staff=False)) for _ in range(HOW_MUCH_TASKS)
 ]
@@ -31,7 +31,7 @@ DEMO_TASK_RANDOM_PRIORITY = [
     random.choice(BaseTask.CHOICES_MATRIX)[0] for _ in range(HOW_MUCH_TASKS)
 ]
 DEMO_TASK_RANDOM_STATUS = [
-    random.choice(BaseTask.TASK_STATUSES)[0] for _ in range(HOW_MUCH_TASKS)
+    random.choice(TaskStatus.objects.all()) for _ in range(HOW_MUCH_TASKS)
 ]
 
 
