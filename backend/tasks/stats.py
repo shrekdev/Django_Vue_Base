@@ -39,3 +39,37 @@ def gen_eisenhower_matrix_stats(user_id: int) -> dict:
     }
 
     return content
+
+
+def tasks_with_deadline_upcoming(how_much: int) -> list:
+    tasks_with_deadline = BaseTask.objects.filter(due_to__isnull=False).order_by('-due_to')[0:how_much]
+    elem = []
+
+    if tasks_with_deadline:
+        for task in tasks_with_deadline:
+            elem.append(
+                {
+                    "id": task.id,
+                    "title": task.title,
+                    "due_to": task.due_to
+                }
+            )
+
+    return elem
+
+
+def tasks_newly_added(how_much: int) -> list:
+    recently_added = BaseTask.objects.all().order_by('-created')[0:how_much]
+    elem = []
+
+    if recently_added:
+        for newly in recently_added:
+            elem.append(
+                {
+                    "id": newly.id,
+                    "title": newly.title,
+                    "category": newly.category.all()[0].name
+                }
+            )
+
+    return elem

@@ -95,9 +95,21 @@ class BaseTaskBulkStar(mixins.BaseTaskBulkActionMixin):
         self._counter += 1
 
 
-class BaseStats(views.APIView):
+class BaseStatsEisenhowerMatrix(views.APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request, user_id):
         matrix = stats.gen_eisenhower_matrix_stats(user_id=user_id)
         return Response(matrix)
+
+
+class BaseStatsStatuses(views.APIView):
+    permission_classes = (AllowAny,)
+
+    def get(self, request):
+        content = {
+            "tasks_newly_added": stats.tasks_newly_added(how_much=5),
+            "tasks_with_deadline_upcoming": stats.tasks_with_deadline_upcoming(how_much=5)
+        }
+
+        return Response(content)

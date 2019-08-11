@@ -21,5 +21,6 @@ urlpatterns = [
     path('bulk/star', views.BaseTaskBulkStar.as_view()),
 
     # url's to get statistics for dashboard
-    path('stats/count/<user_id>/', views.BaseStats.as_view()),
+    path('stats/eisenhower-matrix/<user_id>/', views.BaseStatsEisenhowerMatrix.as_view()),
+    path('stats/statuses/', views.BaseStatsStatuses.as_view()),
 ]
