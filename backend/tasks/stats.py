@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-
+from django.core.exceptions import ObjectDoesNotExist
 from .models import BaseTask
 
 CustomUser = get_user_model()
@@ -14,7 +14,7 @@ def gen_eisenhower_matrix_stats(user_id: int) -> dict:
 
     try:
         user = CustomUser.objects.get(id=user_id)
-    except CustomUser.ObjectDoesNotExist:
+    except ObjectDoesNotExist:
         user = None
 
     if user is not None:
@@ -41,35 +41,50 @@ def gen_eisenhower_matrix_stats(user_id: int) -> dict:
     return content
 
 
-def tasks_with_deadline_upcoming(how_much: int) -> list:
-    tasks_with_deadline = BaseTask.objects.filter(due_to__isnull=False).order_by('-due_to')[0:how_much]
-    elem = []
+def tasks_statuses_stats(how_much: int, user_id: int) -> dict:
+    tasks_with_deadline = []
+    recently_added = []
 
-    if tasks_with_deadline:
-        for task in tasks_with_deadline:
-            elem.append(
-                {
-                    "id": task.id,
-                    "title": task.title,
-                    "due_to": task.due_to
-                }
-            )
+    try:
+        user = CustomUser.objects.get(id=user_id)
+    except ObjectDoesNotExist:
+        user = None
 
-    return elem
+    if user is not None:
+        deadlines = BaseTask.objects.filter(
+            due_to__isnull=False, created_by=user
+        ).order_by('due_to')[0:how_much]
 
+        fresh_tasks = BaseTask.objects.filter(
+            created_by=user
+        ).order_by('-created')[0:how_much]
 
-def tasks_newly_added(how_much: int) -> list:
-    recently_added = BaseTask.objects.all().order_by('-created')[0:how_much]
-    elem = []
+        if deadlines:
+            for task in deadlines:
+                tasks_with_deadline.append(
+                    {
+                        "id": task.id,
+                        "title": task.title,
+                        "due_to": task.due_to,
+                        "in_danger": task.is_deadline_in_danger
+                    }
+                )
 
-    if recently_added:
-        for newly in recently_added:
-            elem.append(
-                {
-                    "id": newly.id,
-                    "title": newly.title,
-                    "category": newly.category.all()[0].name
-                }
-            )
+        if fresh_tasks:
+            for newly in fresh_tasks:
+                recently_added.append(
+                    {
+                        "id": newly.id,
+                        "title": newly.title,
+                        "created": newly.created,
+                        "category": newly.category.all()[0].name
+                    }
+                )
 
-    return elem
+    content = {
+        "tasks_newly_added": recently_added,
+        "tasks_with_deadline_upcoming": tasks_with_deadline,
+    }
+
+    return content
+

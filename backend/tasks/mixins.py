@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from rest_framework import generics, status
 from rest_framework.response import Response
-
+import datetime
 from . import models as tasks_models
 
 
@@ -42,6 +42,12 @@ class BaseTaskFieldsMixin(models.Model):
         blank=True,
         null=True,
     )
+
+    @property
+    def is_deadline_in_danger(self):
+        t_of_danger = datetime.datetime.now() - datetime.timedelta(hours=24)
+        deadline = datetime.datetime.combine(self.due_to, datetime.time())
+        return t_of_danger > deadline
 
     class Meta:
         abstract = True

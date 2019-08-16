@@ -90,56 +90,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-          <v-flex sm6 xs12 md6 lg6 color="primary" style="padding: 0px 10px 20px 0px;">
-            <v-card light>
-
-              <v-card-title style="padding: 8px 10px 8px 10px;">
-                <p style="text-align: right; color: gray; text-transform: uppercase; font-size: 13px; margin-bottom: 0px">
-                  deadline is upcoming
-                </p>
-              </v-card-title>
-              <v-divider></v-divider>
-
-              <v-card-text style="padding: 15px 15px 0px 15px;">
-                <v-list>
-                <v-list-tile>
-                  <v-list-tile>2019-10-10</v-list-tile><v-list-tile-content>task 1 deadline</v-list-tile-content>
-                </v-list-tile>
-                </v-list>
-              </v-card-text>
-
-            </v-card>
-          </v-flex>
-
-
-          <v-flex sm6 xs12 md6 lg6 color="primary" style="padding: 0px 10px 20px 0px;">
-            <v-card light>
-
-              <v-card-title style="padding: 8px 10px 8px 10px;">
-                <p style="text-align: right; color: gray; text-transform: uppercase; font-size: 13px; margin-bottom: 0px">
-                  newly added
-                </p>
-              </v-card-title>
-              <v-divider></v-divider>
-
-              <v-card-text style="padding: 15px 15px 0px 15px;">
-              </v-card-text>
-
-            </v-card>
-          </v-flex>
-
-
-
+          <StatsTaskStatuses />
 
 
 
@@ -153,7 +104,7 @@
 
 
 <script>
-  import { TEST_ACTION } from '@/store/actions/auth';
+  import StatsTaskStatuses from './StatsTaskStatuses.vue';
 
   export default {
     name: 'Dashboard',
@@ -161,6 +112,12 @@
       test_home: function () {
         this.$store.dispatch(TEST_ACTION);
       }
+    },
+    created() {
+
+    },
+    components: {
+      StatsTaskStatuses,
     },
   }
 </script>

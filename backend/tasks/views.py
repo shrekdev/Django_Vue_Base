@@ -106,10 +106,6 @@ class BaseStatsEisenhowerMatrix(views.APIView):
 class BaseStatsStatuses(views.APIView):
     permission_classes = (AllowAny,)
 
-    def get(self, request):
-        content = {
-            "tasks_newly_added": stats.tasks_newly_added(how_much=5),
-            "tasks_with_deadline_upcoming": stats.tasks_with_deadline_upcoming(how_much=5)
-        }
-
-        return Response(content)
+    def get(self, request, user_id):
+        statuses = stats.tasks_statuses_stats(how_much=5, user_id=user_id)
+        return Response(statuses)

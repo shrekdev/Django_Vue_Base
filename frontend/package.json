@@ -19,6 +19,7 @@
     "axios": "^0.18.0",
     "buefy": "^0.7.3",
     "jwt-decode": "^2.2.0",
+    "moment": "^2.24.0",
     "vue": "^2.6.8",
     "vue-router": "^3.0.2",
     "vue-sweetalert2": "^1.6.4",
