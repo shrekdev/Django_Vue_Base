@@ -7,10 +7,15 @@ CustomUser = get_user_model()
 
 def gen_eisenhower_matrix_stats(user_id: int) -> dict:
 
-    urgent_and_important = 0
-    important_and_not_urgent = 0
-    urgent_and_not_important = 0
-    not_important_and_not_urgent = 0
+    urgent_and_important = []
+    important_and_not_urgent = []
+    urgent_and_not_important = []
+    not_important_and_not_urgent = []
+    q1 = 0
+    q2 = 0
+    q3 = 0
+    q4 = 0
+
 
     try:
         user = CustomUser.objects.get(id=user_id)
@@ -18,25 +23,66 @@ def gen_eisenhower_matrix_stats(user_id: int) -> dict:
         user = None
 
     if user is not None:
-        urgent_and_important = BaseTask.objects.filter(
+        q1 = BaseTask.objects.filter(
             created_by=user, priority=BaseTask.URGENT_AND_IMPORTANT
         ).count()
-        important_and_not_urgent = BaseTask.objects.filter(
+        q2 = BaseTask.objects.filter(
             created_by=user, priority=BaseTask.IMPORTANT_AND_NOT_URGENT
         ).count()
-        urgent_and_not_important = BaseTask.objects.filter(
+        q3 = BaseTask.objects.filter(
             created_by=user, priority=BaseTask.URGENT_AND_NOT_IMPORTANT
         ).count()
-        not_important_and_not_urgent = BaseTask.objects.filter(
+        q4 = BaseTask.objects.filter(
             created_by=user, priority=BaseTask.NOT_IMPORTANT_AND_NOT_URGENT
         ).count()
 
-    content = {
-        "urgent_and_important": urgent_and_important,
-        "important_and_not_urgent": important_and_not_urgent,
-        "urgent_and_not_important": urgent_and_not_important,
-        "not_important_and_not_urgent": not_important_and_not_urgent
-    }
+    urgent_and_important.append(
+        {
+            "qty": q1,
+            "label": "do first",
+            "color": "green"
+        }
+    )
+
+    important_and_not_urgent.append(
+        {
+            "qty": q2,
+            "label": "do later",
+            "color": "blue"
+        }
+    )
+
+    urgent_and_not_important.append(
+        {
+            "qty": q3,
+            "label": "delegate",
+            "color": "orange"
+        }
+    )
+
+    not_important_and_not_urgent.append(
+        {
+            "qty": q4,
+            "label": "eliminate",
+            "color": "pink"
+        }
+    )
+
+    from collections import OrderedDict
+    content = OrderedDict(
+        {
+            "urgent_and_important": urgent_and_important,
+            "important_and_not_urgent": important_and_not_urgent,
+            "urgent_and_not_important": urgent_and_not_important,
+            "not_important_and_not_urgent": not_important_and_not_urgent
+        }
+    )
+    # content = {
+    #     "urgent_and_important": urgent_and_important,
+    #     "important_and_not_urgent": important_and_not_urgent,
+    #     "urgent_and_not_important": urgent_and_not_important,
+    #     "not_important_and_not_urgent": not_important_and_not_urgent
+    # }
 
     return content
 
