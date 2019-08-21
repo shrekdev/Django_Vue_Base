@@ -1,40 +1,29 @@
 <template>
+  <v-flex sm6 xs12 md6 lg3 color="primary" style="padding: 0px 10px 20px 0px;">
+    <v-card light>
 
-          <v-flex sm6 xs12 md6 lg3 color="primary" style="padding: 0px 10px 20px 0px;">
-            <v-card light>
+      <div class="v-card-box" :style="'background-color: ' + data[0].color"></div>
 
-              <div class="v-card-box" style="background-color: green;"></div>
+      <v-card-text style="padding: 15px 15px 0px 15px;">
+        <p style="text-align: right; color: gray; text-transform: uppercase; font-size: 13px;">{{ data[0].label }}</p>
+        <p style="text-align: center; text-indent: 50px; font-size: 30px; margin-bottom: 5px;">:: {{ data[0].qty }} ::</p>
+      </v-card-text>
 
-              <v-card-text style="padding: 15px 15px 0px 15px;">
-                <p style="text-align: right; color: gray; text-transform: uppercase; font-size: 13px;">label</p>
-                <p style="text-align: center; text-indent: 50px; font-size: 30px; margin-bottom: 5px;">::  qty  ::</p>
-              </v-card-text>
-
-              <v-divider></v-divider>
-              <v-card-actions>
-                <p style="color: gray; text-transform: uppercase; font-size: 13px;">
-                  click to see them all
-                </p>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-
+      <v-divider></v-divider>
+      <v-card-actions>
+        <p style="color: gray; text-transform: uppercase; font-size: 13px;">
+          click to see them all (id={{ data[0].id }})
+        </p>
+      </v-card-actions>
+    </v-card>
+  </v-flex>
 </template>
 
 
 <script>
   export default {
     name: 'StatsEisenhowerMatrix',
-    data() {
-      return {
-      }
-    },
-//    props: {data: Array},
-    props: ['qty', 'label', 'color',],
-    methods: {
-    },
-    computed: {
-    },
+    props: ['data'],
   }
 </script>
 

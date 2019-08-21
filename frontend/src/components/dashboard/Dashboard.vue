@@ -3,10 +3,10 @@
     <v-content style="padding: 10px 0px 0px 10px;">
       <v-container fluid>
         <v-layout wrap>
-          <StatsEisenhowerMatrix :qty=q1[0].qty />
-          <StatsEisenhowerMatrix />
-          <StatsEisenhowerMatrix />
-          <StatsEisenhowerMatrix />
+          <StatsEisenhowerMatrix :data=matrixData.urgent_and_important />
+          <StatsEisenhowerMatrix :data=matrixData.important_and_not_urgent />
+          <StatsEisenhowerMatrix :data=matrixData.urgent_and_not_important />
+          <StatsEisenhowerMatrix :data=matrixData.not_important_and_not_urgent />
           <StatsTaskStatuses />
         </v-layout>
       </v-container>
@@ -23,10 +23,15 @@
 
 
   export default {
-    name: 'Dashboard',
+    name: "Dashboard",
     data() {
       return {
-        q1: {}
+        matrixData: {
+          "urgent_and_important": [{"qty": null, "label": "", "color": "", "id": ""}],
+          "important_and_not_urgent": [{"qty": null, "label": "", "color": "", "id": ""}],
+          "urgent_and_not_important": [{"qty": null, "label": "", "color": "", "id": ""}],
+          "not_important_and_not_urgent": [{"qty": null, "label": "", "color": "", "id": ""}]
+        }
       }
     },
     methods: {
@@ -36,7 +41,7 @@
     },
     created() {
       this.$store.dispatch(DASHBOARD_STATS_EISENHOWER_MATRIX_LOAD, 12).then((response) => {
-        this.q1 = response.data.urgent_and_important;
+        this.matrixData = response.data;
       })
     },
     computed: {

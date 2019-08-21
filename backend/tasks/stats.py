@@ -40,7 +40,8 @@ def gen_eisenhower_matrix_stats(user_id: int) -> dict:
         {
             "qty": q1,
             "label": "do first",
-            "color": "green"
+            "color": "green",
+            "id": BaseTask.URGENT_AND_IMPORTANT
         }
     )
 
@@ -48,7 +49,8 @@ def gen_eisenhower_matrix_stats(user_id: int) -> dict:
         {
             "qty": q2,
             "label": "do later",
-            "color": "blue"
+            "color": "blue",
+            "id": BaseTask.IMPORTANT_AND_NOT_URGENT
         }
     )
 
@@ -56,7 +58,8 @@ def gen_eisenhower_matrix_stats(user_id: int) -> dict:
         {
             "qty": q3,
             "label": "delegate",
-            "color": "orange"
+            "color": "orange",
+            "id": BaseTask.URGENT_AND_NOT_IMPORTANT
         }
     )
 
@@ -64,7 +67,8 @@ def gen_eisenhower_matrix_stats(user_id: int) -> dict:
         {
             "qty": q4,
             "label": "eliminate",
-            "color": "pink"
+            "color": "pink",
+            "id": BaseTask.NOT_IMPORTANT_AND_NOT_URGENT
         }
     )
 
