@@ -68,7 +68,7 @@
 
 
 <script>
-  import { DASHBOARD_STATS_STATUSES_LOAD } from '@/store/actions/dashboard';
+  import { DASHBOARD_STATS_NEW_AND_OLD_LOAD } from '@/store/actions/dashboard';
   import { mapGetters } from 'vuex';
 
 
@@ -85,7 +85,7 @@
       }
     },
     created() {
-      this.$store.dispatch(DASHBOARD_STATS_STATUSES_LOAD, 12).then((response) => {
+      this.$store.dispatch(DASHBOARD_STATS_NEW_AND_OLD_LOAD, 12).then((response) => {
         this.tasksWithDeadline = response.data.tasks_with_deadline_upcoming;
         this.tasksNewlyAdded = response.data.tasks_newly_added;
       })

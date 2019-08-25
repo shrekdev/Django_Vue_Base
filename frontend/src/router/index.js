@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import store from '../store'
 
 import Layout from '@/components/layout/Layout.vue'
+import DashboardLayout from '@/components/layout/DashboardLayout.vue'
 import AuthLayout from '@/components/auth/AuthLayout.vue'
 import Logout from '@/components/auth/Logout.vue'
 import AccountActivate from '@/components/auth/AccountActivate.vue'
@@ -32,7 +33,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      component: Layout,
+      component: DashboardLayout,
       beforeEnter: ifAuthenticated,
       children: [
         {
@@ -41,6 +42,19 @@ const router = new Router({
           component: () => import('@/components/dashboard/Dashboard.vue'),
           beforeEnter: ifAuthenticated,
         },
+      ],
+    },
+    {
+      path: '/',
+      component: Layout,
+      beforeEnter: ifAuthenticated,
+      children: [
+//        {
+//          path: '',
+//          name: 'Dashboard',
+//          component: () => import('@/components/dashboard/Dashboard.vue'),
+//          beforeEnter: ifAuthenticated,
+//        },
         {
           path: 'task-list',
           name: 'TaskList',

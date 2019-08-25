@@ -22,5 +22,6 @@ urlpatterns = [
 
     # url's to get statistics for dashboard
     path('stats/eisenhower-matrix/<user_id>/', views.BaseStatsEisenhowerMatrix.as_view()),
-    path('stats/statuses/<user_id>', views.BaseStatsStatuses.as_view()),
+    path('stats/new-and-old/<user_id>/', views.BaseStatsNewAndOld.as_view()),
+    path('stats/statuses/<user_id>/', views.BaseStatsStatuses.as_view()),
 ]

@@ -103,9 +103,17 @@ class BaseStatsEisenhowerMatrix(views.APIView):
         return Response(matrix)
 
 
+class BaseStatsNewAndOld(views.APIView):
+    permission_classes = (AllowAny,)
+
+    def get(self, request, user_id):
+        statuses = stats.tasks_new_and_with_deadline_stats(how_much=5, user_id=user_id)
+        return Response(statuses)
+
+
 class BaseStatsStatuses(views.APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request, user_id):
-        statuses = stats.tasks_statuses_stats(how_much=5, user_id=user_id)
+        statuses = stats.tasks_statuses_stats(user_id=user_id)
         return Response(statuses)

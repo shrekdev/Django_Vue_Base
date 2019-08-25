@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
-from .models import BaseTask
+from .models import BaseTask, TaskStatus
 
 CustomUser = get_user_model()
 
@@ -15,7 +15,6 @@ def gen_eisenhower_matrix_stats(user_id: int) -> dict:
     q2 = 0
     q3 = 0
     q4 = 0
-
 
     try:
         user = CustomUser.objects.get(id=user_id)
@@ -72,26 +71,17 @@ def gen_eisenhower_matrix_stats(user_id: int) -> dict:
         }
     )
 
-    from collections import OrderedDict
-    content = OrderedDict(
-        {
-            "urgent_and_important": urgent_and_important,
-            "important_and_not_urgent": important_and_not_urgent,
-            "urgent_and_not_important": urgent_and_not_important,
-            "not_important_and_not_urgent": not_important_and_not_urgent
+    content = {
+        "urgent_and_important": urgent_and_important,
+        "important_and_not_urgent": important_and_not_urgent,
+        "urgent_and_not_important": urgent_and_not_important,
+        "not_important_and_not_urgent": not_important_and_not_urgent
         }
-    )
-    # content = {
-    #     "urgent_and_important": urgent_and_important,
-    #     "important_and_not_urgent": important_and_not_urgent,
-    #     "urgent_and_not_important": urgent_and_not_important,
-    #     "not_important_and_not_urgent": not_important_and_not_urgent
-    # }
 
     return content
 
 
-def tasks_statuses_stats(how_much: int, user_id: int) -> dict:
+def tasks_new_and_with_deadline_stats(how_much: int, user_id: int) -> dict:
     tasks_with_deadline = []
     recently_added = []
 
@@ -138,3 +128,26 @@ def tasks_statuses_stats(how_much: int, user_id: int) -> dict:
 
     return content
 
+
+def tasks_statuses_stats(user_id: int) -> dict:
+
+    stat = []
+    task_status_list = list(TaskStatus.objects.all().order_by("id"))
+    if task_status_list:
+        for task_status in task_status_list:
+            tmp = BaseTask.objects.filter(created_by=user_id, status=task_status)
+            if tmp:
+                stat.append([
+                    {
+                        "id": task_status.id,
+                        "label": task_status.name,
+                        "color": task_status.color,
+                        "qty": tmp.count(),
+                    }
+                ])
+
+    content = {
+        "status_list": stat
+    }
+
+    return content
