@@ -1,11 +1,12 @@
 from rest_framework import generics, views
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
 from . import mixins
 from . import models
 from . import serializers
 from . import stats
+from core.jwt_utils import decode_jwt_token, get_user_id_from_token
 
 
 class TaskCategoryList(generics.ListAPIView):
@@ -20,10 +21,23 @@ class TaskStatusList(generics.ListAPIView):
     permission_classes = (AllowAny,)
 
 
-class BaseTaskList(generics.ListAPIView):
-    queryset = models.BaseTask.objects.all()
+class BaseTaskList(generics.ListAPIView, mixins.JwtUserInfoMixin):
     serializer_class = serializers.BaseTaskSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        priority_filter = self.request.GET.get("priority_filter")
+        status_filter = self.request.GET.get("status_filter")
+        user_id = self.user_id()
+        if user_id:
+            if priority_filter:
+                return models.BaseTask.objects.filter(created_by=user_id, priority=priority_filter)
+
+            if status_filter:
+                return models.BaseTask.objects.filter(created_by=user_id, status=status_filter)
+
+            return models.BaseTask.objects.filter(created_by=user_id)
+        return []
 
 
 class SubTaskList(generics.ListAPIView):
@@ -95,8 +109,8 @@ class BaseTaskBulkStar(mixins.BaseTaskBulkActionMixin):
         self._counter += 1
 
 
-class BaseStatsEisenhowerMatrix(views.APIView):
-    permission_classes = (AllowAny,)
+class BaseStatsEisenhowerMatrix(views.APIView, mixins.JwtUserInfoMixin):
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, user_id):
         matrix = stats.gen_eisenhower_matrix_stats(user_id=user_id)

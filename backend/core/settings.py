@@ -5,7 +5,7 @@ from .utils import get_env_variable
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = '^b^%dr2c^jdt*cui42x+o=b%oo1i=trui%qp(^k_svtvp68rkg'
+SECRET_KEY = get_env_variable('DJANGO_SECRET_KEY')
 
 DEBUG = True
 
@@ -27,9 +27,11 @@ THIRD_PARTY_APPS = [
     'djoser',
     'rest_framework',
     'rest_framework.authtoken',
+    # 'rest_framework_simplejwt',
 ]
 
 LOCAL_APPS = [
+    'core',
     'users',
     'tasks',
 ]
@@ -134,13 +136,15 @@ DJOSER = {
 
 DJOSER_EMAIL = {
     'DOMAIN': '192.168.0.143',
-    'SITE_NAME': 'Django&Vue RM app',
+    'SITE_NAME': 'Django&Vue Awesome Web APP by Rafał Misiarek',
 }
 
 
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
     'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=1),
+    'ALGORITHM': get_env_variable('JWT_ALGORITHM'),
+    'SIGNING_KEY': SECRET_KEY,
 }
 
 LANGUAGE_CODE = 'en-us'

@@ -50,8 +50,11 @@ const getters = {
 
 const actions = {
   [TASKS_LOAD_TASK_LIST]: ({commit, dispatch}) => {
+    const payload = {
+      filter_by: 123
+    }
     return new Promise((resolve, reject) => {
-      apiCall.get('/api/tasks/task_list/')
+      apiCall.get('/api/tasks/task_list/', {params: {'status_filter': 1}})
       .then(resp => {
         commit(TASKS_LOAD_TASK_LIST_SUCCESS, resp);
         resolve(resp);

@@ -4,6 +4,7 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 import datetime
 from . import models as tasks_models
+from core import jwt_utils
 
 
 class BaseTaskFieldsMixin(models.Model):
@@ -90,3 +91,16 @@ class BaseTaskBulkActionMixin(generics.GenericAPIView):
     def perform_bulk_action(self, objects):
         for obj in objects:
             self.perform_action(instance=obj)
+
+
+class JwtUserInfoMixin:
+    """
+    Mixin to get information about user from JWT token,
+    needed for queryset filtering in views
+    """
+
+    def user_id(self):
+        token = self.request.META.get("HTTP_AUTHORIZATION", " ").split(' ')[1]
+        if token:
+            return jwt_utils.get_user_id_from_token(token)
+        return None
