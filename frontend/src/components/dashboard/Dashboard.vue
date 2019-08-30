@@ -4,17 +4,17 @@
       <p class="v-custom-header-name">eisenhower matrix</p>
       <v-container fluid>
         <v-layout wrap>
-          <DashboardBox :data=matrixData.urgent_and_important />
-          <DashboardBox :data=matrixData.important_and_not_urgent />
-          <DashboardBox :data=matrixData.urgent_and_not_important />
-          <DashboardBox :data=matrixData.not_important_and_not_urgent />
+          <DashboardBox :data=matrixData.urgent_and_important filter_by="priority"/>
+          <DashboardBox :data=matrixData.important_and_not_urgent filter_by="priority" />
+          <DashboardBox :data=matrixData.urgent_and_not_important filter_by="priority" />
+          <DashboardBox :data=matrixData.not_important_and_not_urgent filter_by="priority" />
         </v-layout>
       </v-container>
       <p class="v-custom-header-name">task statuses</p>
       <v-container fluid>
         <v-layout wrap>
           <template v-for="status in statusesData.status_list">
-            <DashboardBox :data=status />
+            <DashboardBox :data=status filter_by="status" />
           </template>
         </v-layout>
       </v-container>

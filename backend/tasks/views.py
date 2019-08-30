@@ -26,17 +26,20 @@ class BaseTaskList(generics.ListAPIView, mixins.JwtUserInfoMixin):
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        priority_filter = self.request.GET.get("priority_filter")
-        status_filter = self.request.GET.get("status_filter")
-        user_id = self.user_id()
-        if user_id:
-            if priority_filter:
-                return models.BaseTask.objects.filter(created_by=user_id, priority=priority_filter)
+        filter_by = self.request.GET.get("filter_by")
+        filter_by_id = self.request.GET.get("id")
 
-            if status_filter:
-                return models.BaseTask.objects.filter(created_by=user_id, status=status_filter)
+        # user_id = self.user_id()
+        user_id = 12
+        if user_id:
+            if filter_by == "priority":
+                return models.BaseTask.objects.filter(created_by=user_id, priority=filter_by_id)
+
+            if filter_by == "status":
+                return models.BaseTask.objects.filter(created_by=user_id, status=filter_by_id)
 
             return models.BaseTask.objects.filter(created_by=user_id)
+        
         return []
 
 

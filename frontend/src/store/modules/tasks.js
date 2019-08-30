@@ -49,12 +49,10 @@ const getters = {
 
 
 const actions = {
-  [TASKS_LOAD_TASK_LIST]: ({commit, dispatch}) => {
-    const payload = {
-      filter_by: 123
-    }
+  [TASKS_LOAD_TASK_LIST]: ({commit, dispatch}, data) => {
+    state.tasksList = {}
     return new Promise((resolve, reject) => {
-      apiCall.get('/api/tasks/task_list/', {params: {'status_filter': 1}})
+      apiCall.get('/api/tasks/task_list/', {params: data})
       .then(resp => {
         commit(TASKS_LOAD_TASK_LIST_SUCCESS, resp);
         resolve(resp);
@@ -90,7 +88,6 @@ const actions = {
   },
 
   [TASKS_UPDATE_TASK]: ({commit, dispatch}, data) => {
-    console.log('data: ', data)
     return new Promise((resolve, reject) => {
       apiCall.put(`/api/tasks/update/${data.id}/`, data)
       .then(resp => {
@@ -135,7 +132,6 @@ const actions = {
 
   [ADD_TASK]: ({commit, dispatch}, payload) => {
     return new Promise((resolve, reject) => {
-      console.log('ADD_TASK: data = ', payload)
       apiCall.post('/api/tasks/create/', payload)
       .then(resp => {
         resolve(resp);

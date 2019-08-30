@@ -8,7 +8,7 @@
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
-        <p style="color: gray; text-transform: uppercase; font-size: 13px;">
+        <p style="color: gray; text-transform: uppercase; font-size: 13px;" @click="loadFilteredTasks(filter_by, data[0].id)">
           click to see them all (id={{ data[0].id }})
         </p>
       </v-card-actions>
@@ -20,8 +20,20 @@
 <script>
   export default {
     name: 'DashboardBox',
-    props: ['data'],
+    props: ['data', 'filter_by'],
+    methods: {
+      loadFilteredTasks: function(filter, id) {
+        this.$router.push({
+          name: 'TaskList',
+          params: {
+            filter_by: filter,
+            id: id
+          }
+        });
+      }
+    },
   }
+
 </script>
 
 <style scoped>

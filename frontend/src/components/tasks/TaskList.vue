@@ -69,7 +69,19 @@
       this.$store.dispatch(TASKS_LOAD_STATUS_LIST).then((response) => {
         this.statusList = response.data;
       })
-      this.$store.dispatch(TASKS_LOAD_TASK_LIST);
+      if(this.$route.params.filter_by && this.$route.params.id) {
+        const payload = {
+          filter_by: this.$route.params.filter_by,
+          id: this.$route.params.id
+        }
+        this.$store.dispatch(TASKS_LOAD_TASK_LIST, payload);
+      } else {
+        const payload = {
+          filter_by: null,
+          id: null
+        }
+        this.$store.dispatch(TASKS_LOAD_TASK_LIST, payload);
+      }
     },
     methods: {
       updateTask(taskId) {
