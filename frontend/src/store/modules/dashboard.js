@@ -20,7 +20,7 @@ const getters = {
 const actions = {
   [DASHBOARD_STATS_NEW_AND_OLD_LOAD]: ({commit, dispatch}, userId) => {
     return new Promise((resolve, reject) => {
-      apiCall.get(`/api/tasks/stats/new-and-old/${userId}/`)
+      apiCall.get(`/api/tasks/stats/new-and-old/`)
       .then(resp => {
         resolve(resp);
       })
@@ -32,7 +32,7 @@ const actions = {
 
   [DASHBOARD_STATS_EISENHOWER_MATRIX_LOAD]: ({commit, dispatch}, userId) => {
     return new Promise((resolve, reject) => {
-      apiCall.get(`/api/tasks/stats/eisenhower-matrix/${userId}/`)
+      apiCall.get(`/api/tasks/stats/eisenhower-matrix/`)
       .then(resp => {
         resolve(resp);
       })
@@ -44,7 +44,7 @@ const actions = {
 
   [DASHBOARD_STATS_STATUS_LIST_LOAD]: ({commit, dispatch}, userId) => {
     return new Promise((resolve, reject) => {
-      apiCall.get(`/api/tasks/stats/statuses/${userId}/`)
+      apiCall.get(`/api/tasks/stats/statuses/`)
       .then(resp => {
         resolve(resp);
       })

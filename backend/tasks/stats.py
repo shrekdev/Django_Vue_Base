@@ -24,16 +24,16 @@ def gen_eisenhower_matrix_stats(user_id: int) -> dict:
     if user is not None:
         q1 = BaseTask.objects.filter(
             created_by=user, priority=BaseTask.URGENT_AND_IMPORTANT
-        ).count()
+        ).exclude(status__name="Completed").count()
         q2 = BaseTask.objects.filter(
             created_by=user, priority=BaseTask.IMPORTANT_AND_NOT_URGENT
-        ).count()
+        ).exclude(status__name="Completed").count()
         q3 = BaseTask.objects.filter(
             created_by=user, priority=BaseTask.URGENT_AND_NOT_IMPORTANT
-        ).count()
+        ).exclude(status__name="Completed").count()
         q4 = BaseTask.objects.filter(
             created_by=user, priority=BaseTask.NOT_IMPORTANT_AND_NOT_URGENT
-        ).count()
+        ).exclude(status__name="Completed").count()
 
     urgent_and_important.append(
         {

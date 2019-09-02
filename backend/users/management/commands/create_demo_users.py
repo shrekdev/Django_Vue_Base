@@ -2,7 +2,6 @@ from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from django.db.utils import IntegrityError
 
-from ._literals import *
 
 CustomUser = get_user_model()
 
@@ -16,17 +15,21 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        for i in range(HOW_MUCH_DEMO_USERS):
+        user_settings = [
+            ("Rafał", "rafal@mail.com"), ("Kasia", "kasia@mail.com")
+        ]
+
+        for first_name, email in user_settings:
             try:
                 user = CustomUser.objects.create_user(
-                    first_name=DEMO_USER_FIRST_NAME[i],
-                    email=DEMO_USER_EMAIL[i],
-                    password=DEMO_USER_PASSWORD,
+                    first_name=first_name,
+                    email=email,
+                    password="password",
                     is_active=True,
                     is_staff=False,
                 )
                 user.save()
             except IntegrityError:
-                self.stderr.write(self.style.ERROR(f"User {DEMO_USER_FIRST_NAME[i]} already exist!"))
+                self.stderr.write(self.style.ERROR(f"User {first_name} already exist!"))
             else:
-                self.stdout.write(self.style.SUCCESS(f"Successfully created user: {DEMO_USER_FIRST_NAME[i]}"))
+                self.stdout.write(self.style.SUCCESS(f"Successfully created user: {first_name}"))

@@ -49,12 +49,6 @@ const router = new Router({
       component: Layout,
       beforeEnter: ifAuthenticated,
       children: [
-//        {
-//          path: '',
-//          name: 'Dashboard',
-//          component: () => import('@/components/dashboard/Dashboard.vue'),
-//          beforeEnter: ifAuthenticated,
-//        },
         {
           path: 'task-list',
           name: 'TaskList',

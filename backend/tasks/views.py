@@ -6,7 +6,6 @@ from . import mixins
 from . import models
 from . import serializers
 from . import stats
-from core.jwt_utils import decode_jwt_token, get_user_id_from_token
 
 
 class TaskCategoryList(generics.ListAPIView):
@@ -28,9 +27,7 @@ class BaseTaskList(generics.ListAPIView, mixins.JwtUserInfoMixin):
     def get_queryset(self):
         filter_by = self.request.GET.get("filter_by")
         filter_by_id = self.request.GET.get("id")
-
-        # user_id = self.user_id()
-        user_id = 12
+        user_id = self.user_id()
         if user_id:
             if filter_by == "priority":
                 return models.BaseTask.objects.filter(created_by=user_id, priority=filter_by_id)
@@ -115,22 +112,22 @@ class BaseTaskBulkStar(mixins.BaseTaskBulkActionMixin):
 class BaseStatsEisenhowerMatrix(views.APIView, mixins.JwtUserInfoMixin):
     permission_classes = (IsAuthenticated,)
 
-    def get(self, request, user_id):
-        matrix = stats.gen_eisenhower_matrix_stats(user_id=user_id)
+    def get(self, request):
+        matrix = stats.gen_eisenhower_matrix_stats(user_id=self.user_id())
         return Response(matrix)
 
 
-class BaseStatsNewAndOld(views.APIView):
+class BaseStatsNewAndOld(views.APIView, mixins.JwtUserInfoMixin):
     permission_classes = (AllowAny,)
 
-    def get(self, request, user_id):
-        statuses = stats.tasks_new_and_with_deadline_stats(how_much=5, user_id=user_id)
+    def get(self, request):
+        statuses = stats.tasks_new_and_with_deadline_stats(how_much=5, user_id=self.user_id())
         return Response(statuses)
 
 
-class BaseStatsStatuses(views.APIView):
+class BaseStatsStatuses(views.APIView, mixins.JwtUserInfoMixin):
     permission_classes = (AllowAny,)
 
-    def get(self, request, user_id):
-        statuses = stats.tasks_statuses_stats(user_id=user_id)
+    def get(self, request):
+        statuses = stats.tasks_statuses_stats(user_id=self.user_id())
         return Response(statuses)
