@@ -24,6 +24,10 @@
           <StatsTaskStatuses />
         </v-layout>
       </v-container>
+      <p class="v-custom-header-name">chart</p>
+      <v-container fluid>
+        <StatusesChart />
+      </v-container>
     </v-content>
   </section>
 </template>
@@ -34,7 +38,7 @@
   import DashboardBox from './DashboardBox.vue';
   import { DASHBOARD_STATS_EISENHOWER_MATRIX_LOAD, DASHBOARD_STATS_STATUS_LIST_LOAD } from '@/store/actions/dashboard';
   import { mapGetters } from 'vuex';
-
+  import StatusesChart from './StatusesChart';
 
   export default {
     name: "Dashboard",
@@ -68,6 +72,7 @@
     components: {
       DashboardBox,
       StatsTaskStatuses,
+      StatusesChart,
     },
   }
 </script>

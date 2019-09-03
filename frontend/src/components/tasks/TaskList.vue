@@ -15,7 +15,9 @@
               </div>
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
-                  <v-chip small :color="item.status.color" v-on="on" style="width: auto;">{{ item.status.name[0] }}</v-chip>
+                  <v-chip @click.stop="statusClicked(item.status.id)" small :color="item.status.color" v-on="on" style="width: auto;">
+                    {{ item.status.name[0] }}
+                  </v-chip>
                 </template>
                 <span>{{ item.status.name }}</span>
               </v-tooltip>
@@ -113,6 +115,9 @@
       },
       addTaskToSelected(taskId) {
         this.$store.commit(CHANGE_SELECTED_TASK, taskId);
+      },
+      statusClicked(statusId) {
+        // TODO: filter by status id (nested object)
       },
     },
     computed: {
