@@ -15,7 +15,8 @@ class BaseTaskFieldsMixin(models.Model):
     created = models.DateTimeField(
         verbose_name='created',
         help_text='Created date and time',
-        auto_now_add=True,
+        # auto_now_add=True,
+        default=timezone.now
     )
 
     updated = models.DateTimeField(

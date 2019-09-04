@@ -24,4 +24,5 @@ urlpatterns = [
     path('stats/eisenhower-matrix/', views.BaseStatsEisenhowerMatrix.as_view()),
     path('stats/new-and-old/', views.BaseStatsNewAndOld.as_view()),
     path('stats/statuses/', views.BaseStatsStatuses.as_view()),
+    path('stats/statuses/chart/', views.BaseStatsStatusesChart.as_view()),
 ]

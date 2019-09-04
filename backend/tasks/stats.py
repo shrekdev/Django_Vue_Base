@@ -1,5 +1,8 @@
+import datetime
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils import timezone
+
 from .models import BaseTask, TaskStatus
 
 CustomUser = get_user_model()
@@ -151,3 +154,42 @@ def tasks_statuses_stats(user_id: int) -> dict:
     }
 
     return content
+
+
+def tasks_statuses_chart(user_id: str, days: int) -> dict:
+
+    end_datetime = timezone.now()
+    start_datetime = end_datetime - datetime.timedelta(days=days)
+
+    user_tasks = list(BaseTask.objects.filter(
+        created__gte=start_datetime, created__lte=end_datetime, created_by=user_id
+    ))
+
+    labels = sorted({s.created for s in user_tasks})
+    status_list = [s for s in TaskStatus.objects.all().exclude(name="Completed")]
+
+    datasets = []
+    for status_input in status_list:
+        tmp_agg = []
+        for time_input in labels:
+            agg = BaseTask.objects.filter(
+                created=time_input, status__name=status_input.name
+            ).count()
+            tmp_agg.append(agg)
+
+        datasets.append(
+            {
+                "fill": False,
+                "label": status_input.name,
+                "backgroundColor": status_input.color,
+                "borderColor": status_input.color,
+                "data": tmp_agg
+            }
+        )
+
+    context = {
+        "labels": sorted(l.strftime("%Y-%m-%d") for l in labels),
+        "datasets": datasets
+    }
+
+    return {"data": context}

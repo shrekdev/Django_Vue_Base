@@ -2,6 +2,7 @@ import {
   DASHBOARD_STATS_NEW_AND_OLD_LOAD,
   DASHBOARD_STATS_EISENHOWER_MATRIX_LOAD,
   DASHBOARD_STATS_STATUS_LIST_LOAD,
+  DASHBOARD_STATS_STATUSES_CHART,
 } from '../actions/dashboard.js';
 import apiCall from '../../utils/api';
 import Vue from 'vue';
@@ -53,6 +54,19 @@ const actions = {
       })
     })
   },
+
+  [DASHBOARD_STATS_STATUSES_CHART]: ({commit, dispatch}, userId) => {
+    return new Promise((resolve, reject) => {
+      apiCall.get('/api/tasks/stats/statuses/chart/')
+      .then(resp => {
+        resolve(resp);
+      })
+      .catch(err => {
+        reject(err);
+      })
+    })
+  },
+
 }
 
 const mutations = {

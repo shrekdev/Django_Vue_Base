@@ -131,3 +131,11 @@ class BaseStatsStatuses(views.APIView, mixins.JwtUserInfoMixin):
     def get(self, request):
         statuses = stats.tasks_statuses_stats(user_id=self.user_id())
         return Response(statuses)
+
+
+class BaseStatsStatusesChart(views.APIView, mixins.JwtUserInfoMixin):
+    permission_classes = (AllowAny,)
+
+    def get(self, request):
+        data = stats.tasks_statuses_chart(user_id=self.user_id(), days=10)
+        return Response(data)

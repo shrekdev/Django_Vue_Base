@@ -1,4 +1,6 @@
 import random
+import datetime
+from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from django.db.utils import IntegrityError
@@ -41,6 +43,11 @@ class Command(BaseCommand):
             random.choice(TaskStatus.objects.all()) for _ in range(self.HOW_MUCH_TASKS)
         ]
 
+        tnow = timezone.now()
+        random_task_created_list = [
+            tnow - datetime.timedelta(days=random.randint(1, 10)) for _ in range(self.HOW_MUCH_TASKS)
+        ]
+
         user = CustomUser.objects.filter(first_name='Rafał')[0]
 
         for i in range(self.HOW_MUCH_TASKS):
@@ -51,6 +58,7 @@ class Command(BaseCommand):
                     title=random_task_title_list[i],
                     priority=random_task_priority_list[i],
                     status=random_task_status_list[i],
+                    created=random_task_created_list[i],
                     completed=True if random_task_status_list[i] == '5' else False
                 )
                 task.category.set([random_task_category_list[i]])

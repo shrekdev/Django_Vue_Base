@@ -58,7 +58,7 @@
         this.$store.dispatch(TEST_ACTION);
       }
     },
-    created() {
+    mounted() {
       this.$store.dispatch(DASHBOARD_STATS_EISENHOWER_MATRIX_LOAD, 12).then((response) => {
         this.matrixData = response.data;
       })
