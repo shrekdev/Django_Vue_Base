@@ -8,8 +8,8 @@
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
-        <p style="color: gray; text-transform: uppercase; font-size: 13px;" @click="loadFilteredTasks(filter_by, data[0].id)">
-          click to see them all (id={{ data[0].id }})
+        <p style="color: gray; text-transform: uppercase; font-size: 13px; cursor:pointer;" @click="loadFilteredTasks(filter_by, data[0].id)">
+          <v-icon color="accent">arrow_right</v-icon>click to see them all
         </p>
       </v-card-actions>
     </v-card>

@@ -94,13 +94,9 @@ def tasks_new_and_with_deadline_stats(how_much: int, user_id: int) -> dict:
         user = None
 
     if user is not None:
-        deadlines = BaseTask.objects.filter(
-            due_to__isnull=False, created_by=user
-        ).order_by('due_to')[0:how_much]
-
-        fresh_tasks = BaseTask.objects.filter(
-            created_by=user
-        ).order_by('-created')[0:how_much]
+        tnow = timezone.now()
+        deadlines = BaseTask.objects.filter(due_to__gte=tnow, created_by=user).order_by('due_to')[0:how_much]
+        fresh_tasks = BaseTask.objects.filter(created_by=user).order_by('-created')[0:how_much]
 
         if deadlines:
             for task in deadlines:

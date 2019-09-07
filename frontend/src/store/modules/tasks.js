@@ -197,7 +197,7 @@ const actions = {
 
 const mutations = {
   [TASKS_LOAD_TASK_LIST_SUCCESS]: (state, resp) => {
-    state.tasksList = resp.data;
+    state.tasksList = resp.data.results;
   },
   [SET_TASK_ID_TO_UPDATE]: (state, taskId) => {
     state.taskToUpdate = taskId;
@@ -236,7 +236,7 @@ const mutations = {
       state.selectedTasks = [];
     }
   },
-  [SHOW_TASK_FORM]: (state) => {
+  [SHOW_TASK_FORM]: (state, data) => {
     state.showTaskForm = !state.showTaskForm;
   },
 }

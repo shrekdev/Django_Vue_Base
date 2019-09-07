@@ -1,4 +1,5 @@
 from rest_framework import generics, views
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
@@ -6,6 +7,12 @@ from . import mixins
 from . import models
 from . import serializers
 from . import stats
+
+
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size_query_param = 'page_size'
+    page_size = 20
+    max_page_size = 20
 
 
 class TaskCategoryList(generics.ListAPIView):
@@ -22,12 +29,14 @@ class TaskStatusList(generics.ListAPIView):
 
 class BaseTaskList(generics.ListAPIView, mixins.JwtUserInfoMixin):
     serializer_class = serializers.BaseTaskSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
+    pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         filter_by = self.request.GET.get("filter_by")
         filter_by_id = self.request.GET.get("id")
-        user_id = self.user_id()
+        # user_id = self.user_id()
+        user_id = 4
         if user_id:
             if filter_by == "priority":
                 return models.BaseTask.objects.filter(created_by=user_id, priority=filter_by_id)
@@ -121,7 +130,7 @@ class BaseStatsNewAndOld(views.APIView, mixins.JwtUserInfoMixin):
     permission_classes = (AllowAny,)
 
     def get(self, request):
-        statuses = stats.tasks_new_and_with_deadline_stats(how_much=5, user_id=self.user_id())
+        statuses = stats.tasks_new_and_with_deadline_stats(how_much=3, user_id=self.user_id())
         return Response(statuses)
 
 

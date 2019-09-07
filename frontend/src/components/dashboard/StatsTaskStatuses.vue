@@ -4,7 +4,7 @@
       <v-card light>
         <v-card-title style="padding: 8px 10px 8px 10px;">
           <p class="v-custom-p">
-            deadline is upcoming
+            upcoming deadlines
           </p>
         </v-card-title>
         <v-divider></v-divider>

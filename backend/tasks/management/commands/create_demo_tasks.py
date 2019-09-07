@@ -59,6 +59,7 @@ class Command(BaseCommand):
                     priority=random_task_priority_list[i],
                     status=random_task_status_list[i],
                     created=random_task_created_list[i],
+                    due_to=random_task_created_list[i] + datetime.timedelta(days=random.randint(5, 15)),
                     completed=True if random_task_status_list[i] == '5' else False
                 )
                 task.category.set([random_task_category_list[i]])

@@ -18,15 +18,15 @@
           </template>
         </v-layout>
       </v-container>
+      <p class="v-custom-header-name">task statuses changes</p>
+      <v-container fluid>
+        <StatusesChart />
+      </v-container>
       <p class="v-custom-header-name">news</p>
       <v-container fluid>
         <v-layout wrap>
           <StatsTaskStatuses />
         </v-layout>
-      </v-container>
-      <p class="v-custom-header-name">chart</p>
-      <v-container fluid>
-        <StatusesChart />
       </v-container>
     </v-content>
   </section>

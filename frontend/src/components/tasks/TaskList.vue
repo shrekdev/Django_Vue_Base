@@ -15,7 +15,7 @@
               </div>
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
-                  <v-chip @click.stop="statusClicked(item.status.id)" small :color="item.status.color" v-on="on" style="width: auto;">
+                  <v-chip small :color="item.status.color" v-on="on" style="width: auto;">
                     {{ item.status.name[0] }}
                   </v-chip>
                 </template>
@@ -44,6 +44,17 @@
       </v-hover>
     </template>
   </v-list>
+
+<template>
+  <div class="text-xs-center">
+    <v-pagination
+      v-model="page"
+      :length="6"
+      @input="paginationHandler()">
+    </v-pagination>
+  </div>
+</template>
+
 </section>
 </template>
 
@@ -56,6 +67,7 @@
     TASKS_LOAD_TASK_LIST,
     TASKS_LOAD_STATUS_LIST,
     CHANGE_SELECTED_TASK,
+    TASKS_LOAD_CATEGORY_LIST
   } from '@/store/actions/tasks';
   import { mapGetters } from 'vuex';
 
@@ -65,6 +77,7 @@
     data() {
       return {
         statusList: [],
+        page: 1,
       }
     },
     created() {
@@ -116,9 +129,12 @@
       addTaskToSelected(taskId) {
         this.$store.commit(CHANGE_SELECTED_TASK, taskId);
       },
-      statusClicked(statusId) {
-        // TODO: filter by status id (nested object)
-      },
+      paginationHandler() {
+        const payload = {
+          page: this.page
+        }
+        this.$store.dispatch(TASKS_LOAD_TASK_LIST, payload);
+      }
     },
     computed: {
       ...mapGetters(['getTasksList', 'getSelectedTasksIds']),
