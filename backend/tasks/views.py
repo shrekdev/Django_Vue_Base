@@ -21,10 +21,13 @@ class TaskCategoryList(generics.ListAPIView):
     permission_classes = (AllowAny,)
 
 
-class TaskStatusList(generics.ListAPIView):
-    queryset = models.TaskStatus.objects.all()
+class TaskStatusList(generics.ListAPIView, mixins.JwtUserInfoMixin):
     serializer_class = serializers.TaskStatusSerializer
     permission_classes = (AllowAny,)
+
+    def get_queryset(self):
+        user_id = self.user_id()
+        return models.TaskStatus.objects.filter(user=1)
 
 
 class BaseTaskList(generics.ListAPIView, mixins.JwtUserInfoMixin):

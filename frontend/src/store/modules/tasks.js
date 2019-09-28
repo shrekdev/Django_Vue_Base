@@ -16,6 +16,7 @@ import {
   MARK_SELECTED_TASKS_AS_COMPLETED,
   MARK_SELECTED_TASKS_WITH_STAR,
   DELETE_SELECTED_TASKS,
+  TASKS_LOAD_STATUS_LIST_SUCCESS,
 } from '../actions/tasks.js';
 import apiCall from '../../utils/api';
 import Vue from 'vue';
@@ -28,6 +29,7 @@ function helper_CleanUpdateTaskStates() {
 
 const state = {
   tasksList: {},
+  statusList: {},
   taskToUpdate: 0,
   selectedTasks: [],
   selectedAllTasks: false,
@@ -41,9 +43,25 @@ const getters = {
   getShowTakFormStatus: state => state.showTaskForm,
 
   getTaskById(state) {
-    return id => state.tasksList.filter(item =>{
+    return id => state.tasksList.filter(item => {
       return item.id === id
     });
+  },
+
+  getNewStatusLabelId(state) {
+    for(let i=0; i<state.statusList.length; i++) {
+      if(state.statusList[i].is_new === true) {
+        return state.statusList[i].id
+      }
+    }
+  },
+
+  getCompletedStatusLabelId(state) {
+    for(let i=0; i<state.statusList.length; i++) {
+      if(state.statusList[i].is_completed === true) {
+        return state.statusList[i].id
+      }
+    }
   },
 }
 
@@ -79,6 +97,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       apiCall.get('/api/tasks/status/list/')
       .then(resp => {
+        commit(TASKS_LOAD_STATUS_LIST_SUCCESS, resp);
         resolve(resp);
       })
       .catch(err => {
@@ -238,6 +257,9 @@ const mutations = {
   },
   [SHOW_TASK_FORM]: (state, data) => {
     state.showTaskForm = !state.showTaskForm;
+  },
+  [TASKS_LOAD_STATUS_LIST_SUCCESS]: (state, resp) => {
+    state.statusList = resp.data;
   },
 }
 

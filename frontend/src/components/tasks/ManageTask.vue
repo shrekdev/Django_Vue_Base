@@ -10,7 +10,7 @@
 <v-form ref="form" v-model="valid" lazy-validation>
     <v-textarea dark solo v-model="taskTitle" required></v-textarea>
 
-    <v-select v-if="getTaskIdToUpdate == 0" solo v-model="statusSelectedDefault" item-text="name" item-value="id"
+    <v-select v-if="getTaskIdToUpdate == 0" solo v-model="this.getNewStatusLabelId" item-text="name" item-value="id"
       :items="statusList" disabled label="Status" chips persistent-hint >
     </v-select>
     <v-select v-else solo v-model="statusListSelected" item-text="name" item-value="id" :items="statusList"
@@ -59,8 +59,6 @@
   } from '@/store/actions/tasks';
   import {
     TASKS_PRIORITY_LIST,
-    ID_FOR_NEW_TASK,
-    ID_FOR_COMPLETED_TASK,
   } from './literals';
   import { mapGetters } from 'vuex';
 
@@ -71,7 +69,6 @@
       return {
         datePickerMenu: false,
         valid: true,
-        statusSelectedDefault: ID_FOR_NEW_TASK,
         alertSuccess: false,
         alertError: false,
         dueTo: '',
@@ -103,7 +100,7 @@
           priority: this.priorityListSelected,
           created_by: this.getUserId,
           assigned_to: this.getUserId,
-          status: ID_FOR_NEW_TASK,
+          status: this.getNewStatusLabelId,
           category: this.categoryListSelected,
           due_to: this.dueTo,
         }
@@ -118,7 +115,7 @@
         }
 
         let completed = false;
-        if(this.statusListSelected === ID_FOR_COMPLETED_TASK) {
+        if(this.statusListSelected === this.getCompletedStatusLabelId) {
           completed = true;
         }
 
@@ -162,7 +159,7 @@
       this.dueTo = t.due_to;
     },
     computed: {
-      ...mapGetters(['getTaskIdToUpdate', 'getTaskById', 'getUserId']),
+      ...mapGetters(['getTaskIdToUpdate', 'getTaskById', 'getUserId', 'getNewStatusLabelId', 'getCompletedStatusLabelId']),
       taskToUpdate: function taskId() {
         const id = this.getTaskIdToUpdate;
         if(id != 0) {

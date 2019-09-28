@@ -52,8 +52,16 @@ class TaskCategory(models.Model):
 
 class TaskStatus(models.Model):
     """
-    Model representing a single status for Task model
+    Model representing a single status for BaseTask
     """
+
+    user = models.ForeignKey(
+        to=CustomUser,
+        verbose_name='user',
+        help_text='user',
+        related_name='user_status_list',
+        on_delete=models.CASCADE,
+    )
 
     name = models.CharField(
         verbose_name='status name',
@@ -64,9 +72,23 @@ class TaskStatus(models.Model):
 
     color = models.CharField(
         verbose_name='color',
-        help_text='Color of Task Status (HEX)',
+        help_text='color of Task Status (HEX)',
         default='#0000FF',
         max_length=7,
+    )
+
+    # TODO: there can be only one is_new and only one is_completed label for each user
+
+    is_new = models.BooleanField(
+        verbose_name="is new",
+        help_text="determine whether this label indicate new task",
+        default=False,
+    )
+
+    is_completed = models.BooleanField(
+        verbose_name="is completed",
+        help_text="determine whether this label indicate completed task",
+        default=False,
     )
 
     class Meta:
