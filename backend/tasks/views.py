@@ -1,4 +1,4 @@
-from rest_framework import generics, views
+from rest_framework import generics, views, filters
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -34,6 +34,8 @@ class BaseTaskList(generics.ListAPIView, mixins.JwtUserInfoMixin):
     serializer_class = serializers.BaseTaskSerializer
     permission_classes = (AllowAny,)
     pagination_class = StandardResultsSetPagination
+    search_fields = ['title']
+    filter_backends = (filters.SearchFilter,)
 
     def get_queryset(self):
         filter_by = self.request.GET.get("filter_by")
