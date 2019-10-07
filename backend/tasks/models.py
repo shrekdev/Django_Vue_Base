@@ -81,14 +81,20 @@ class TaskStatus(models.Model):
 
     is_new = models.BooleanField(
         verbose_name="is new",
-        help_text="determine whether this label indicate new task",
+        help_text="to determine whether this label indicate new task",
         default=False,
     )
 
     is_completed = models.BooleanField(
         verbose_name="is completed",
-        help_text="determine whether this label indicate completed task",
+        help_text="to determine whether this label indicate completed task",
         default=False,
+    )
+
+    is_active = models.BooleanField(
+        verbose_name="is active",
+        help_text="to determine whether this label is in use",
+        default=True,
     )
 
     class Meta:

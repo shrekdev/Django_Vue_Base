@@ -38,6 +38,7 @@ const state = {
 
 const getters = {
   getTasksList: state => state.tasksList,
+  getStatusList: state => state.statusList,
   getTaskIdToUpdate: state => state.taskToUpdate,
   getSelectedTasksIds: state => state.selectedTasks,
   getShowTakFormStatus: state => state.showTaskForm,

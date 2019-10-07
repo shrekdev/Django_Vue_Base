@@ -13,7 +13,10 @@ urlpatterns = [
     # path('update/completed/<pk>/', views.BaseTaskCompleted.as_view()),
     # path('delete/<pk>/', views.BaseTaskDelete.as_view()),
     path('create/', views.BaseTaskCreate.as_view()),
+
+    # url's for task statuses
     path('status/list/', views.TaskStatusList.as_view()),
+    path('status/update/', views.TaskStatusUpdate.as_view()),
 
     # url's for bulk actions
     path('bulk/delete', views.BaseTaskBulkDelete.as_view()),

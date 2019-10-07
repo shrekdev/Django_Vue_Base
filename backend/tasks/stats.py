@@ -131,7 +131,7 @@ def tasks_new_and_with_deadline_stats(how_much: int, user_id: int) -> dict:
 def tasks_statuses_stats(user_id: int) -> dict:
 
     stat = []
-    task_status_list = list(TaskStatus.objects.all().order_by("id"))
+    task_status_list = list(TaskStatus.objects.filter(user=user_id).order_by("id"))
     if task_status_list:
         for task_status in task_status_list:
             tmp = BaseTask.objects.filter(created_by=user_id, status=task_status)

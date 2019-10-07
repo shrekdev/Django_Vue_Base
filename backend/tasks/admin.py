@@ -4,8 +4,8 @@ from . import models
 
 @admin.register(models.TaskStatus)
 class TaskStatusAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'name', 'color', 'is_new', 'is_completed',)
-    fields = ['name', 'color', 'is_new', 'is_completed']
+    list_display = ('id', 'user', 'name', 'color', 'is_new', 'is_completed', 'is_active')
+    fields = ['user', 'name', 'color', 'is_new', 'is_completed', 'is_active']
 
 
 @admin.register(models.TaskCategory)
