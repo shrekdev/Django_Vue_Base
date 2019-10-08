@@ -4,6 +4,7 @@ import store from '../store'
 
 import Layout from '@/components/layout/Layout.vue'
 import DashboardLayout from '@/components/layout/DashboardLayout.vue'
+import SettingsLayout from '@/components/layout/DashboardLayout.vue'
 import AuthLayout from '@/components/auth/AuthLayout.vue'
 import Logout from '@/components/auth/Logout.vue'
 import AccountActivate from '@/components/auth/AccountActivate.vue'
@@ -18,7 +19,7 @@ const ifNotAuthenticated = (to, from, next) => {
     next()
     return
   }
-  next('/')
+  next('/');
 }
 
 const ifAuthenticated = (to, from, next) => {
@@ -55,6 +56,13 @@ const router = new Router({
           component: () => import('@/components/tasks/TaskList.vue'),
           beforeEnter: ifAuthenticated,
         },
+      ],
+    },
+    {
+      path: '/',
+      component: SettingsLayout,
+      beforeEnter: ifAuthenticated,
+      children: [
         {
           path: 'settings',
           name: 'Settings',

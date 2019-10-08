@@ -4,30 +4,17 @@
       <p class="v-custom-header-name">task status</p>
       <v-container fluid>
         <v-layout wrap>
+          <v-flex style="padding: 0px 10px 20px 0px;">
+            <v-card light>
+              <v-card-text style="padding: 15px 15px 0px 15px;">
 
+                <TaskStatusUpdate />
+                <TaskStatusUpdate />
+                <TaskStatusUpdate />
 
-
-  <v-flex lg color="primary" style="padding: 0px 10px 20px 0px;">
-    <v-card light>
-      <v-card-text style="padding: 15px 15px 0px 15px;">
-
-<v-layout row wrap>
-        <v-flex xs12 sm6>
-          <v-text-field label="" solo dark ></v-text-field>
-        </v-flex>
-        <v-spacer></v-spacer>
-        <v-btn color="success">Activate</v-btn>
-        <v-btn color="warning">Deactivate</v-btn>
-</v-layout>
-
-
-      </v-card-text>
-      <v-divider></v-divider>
-    </v-card>
-  </v-flex>
-
-
-
+              </v-card-text>
+            </v-card>
+          </v-flex>
         </v-layout>
       </v-container>
     </v-content>
@@ -37,12 +24,21 @@
 
 <script>
   import { mapGetters } from 'vuex';
-
+  import TaskStatusUpdate from './TaskStatusUpdate.vue';
+  import { SETTINGS_GET_TASK_STATUS_LIST } from '@/store/actions/settings';
 
   export default {
     name: 'Settings',
     computed: {
       ...mapGetters(['getStatusList']),
+    },
+    mounted() {
+      this.$store.dispatch(SETTINGS_GET_TASK_STATUS_LIST).then((response) => {
+        console.log('data: ', response.data);
+      })
+    },
+    components: {
+      TaskStatusUpdate
     },
   }
 </script>

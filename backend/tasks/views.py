@@ -30,15 +30,20 @@ class TaskStatusList(generics.ListAPIView, mixins.JwtUserInfoMixin):
         return models.TaskStatus.objects.filter(user=user_id)
 
 
-class TaskStatusUpdate(views.APIView, mixins.JwtUserInfoMixin):
+# class TaskStatusUpdate(views.APIView, mixins.JwtUserInfoMixin):
+class TaskStatusUpdate(generics.UpdateAPIView, mixins.JwtUserInfoMixin):
     serializer_class = serializers.TaskStatusUpdateSerializer
     permission_classes = (AllowAny,)
 
-    def get(self, request):
-        return Response({"test": "get"})
+    def get_queryset(self):
+        user_id = self.user_id()
+        return models.TaskStatus.objects.filter(user=user_id)
 
-    def post(self, request):
-        return Response({"test": "post"})
+    # def get(self, request):
+    #     return Response({"test": "get"})
+    #
+    # def post(self, request):
+    #     return Response({"test": "post"})
 
 
 class BaseTaskList(generics.ListAPIView, mixins.JwtUserInfoMixin):
