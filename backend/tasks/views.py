@@ -21,7 +21,11 @@ class TaskCategoryList(generics.ListAPIView):
     permission_classes = (AllowAny,)
 
 
-class TaskStatusList(generics.ListAPIView, mixins.JwtUserInfoMixin):
+class TaskStatusAPIView(generics.ListAPIView,
+                        generics.CreateAPIView,
+                        generics.UpdateAPIView,
+                        mixins.JwtUserInfoMixin):
+
     serializer_class = serializers.TaskStatusSerializer
     permission_classes = (AllowAny,)
 
@@ -30,20 +34,14 @@ class TaskStatusList(generics.ListAPIView, mixins.JwtUserInfoMixin):
         return models.TaskStatus.objects.filter(user=user_id)
 
 
-# class TaskStatusUpdate(views.APIView, mixins.JwtUserInfoMixin):
-class TaskStatusUpdate(generics.UpdateAPIView, mixins.JwtUserInfoMixin):
-    serializer_class = serializers.TaskStatusUpdateSerializer
-    permission_classes = (AllowAny,)
-
-    def get_queryset(self):
-        user_id = self.user_id()
-        return models.TaskStatus.objects.filter(user=user_id)
-
-    # def get(self, request):
-    #     return Response({"test": "get"})
-    #
-    # def post(self, request):
-    #     return Response({"test": "post"})
+# class TaskStatusUpdate(generics.UpdateAPIView, mixins.JwtUserInfoMixin):
+#     # serializer_class = serializers.TaskStatusUpdateSerializer
+#     serializer_class = serializers.TaskStatusSerializer
+#     permission_classes = (AllowAny,)
+#
+#     def get_queryset(self):
+#         user_id = self.user_id()
+#         return models.TaskStatus.objects.filter(user=user_id)
 
 
 class BaseTaskList(generics.ListAPIView, mixins.JwtUserInfoMixin):

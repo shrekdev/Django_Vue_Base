@@ -14,12 +14,6 @@ class TaskStatusSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class TaskStatusUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.TaskStatus
-        fields = ["name", "color", "is_active"]
-
-
 class SubTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.SubTask

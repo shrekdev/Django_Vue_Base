@@ -7,11 +7,12 @@
           <v-flex style="padding: 0px 10px 20px 0px;">
             <v-card light>
               <v-card-text style="padding: 15px 15px 0px 15px;">
-
-                <TaskStatusUpdate />
-                <TaskStatusUpdate />
-                <TaskStatusUpdate />
-
+                <template v-for ="item in getStatusList">
+                  <template v-if="!item.is_new && !item.is_completed && item.is_active">
+                    <TaskStatusUpdate :key="item.id" :id="item.id" :name="item.name" :color="item.color"/>
+                  </template>
+                </template>
+                <TaskStatusCreate />
               </v-card-text>
             </v-card>
           </v-flex>
@@ -25,7 +26,9 @@
 <script>
   import { mapGetters } from 'vuex';
   import TaskStatusUpdate from './TaskStatusUpdate.vue';
+  import TaskStatusCreate from './TaskStatusCreate.vue';
   import { SETTINGS_GET_TASK_STATUS_LIST } from '@/store/actions/settings';
+  import { TASKS_LOAD_STATUS_LIST } from '@/store/actions/tasks';
 
   export default {
     name: 'Settings',
@@ -33,12 +36,11 @@
       ...mapGetters(['getStatusList']),
     },
     mounted() {
-      this.$store.dispatch(SETTINGS_GET_TASK_STATUS_LIST).then((response) => {
-        console.log('data: ', response.data);
-      })
+      this.$store.dispatch(TASKS_LOAD_STATUS_LIST);
     },
     components: {
-      TaskStatusUpdate
+      TaskStatusUpdate,
+      TaskStatusCreate
     },
   }
 </script>

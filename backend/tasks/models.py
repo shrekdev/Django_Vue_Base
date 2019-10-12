@@ -162,7 +162,8 @@ class BaseTask(BaseTaskFieldsMixin):
         to=TaskStatus,
         verbose_name='task status',
         help_text='Current task status',
-        on_delete=models.CASCADE,
+        null=True,
+        on_delete=models.SET_NULL,
     )
 
     category = models.ManyToManyField(

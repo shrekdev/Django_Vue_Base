@@ -13,6 +13,7 @@
       <p class="v-custom-header-name">task statuses</p>
       <v-container fluid>
         <v-layout wrap>
+        {{statusesData}}
           <template v-for="status in statusesData.status_list">
             <DashboardBox :data=status filter_by="status" />
           </template>
