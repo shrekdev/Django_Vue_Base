@@ -34,17 +34,10 @@ class TaskStatusAPIView(generics.ListAPIView,
         return models.TaskStatus.objects.filter(user=user_id)
 
 
-# class TaskStatusUpdate(generics.UpdateAPIView, mixins.JwtUserInfoMixin):
-#     # serializer_class = serializers.TaskStatusUpdateSerializer
-#     serializer_class = serializers.TaskStatusSerializer
-#     permission_classes = (AllowAny,)
-#
-#     def get_queryset(self):
-#         user_id = self.user_id()
-#         return models.TaskStatus.objects.filter(user=user_id)
+class BaseTaskListDeleteAPIView(generics.ListAPIView,
+                                generics.DestroyAPIView,
+                                mixins.JwtUserInfoMixin):
 
-
-class BaseTaskList(generics.ListAPIView, mixins.JwtUserInfoMixin):
     serializer_class = serializers.BaseTaskSerializer
     permission_classes = (AllowAny,)
     pagination_class = StandardResultsSetPagination
@@ -68,27 +61,12 @@ class BaseTaskList(generics.ListAPIView, mixins.JwtUserInfoMixin):
         return []
 
 
-class SubTaskList(generics.ListAPIView):
-    queryset = models.SubTask.objects.all()
-    serializer_class = serializers.SubTaskSerializer
-    permission_classes = (AllowAny,)
+class BaseTaskCreateUpdateAPIView(generics.CreateAPIView,
+                                  generics.UpdateAPIView,
+                                  mixins.JwtUserInfoMixin):
 
-
-class BaseTaskUpdate(generics.UpdateAPIView):
     queryset = models.BaseTask.objects.all()
-    serializer_class = serializers.BaseTaskUpdateSerializer
-    permission_classes = (AllowAny,)
-
-
-class BaseTaskDelete(generics.DestroyAPIView):
-    queryset = models.BaseTask.objects.all()
-    serializer_class = serializers.BaseTaskSerializer
-    permission_classes = (AllowAny,)
-
-
-class BaseTaskCreate(generics.CreateAPIView):
-    queryset = models.BaseTask.objects.all()
-    serializer_class = serializers.BaseTaskUpdateSerializer
+    serializer_class = serializers.BaseTaskCreateUpdateSerializer
     permission_classes = (AllowAny,)
 
 

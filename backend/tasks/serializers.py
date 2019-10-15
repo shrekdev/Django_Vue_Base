@@ -21,14 +21,14 @@ class SubTaskSerializer(serializers.ModelSerializer):
 
 
 class BaseTaskSerializer(serializers.ModelSerializer):
-    status = TaskStatusSerializer(read_only=True)
+    status = TaskStatusSerializer(read_only=False)
 
     class Meta:
         model = models.BaseTask
         fields = "__all__"
 
 
-class BaseTaskUpdateSerializer(serializers.ModelSerializer):
+class BaseTaskCreateUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.BaseTask

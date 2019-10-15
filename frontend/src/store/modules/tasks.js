@@ -71,7 +71,7 @@ const actions = {
   [TASKS_LOAD_TASK_LIST]: ({commit, dispatch}, data) => {
     state.tasksList = {}
     return new Promise((resolve, reject) => {
-      apiCall.get('/api/tasks/task_list/', {params: data})
+      apiCall.get('/api/tasks/list/', {params: data})
       .then(resp => {
         commit(TASKS_LOAD_TASK_LIST_SUCCESS, resp);
         resolve(resp);
@@ -84,7 +84,7 @@ const actions = {
 
   [TASKS_LOAD_CATEGORY_LIST]: ({commit, dispatch}) => {
     return new Promise((resolve, reject) => {
-      apiCall.get('/api/tasks/category_list/')
+      apiCall.get('/api/tasks/category/list/')
       .then(resp => {
         resolve(resp);
       })
