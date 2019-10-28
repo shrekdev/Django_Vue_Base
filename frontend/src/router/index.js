@@ -1,34 +1,33 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import store from '../store'
+import Vue from 'vue';
+import Router from 'vue-router';
+import store from '../store';
 
-import Layout from '@/components/layout/Layout.vue'
-import DashboardLayout from '@/components/layout/DashboardLayout.vue'
-import SettingsLayout from '@/components/layout/DashboardLayout.vue'
-import AuthLayout from '@/components/auth/AuthLayout.vue'
-import Logout from '@/components/auth/Logout.vue'
-import AccountActivate from '@/components/auth/AccountActivate.vue'
-import PasswordResetConfirmRedirect from '@/components/auth/PasswordResetConfirmRedirect.vue'
+import Layout from '@/components/layout/Layout.vue';
+import DashboardLayout from '@/components/layout/DashboardLayout.vue';
+import AuthLayout from '@/components/auth/AuthLayout.vue';
+import Logout from '@/components/auth/Logout.vue';
+import AccountActivate from '@/components/auth/AccountActivate.vue';
+import PasswordResetConfirmRedirect from '@/components/auth/PasswordResetConfirmRedirect.vue';
 
 
-Vue.use(Router)
+Vue.use(Router);
 
 
 const ifNotAuthenticated = (to, from, next) => {
   if (!store.getters.isAuthenticated) {
-    next()
-    return
+    next();
+    return;
   }
   next('/');
-}
+};
 
 const ifAuthenticated = (to, from, next) => {
   if (store.getters.isAuthenticated) {
-    next()
-    return
+    next();
+    return;
   }
-  next('/login')
-}
+  next('/login');
+};
 
 const router = new Router({
   routes: [
@@ -60,7 +59,7 @@ const router = new Router({
     },
     {
       path: '/',
-      component: SettingsLayout,
+      component: DashboardLayout,
       beforeEnter: ifAuthenticated,
       children: [
         {
@@ -108,7 +107,7 @@ const router = new Router({
       component: Logout,
       beforeEnter: ifAuthenticated,
     },
-  ]
-})
+  ],
+});
 
-export default router
+export default router;

@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import {
   SETTINGS_GET_TASK_STATUS_LIST,
   SETTINGS_UPDATE_STATUS,
@@ -6,15 +7,14 @@ import {
 import { TASKS_LOAD_STATUS_LIST } from '../actions/tasks.js';
 
 import apiCall from '../../utils/api';
-import Vue from 'vue';
 
 
 const state = {
-}
+};
 
 
 const getters = {
-}
+};
 
 
 const actions = {
@@ -30,41 +30,37 @@ const actions = {
 //    })
 //  },
 
-  [SETTINGS_UPDATE_STATUS]: ({commit, dispatch}, payload) => {
-    return new Promise((resolve, reject) => {
-      const id = payload.id;
-      delete payload.id;
-      apiCall.patch(`/api/tasks/status/update/${id}/`, payload)
-      .then(resp => {
+  [SETTINGS_UPDATE_STATUS]: ({ commit, dispatch }, payload) => new Promise((resolve, reject) => {
+    const id = payload.id;
+    delete payload.id;
+    apiCall.patch(`/api/tasks/status/update/${id}/`, payload)
+      .then((resp) => {
         dispatch(TASKS_LOAD_STATUS_LIST);
         resolve(resp);
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
-      })
-    })
-  },
+      });
+  }),
 
 
-  [SETTINGS_CREATE_STATUS]: ({commit, dispatch}, payload) => {
-    return new Promise((resolve, reject) => {
-      apiCall.post('/api/tasks/status/create/', payload)
-      .then(resp => {
-        console.log("response: ", resp);
+  [SETTINGS_CREATE_STATUS]: ({ commit, dispatch }, payload) => new Promise((resolve, reject) => {
+    apiCall.post('/api/tasks/status/create/', payload)
+      .then((resp) => {
+        console.log('response: ', resp);
         dispatch(TASKS_LOAD_STATUS_LIST);
         resolve(resp);
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
-      })
-    })
-  },
+      });
+  }),
 
-}
+};
 
 
 const mutations = {
-}
+};
 
 
 export default {
@@ -72,4 +68,4 @@ export default {
   getters,
   actions,
   mutations,
-}
+};

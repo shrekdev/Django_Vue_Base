@@ -1,43 +1,43 @@
+import jwt_decode from 'jwt-decode';
 import {
-    AUTH_SIGN_UP,
-    AUTH_SIGN_UP_SUCCESS,
-    AUTH_SIGN_UP_ERROR,
-    AUTH_ACCOUNT_ACTIVATE,
-    AUTH_ACCOUNT_ACTIVATE_SUCCESS,
-    AUTH_ACCOUNT_ACTIVATE_ERROR,
-    AUTH_LOG_IN,
-    AUTH_LOG_IN_ERROR,
-    AUTH_LOG_IN_SUCCESS,
-    AUTH_LOGOUT,
-    TEST_ACTION,
-    AUTH_TOKEN_REFRESH,
-    AUTH_PASSWORD_RESET,
-    AUTH_PASSWORD_RESET_SUCCESS,
-    AUTH_PASSWORD_RESET_ERROR,
-    AUTH_PASSWORD_RESET_CONFIRM,
-    AUTH_PASSWORD_RESET_CONFIRM_SUCCESS,
-    AUTH_PASSWORD_RESET_CONFIRM_ERROR,
-    REQUEST_PROCESSING_TRUE,
-    REQUEST_PROCESSING_FALSE,
+  AUTH_SIGN_UP,
+  AUTH_SIGN_UP_SUCCESS,
+  AUTH_SIGN_UP_ERROR,
+  AUTH_ACCOUNT_ACTIVATE,
+  AUTH_ACCOUNT_ACTIVATE_SUCCESS,
+  AUTH_ACCOUNT_ACTIVATE_ERROR,
+  AUTH_LOG_IN,
+  AUTH_LOG_IN_ERROR,
+  AUTH_LOG_IN_SUCCESS,
+  AUTH_LOGOUT,
+  TEST_ACTION,
+  AUTH_TOKEN_REFRESH,
+  AUTH_PASSWORD_RESET,
+  AUTH_PASSWORD_RESET_SUCCESS,
+  AUTH_PASSWORD_RESET_ERROR,
+  AUTH_PASSWORD_RESET_CONFIRM,
+  AUTH_PASSWORD_RESET_CONFIRM_SUCCESS,
+  AUTH_PASSWORD_RESET_CONFIRM_ERROR,
+  REQUEST_PROCESSING_TRUE,
+  REQUEST_PROCESSING_FALSE,
 } from '../actions/auth.js';
 import apiCall from '../../utils/api';
-import jwt_decode from 'jwt-decode';
 
 
 const state = {
   requestProcessing: false,
   accessToken: localStorage.getItem('access'),
   refreshToken: localStorage.getItem('refresh'),
-  accountSignUpStatus: "",
-  accountActivationStatus: "",
-  accountPasswordResetStatus: "",
-  accountPasswordResetErrors: "",
-  accountPasswordResetConfirmStatus: "",
+  accountSignUpStatus: '',
+  accountActivationStatus: '',
+  accountPasswordResetStatus: '',
+  accountPasswordResetErrors: '',
+  accountPasswordResetConfirmStatus: '',
   accountPasswordResetConfirmErrors: {},
   status: '',
   logInErrors: {},
   signup_errors: {},
-}
+};
 
 
 const getters = {
@@ -56,108 +56,94 @@ const getters = {
   getAccountPasswordResetConfirmErrors: state => state.accountPasswordResetConfirmErrors,
   getUserId() {
     return jwt_decode(state.accessToken).user_id;
-  }
-}
+  },
+};
 
 
 const actions = {
 
-  [AUTH_SIGN_UP]: ({commit, dispatch}, data) => {
-    return new Promise((resolve, reject) => {
-      apiCall.post('/api/auth/users/', data)
-      .then(resp => {
+  [AUTH_SIGN_UP]: ({ commit, dispatch }, data) => new Promise((resolve, reject) => {
+    apiCall.post('/api/auth/users/', data)
+      .then((resp) => {
         commit(AUTH_SIGN_UP_SUCCESS, resp);
         resolve(resp);
       })
-      .catch(err => {
+      .catch((err) => {
         commit(AUTH_SIGN_UP_ERROR, err);
         reject(err);
-      })
-    })
-  },
+      });
+  }),
 
-  [AUTH_ACCOUNT_ACTIVATE]: ({commit, dispatch}, data) => {
-    return new Promise((resolve, reject) => {
-      apiCall.post('/api/auth/users/confirm/', data)
-      .then(resp => {
+  [AUTH_ACCOUNT_ACTIVATE]: ({ commit, dispatch }, data) => new Promise((resolve, reject) => {
+    apiCall.post('/api/auth/users/confirm/', data)
+      .then((resp) => {
         commit(AUTH_ACCOUNT_ACTIVATE_SUCCESS, resp);
         resolve(resp);
       })
-      .catch(err => {
+      .catch((err) => {
         commit(AUTH_ACCOUNT_ACTIVATE_ERROR, err);
         reject(err);
-      })
-    })
-  },
+      });
+  }),
 
-  [AUTH_LOG_IN]: ({commit, dispatch}, user) => {
-    return new Promise((resolve, reject) => {
-      apiCall.post('/api/auth/jwt/create/', user)
-      .then(resp => {
+  [AUTH_LOG_IN]: ({ commit, dispatch }, user) => new Promise((resolve, reject) => {
+    apiCall.post('/api/auth/jwt/create/', user)
+      .then((resp) => {
         localStorage.setItem('access', resp.data.access);
         localStorage.setItem('refresh', resp.data.refresh);
         commit(AUTH_LOG_IN_SUCCESS, resp);
         resolve(resp);
       })
-      .catch(err => {
+      .catch((err) => {
         localStorage.removeItem('access');
         localStorage.removeItem('refresh');
         commit(AUTH_LOG_IN_ERROR, err);
         reject(err);
-      })
-    })
-  },
+      });
+  }),
 
-  [AUTH_LOGOUT]: ({commit, dispatch}) => {
-    return new Promise((resolve, reject) => {
-      localStorage.removeItem('access');
-      localStorage.removeItem('refresh');
-      commit(AUTH_LOGOUT);
-      resolve();
-    })
-  },
+  [AUTH_LOGOUT]: ({ commit, dispatch }) => new Promise((resolve, reject) => {
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
+    commit(AUTH_LOGOUT);
+    resolve();
+  }),
 
-  [TEST_ACTION]: ({commit, dispatch}) => {
-    return new Promise((resolve, reject) => {
-      console.log('IN TEST_ACTION');
-      const payload = {
-        ids: [494, 498],
-      }
-      apiCall.post('/api/tasks/bulk/star', payload);  // dla testów
-      resolve();
-    })
-  },
+  [TEST_ACTION]: ({ commit, dispatch }) => new Promise((resolve, reject) => {
+    console.log('IN TEST_ACTION');
+    const payload = {
+      ids: [494, 498],
+    };
+    apiCall.post('/api/tasks/bulk/star', payload); // dla testów
+    resolve();
+  }),
 
-  [AUTH_PASSWORD_RESET]: ({commit, dispatch}, data) => {
-    return new Promise((resolve, reject) => {
-      apiCall.post('/api/auth/password/reset/', data)
-      .then(resp => {
+  [AUTH_PASSWORD_RESET]: ({ commit, dispatch }, data) => new Promise((resolve, reject) => {
+    apiCall.post('/api/auth/password/reset/', data)
+      .then((resp) => {
         commit(AUTH_PASSWORD_RESET_SUCCESS, resp);
         resolve(resp);
       })
-      .catch(err => {
+      .catch((err) => {
         commit(AUTH_PASSWORD_RESET_ERROR, err);
         reject(err);
-      })
-    })
-  },
+      });
+  }),
 
-  [AUTH_PASSWORD_RESET_CONFIRM]: ({commit, dispatch}, data) => {
-    return new Promise((resolve, reject) => {
-      apiCall.post('/api/auth/password/reset/confirm/', data)
-      .then(resp => {
-        console.log('hasło zmienione')
+  [AUTH_PASSWORD_RESET_CONFIRM]: ({ commit, dispatch }, data) => new Promise((resolve, reject) => {
+    apiCall.post('/api/auth/password/reset/confirm/', data)
+      .then((resp) => {
+        console.log('hasło zmienione');
         commit(AUTH_PASSWORD_RESET_CONFIRM_SUCCESS, resp);
         resolve(resp);
       })
-      .catch(err => {
-        console.log('error in AUTH_PASSWORD_RESET_CONFIRM_ERROR')
+      .catch((err) => {
+        console.log('error in AUTH_PASSWORD_RESET_CONFIRM_ERROR');
         commit(AUTH_PASSWORD_RESET_CONFIRM_ERROR, err);
         reject(err);
-      })
-    })
-  },
-}
+      });
+  }),
+};
 
 const mutations = {
 
@@ -210,7 +196,7 @@ const mutations = {
   },
 
   [AUTH_PASSWORD_RESET_CONFIRM_SUCCESS]: (state, resp) => {
-    state.accountPasswordResetConfirmErrors = {}
+    state.accountPasswordResetConfirmErrors = {};
     state.accountPasswordResetConfirmStatus = 'success';
   },
   [AUTH_PASSWORD_RESET_CONFIRM_ERROR]: (state, err) => {
@@ -225,7 +211,7 @@ const mutations = {
   [REQUEST_PROCESSING_FALSE]: (state) => {
     state.requestProcessing = false;
   },
-}
+};
 
 
 export default {
@@ -233,4 +219,4 @@ export default {
   getters,
   actions,
   mutations,
-}
+};

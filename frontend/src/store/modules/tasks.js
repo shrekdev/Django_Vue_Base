@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import {
   TASKS_LOAD_TASK_LIST,
   TASKS_LOAD_TASK_LIST_SUCCESS,
@@ -19,7 +20,6 @@ import {
   TASKS_LOAD_STATUS_LIST_SUCCESS,
 } from '../actions/tasks.js';
 import apiCall from '../../utils/api';
-import Vue from 'vue';
 
 
 // TODO: remove it
@@ -34,7 +34,7 @@ const state = {
   selectedTasks: [],
   selectedAllTasks: false,
   showTaskForm: false,
-}
+};
 
 const getters = {
   getTasksList: state => state.tasksList,
@@ -44,176 +44,156 @@ const getters = {
   getShowTakFormStatus: state => state.showTaskForm,
 
   getTaskById(state) {
-    return id => state.tasksList.filter(item => {
-      return item.id === id
-    });
+    return id => state.tasksList.filter(item => item.id === id);
   },
 
   getNewStatusLabelId(state) {
-    for(let i=0; i<state.statusList.length; i++) {
-      if(state.statusList[i].is_new === true) {
-        return state.statusList[i].id
+    for (let i = 0; i < state.statusList.length; i++) {
+      if (state.statusList[i].is_new === true) {
+        return state.statusList[i].id;
       }
     }
   },
 
   getCompletedStatusLabelId(state) {
-    for(let i=0; i<state.statusList.length; i++) {
-      if(state.statusList[i].is_completed === true) {
-        return state.statusList[i].id
+    for (let i = 0; i < state.statusList.length; i++) {
+      if (state.statusList[i].is_completed === true) {
+        return state.statusList[i].id;
       }
     }
   },
-}
+};
 
 
 const actions = {
-  [TASKS_LOAD_TASK_LIST]: ({commit, dispatch}, data) => {
-    state.tasksList = {}
+  [TASKS_LOAD_TASK_LIST]: ({ commit, dispatch }, data) => {
+    state.tasksList = {};
     return new Promise((resolve, reject) => {
-      apiCall.get('/api/tasks/list/', {params: data})
-      .then(resp => {
-        commit(TASKS_LOAD_TASK_LIST_SUCCESS, resp);
-        resolve(resp);
-      })
-      .catch(err => {
-        reject(err);
-      })
-    })
+      apiCall.get('/api/tasks/list/', { params: data })
+        .then((resp) => {
+          commit(TASKS_LOAD_TASK_LIST_SUCCESS, resp);
+          resolve(resp);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   },
 
-  [TASKS_LOAD_CATEGORY_LIST]: ({commit, dispatch}) => {
-    return new Promise((resolve, reject) => {
-      apiCall.get('/api/tasks/category/list/')
-      .then(resp => {
+  [TASKS_LOAD_CATEGORY_LIST]: ({ commit, dispatch }) => new Promise((resolve, reject) => {
+    apiCall.get('/api/tasks/category/list/')
+      .then((resp) => {
         resolve(resp);
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
-      })
-    })
-  },
+      });
+  }),
 
-  [TASKS_LOAD_STATUS_LIST]: ({commit, dispatch}) => {
-    return new Promise((resolve, reject) => {
-      apiCall.get('/api/tasks/status/list/')
-      .then(resp => {
+  [TASKS_LOAD_STATUS_LIST]: ({ commit, dispatch }) => new Promise((resolve, reject) => {
+    apiCall.get('/api/tasks/status/list/')
+      .then((resp) => {
         commit(TASKS_LOAD_STATUS_LIST_SUCCESS, resp);
         resolve(resp);
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
-      })
-    })
-  },
+      });
+  }),
 
-  [TASKS_UPDATE_TASK]: ({commit, dispatch}, data) => {
-    return new Promise((resolve, reject) => {
-      apiCall.put(`/api/tasks/update/${data.id}/`, data)
-      .then(resp => {
+  [TASKS_UPDATE_TASK]: ({ commit, dispatch }, data) => new Promise((resolve, reject) => {
+    apiCall.put(`/api/tasks/update/${data.id}/`, data)
+      .then((resp) => {
         dispatch(TASKS_LOAD_TASK_LIST);
         commit(CLEAR_TASK_TO_UPDATE_STATE);
         resolve(resp);
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
-      })
-    })
-  },
+      });
+  }),
 
-  [DELETE_SINGLE_TASK]: ({commit, dispatch}, taskId) => {
-    return new Promise((resolve, reject) => {
-      apiCall.delete(`/api/tasks/delete/${taskId}/`)
-      .then(resp => {
+  [DELETE_SINGLE_TASK]: ({ commit, dispatch }, taskId) => new Promise((resolve, reject) => {
+    apiCall.delete(`/api/tasks/delete/${taskId}/`)
+      .then((resp) => {
         commit(DELETE_SINGLE_TASK_SUCCESS, taskId);
         resolve(resp);
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
-      })
-    })
-  },
+      });
+  }),
 
-  [PATCH_TASK]: ({commit, dispatch}, payload) => {
-    return new Promise((resolve, reject) => {
-      const id = payload.id;
-      delete payload.id;
-      apiCall.patch(`/api/tasks/update/${id}/`, payload)
-      .then(resp => {
+  [PATCH_TASK]: ({ commit, dispatch }, payload) => new Promise((resolve, reject) => {
+    const id = payload.id;
+    delete payload.id;
+    apiCall.patch(`/api/tasks/update/${id}/`, payload)
+      .then((resp) => {
         dispatch(TASKS_LOAD_TASK_LIST);
         commit(CLEAR_TASK_TO_UPDATE_STATE);
         resolve(resp);
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
-      })
-    })
-  },
+      });
+  }),
 
-  [ADD_TASK]: ({commit, dispatch}, payload) => {
-    return new Promise((resolve, reject) => {
-      apiCall.post('/api/tasks/create/', payload)
-      .then(resp => {
+  [ADD_TASK]: ({ commit, dispatch }, payload) => new Promise((resolve, reject) => {
+    apiCall.post('/api/tasks/create/', payload)
+      .then((resp) => {
         resolve(resp);
         dispatch(TASKS_LOAD_TASK_LIST);
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
-      })
-    })
-  },
+      });
+  }),
 
-  [MARK_SELECTED_TASKS_AS_COMPLETED]: ({commit, dispatch}) => {
-    return new Promise((resolve, reject) => {
-      const payload = {
-        ids: state.selectedTasks
-      }
-      apiCall.post('/api/tasks/bulk/completed', payload)
-      .then(resp => {
+  [MARK_SELECTED_TASKS_AS_COMPLETED]: ({ commit, dispatch }) => new Promise((resolve, reject) => {
+    const payload = {
+      ids: state.selectedTasks,
+    };
+    apiCall.post('/api/tasks/bulk/completed', payload)
+      .then((resp) => {
         dispatch(TASKS_LOAD_TASK_LIST);
         state.selectedTasks = [];
         state.selectedAllTasks = false;
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
-      })
-    })
-  },
+      });
+  }),
 
-  [MARK_SELECTED_TASKS_WITH_STAR]: ({commit, dispatch}) => {
-    return new Promise((resolve, reject) => {
-      const payload = {
-        ids: state.selectedTasks
-      }
-      apiCall.post('/api/tasks/bulk/star', payload)
-      .then(resp => {
+  [MARK_SELECTED_TASKS_WITH_STAR]: ({ commit, dispatch }) => new Promise((resolve, reject) => {
+    const payload = {
+      ids: state.selectedTasks,
+    };
+    apiCall.post('/api/tasks/bulk/star', payload)
+      .then((resp) => {
         dispatch(TASKS_LOAD_TASK_LIST);
         state.selectedTasks = [];
         state.selectedAllTasks = false;
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
-      })
-    })
-  },
+      });
+  }),
 
-  [DELETE_SELECTED_TASKS]: ({commit, dispatch}) => {
-    return new Promise((resolve, reject) => {
-      const payload = {
-        ids: state.selectedTasks
-      }
-      apiCall.post('/api/tasks/bulk/delete', payload)
-      .then(resp => {
+  [DELETE_SELECTED_TASKS]: ({ commit, dispatch }) => new Promise((resolve, reject) => {
+    const payload = {
+      ids: state.selectedTasks,
+    };
+    apiCall.post('/api/tasks/bulk/delete', payload)
+      .then((resp) => {
         dispatch(TASKS_LOAD_TASK_LIST);
         state.selectedTasks = [];
         state.selectedAllTasks = false;
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
-      })
-    })
-  },
-}
+      });
+  }),
+};
 
 const mutations = {
   [TASKS_LOAD_TASK_LIST_SUCCESS]: (state, resp) => {
@@ -234,7 +214,7 @@ const mutations = {
   },
   [CHANGE_SELECTED_TASK]: (state, taskId) => {
     if (state.selectedTasks.includes(taskId)) {
-      for(let i = 0; i < state.selectedTasks.length; i++){
+      for (let i = 0; i < state.selectedTasks.length; i++) {
         if (state.selectedTasks[i] === taskId) {
           state.selectedTasks.splice(i, 1);
           i--;
@@ -247,8 +227,8 @@ const mutations = {
   [SELECT_ALL_TASKS]: (state) => {
     state.selectedAllTasks = !state.selectedAllTasks;
     if (state.selectedAllTasks) {
-      for(let i=0; i<state.tasksList.length; i++) {
-        if(!state.selectedTasks.includes(state.tasksList[i].id)) {
+      for (let i = 0; i < state.tasksList.length; i++) {
+        if (!state.selectedTasks.includes(state.tasksList[i].id)) {
           state.selectedTasks.push(state.tasksList[i].id);
         }
       }
@@ -262,7 +242,7 @@ const mutations = {
   [TASKS_LOAD_STATUS_LIST_SUCCESS]: (state, resp) => {
     state.statusList = resp.data;
   },
-}
+};
 
 
 export default {
@@ -270,4 +250,4 @@ export default {
   getters,
   actions,
   mutations,
-}
+};
