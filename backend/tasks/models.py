@@ -183,7 +183,7 @@ class BaseTask(BaseTaskFieldsMixin):
         verbose_name = 'Base Task'
         verbose_name_plural = 'Base Tasks'
         unique_together = ['title', 'created_by']
-        ordering = ['-created', 'status']
+        ordering = ['-created']
 
     def __str__(self):
         return self.title

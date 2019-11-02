@@ -21,7 +21,7 @@ class Command(BaseCommand):
     """
 
     help = "Create BaseTask objects"
-    HOW_MUCH_TASKS = 100
+    HOW_MUCH_TASKS = 50
 
     def handle(self, *args, **options):
 
@@ -48,6 +48,7 @@ class Command(BaseCommand):
             tnow - datetime.timedelta(days=random.randint(1, 10)) for _ in range(self.HOW_MUCH_TASKS)
         ]
 
+        # TODO: need to be changed accordingly for specific usage scenario
         user = CustomUser.objects.filter(first_name='Rafał')[0]
 
         for i in range(self.HOW_MUCH_TASKS):
@@ -60,7 +61,7 @@ class Command(BaseCommand):
                     status=random_task_status_list[i],
                     created=random_task_created_list[i],
                     due_to=random_task_created_list[i] + datetime.timedelta(days=random.randint(5, 15)),
-                    completed=True if random_task_status_list[i] == '5' else False
+                    completed=True if random_task_status_list[i].is_completed else False
                 )
                 task.category.set([random_task_category_list[i]])
                 task.save()

@@ -50,7 +50,11 @@ class BaseTaskListDeleteAPIView(generics.ListAPIView,
         user_id = self.user_id()
         if user_id:
             if filter_by == "priority":
-                return models.BaseTask.objects.filter(created_by=user_id, priority=filter_by_id)
+                return models.BaseTask.objects.filter(
+                    created_by=user_id,
+                    priority=filter_by_id,
+                    status__is_completed=False,
+                )
 
             if filter_by == "status":
                 return models.BaseTask.objects.filter(created_by=user_id, status=filter_by_id)
