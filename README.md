@@ -11,6 +11,8 @@ The goal was to create single-page application for to-do tasks management. The p
 
 Be aware the project is currently under development. Overall presentation can be seen below:
 
+![](main.gif)
+
 
 ### Local development
 
@@ -40,6 +42,8 @@ or to shell into container:
 
 This project uses Djoser library and django-rest-framework-simplejwt plugin to handle JWT based authentication 
 system. Bear in main that JWT may be vulnerable. Simple usage in action:
+
+![](auth.gif)
 
 
 ### License
