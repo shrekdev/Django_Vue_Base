@@ -16,7 +16,7 @@
     "vue-template-compiler": "^2.6.8"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "buefy": "^0.7.3",
     "chart.js": "^2.8.0",
     "jwt-decode": "^2.2.0",
